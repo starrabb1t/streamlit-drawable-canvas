@@ -10,7 +10,7 @@ import streamlit.components.v1 as components
 import streamlit.elements.lib.image_utils as st_image
 from PIL import Image
 
-RELEASE = True  # on packaging, pass this to True
+_RELEASE = True  # on packaging, pass this to True
 
 if not _RELEASE:
     _component_func = components.declare_component(
@@ -66,7 +66,6 @@ def st_canvas(
     initial_drawing: dict = None,
     display_toolbar: bool = True,
     point_display_radius: int = 3,
-    reset_canvas: bool = False,
     key=None,
 ) -> CanvasResult:
     """Create a drawing canvas in Streamlit app. Retrieve the RGBA image data into a 4D numpy array (r, g, b, alpha)
@@ -109,8 +108,6 @@ def st_canvas(
     key: str
         An optional string to use as the unique key for the widget.
         Assign a key so the component is not remount every time the script is rerun.
-    reset_canvas: bool
-        Force resetting canvas to initial state from Python.
 
     Returns
     -------
@@ -126,9 +123,13 @@ def st_canvas(
         background_image = _resize_img(background_image, height, width)
         # Reduce network traffic and cache when switch another configure, use streamlit in-mem filemanager to convert image to URL
         background_image_url = st_image.image_to_url(
-            background_image, width, True, "RGB", "PNG", f"drawable-canvas-bg-{md5(background_image.tobytes()).hexdigest()}-{key}"
+            background_image, width, True, "RGB", "PNG", f"drawable-canvas-bg-{md5(background_image.tobytes()).hexdigest()}-{key}" 
         )
-        background_image_url = st._config.get_option("server.baseUrlPath") + background_image_url
+        base_url_path: str = st._config.get_option("server.baseUrlPath").strip("/")
+        if base_url_path:
+            base_url_path = "/" + base_url_path
+        background_image_url = base_url_path + background_image_url
+
         background_color = ""
 
     # Clean initial drawing, override its background color
@@ -152,7 +153,6 @@ def st_canvas(
         displayRadius=point_display_radius,
         key=key,
         default=None,
-        resetCanvas=reset_canvas
     )
     if component_value is None:
         return CanvasResult

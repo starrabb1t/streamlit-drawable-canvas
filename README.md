@@ -2,15 +2,6 @@
 
 Streamlit component which provides a sketching canvas using [Fabric.js](http://fabricjs.com/).
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/andfanilo/streamlit-drawable-canvas-demo/master/app.py)
-
-[![PyPI](https://img.shields.io/pypi/v/streamlit-drawable-canvas)](https://pypi.org/project/streamlit-drawable-canvas/)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/streamlit-drawable-canvas)](https://pypi.org/project/streamlit-drawable-canvas/)
-
-<a href="https://www.buymeacoffee.com/andfanilo" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="50" width="180"></a>
-
-![](./img/demo.gif)
-
 ## Features
 
 - Draw freely, lines, circles, boxes and polygons on the canvas, with options on stroke & fill

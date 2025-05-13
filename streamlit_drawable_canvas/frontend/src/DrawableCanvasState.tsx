@@ -227,6 +227,12 @@ export const CanvasStateProvider = ({
   )
   const undo = useCallback(() => dispatch({ type: "undo" }), [dispatch])
   const redo = useCallback(() => dispatch({ type: "redo" }), [dispatch])
+
+  // zoom in fix
+  const zoomIn = useCallback(() => {
+    console.log("hui");
+  }, []);
+
   const forceStreamlitUpdate = useCallback(
     () => dispatch({ type: "forceSendToStreamlit" }),
     [dispatch]
@@ -248,6 +254,7 @@ export const CanvasStateProvider = ({
         redo,
         canUndo,
         canRedo,
+        zoomIn,
         forceStreamlitUpdate,
         resetState,
       }}

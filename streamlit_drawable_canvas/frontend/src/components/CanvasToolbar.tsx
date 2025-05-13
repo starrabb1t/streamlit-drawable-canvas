@@ -50,6 +50,7 @@ interface CanvasToolbarProps {
   undoCallback: () => void
   redoCallback: () => void
   resetCallback: () => void
+  zoomInCallback: () => void
 }
 
 const CanvasToolbar = ({
@@ -60,6 +61,7 @@ const CanvasToolbar = ({
   downloadCallback,
   undoCallback,
   redoCallback,
+  zoomInCallback,
   resetCallback,
 }: CanvasToolbarProps) => {
   const GAP_BETWEEN_ICONS = 4
@@ -86,6 +88,13 @@ const CanvasToolbar = ({
       invertX: false,
       enabled: canRedo,
       clickCallback: canRedo ? redoCallback : () => {},
+    },
+    {
+      imgUrl: "",
+      altText: "ZoomIn",
+      invertX: false,
+      enabled: true,
+      clickCallback: zoomInCallback,
     },
     {
       imgUrl: bin,

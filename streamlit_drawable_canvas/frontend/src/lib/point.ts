@@ -56,7 +56,12 @@ class PointTool extends FabricTool {
       selectable: false,
       evented: false,
       radius: this.displayRadius,
+      lockRotation: true,
+      lockScalingX: true,
+      lockScalingY: true,
+      hasControls: false
     })
+    //this.currentCircle.customField = false;
     if (_clicked === 0) {
       canvas.add(this.currentCircle)
     }

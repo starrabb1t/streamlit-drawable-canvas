@@ -85,6 +85,7 @@ const DrawableCanvas = ({ args }: ComponentProps) => {
     redo,
     canUndo,
     canRedo,
+    zoomIn,
     forceStreamlitUpdate,
     resetState,
   } = useCanvasState()
@@ -270,6 +271,7 @@ const DrawableCanvas = ({ args }: ComponentProps) => {
           downloadCallback={forceStreamlitUpdate}
           undoCallback={undo}
           redoCallback={redo}
+          zoomInCallback={zoomIn}
           resetCallback={() => {
             resetState(initialState)
           }}

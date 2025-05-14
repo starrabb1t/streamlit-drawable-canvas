@@ -24960,11 +24960,11 @@ const MAX_ZOOM = 10;
 const MIN_ZOOM = 1;
 function App({ args }) {
     _s();
-    const { backgroundImageURL, color, drawingMode, canvasWidth, canvasHeight } = args;
+    const { backgroundImageURL, color, drawingMode, canvasWidth, canvasHeight, initialObjects = [] } = args;
     const mountRef = (0, _react.useRef)(null);
     const canvasRef = (0, _react.useRef)(null);
-    const wrapperRef = (0, _react.useRef)(null);
     const idCounter = (0, _react.useRef)(0);
+    const initialLoaded = (0, _react.useRef)(false);
     //
     // 1) Инициализация Fabric.Canvas + фон + паннинг
     //
@@ -25036,13 +25036,62 @@ function App({ args }) {
         el.addEventListener("contextmenu", (e)=>e.preventDefault());
         // cleanup
         return ()=>{
-            canvas.dispose();
             el.removeEventListener("mousedown", startPan);
             el.removeEventListener("mousemove", doPan);
             el.removeEventListener("mouseup", stopPan);
             el.removeEventListener("contextmenu", (e)=>e.preventDefault());
+            canvas.dispose();
         };
     }, []);
+    (0, _react.useEffect)(()=>{
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        // если мы уже импортировали initialObjects ранее — ничего не делаем
+        if (initialLoaded.current) return;
+        initialLoaded.current = true;
+        // Сохраним фон, потому что clear() его сбросит
+        const bg = canvas.backgroundImage;
+        canvas.clear();
+        if (bg) canvas.setBackgroundImage(bg, canvas.renderAll.bind(canvas));
+        // Сбросим счётчик ID
+        idCounter.current = 0;
+        // Добавляем объекты из initialObjects
+        initialObjects.forEach((o)=>{
+            let inst = null;
+            if (o.type === "rect") inst = new (0, _fabric.fabric).Rect({
+                left: o.left,
+                top: o.top,
+                originX: "left",
+                originY: "top",
+                width: o.width,
+                height: o.height,
+                fill: "transparent",
+                stroke: o.stroke,
+                strokeWidth: 2,
+                selectable: false
+            });
+            else if (o.type === "circle") inst = new (0, _fabric.fabric).Circle({
+                left: o.left,
+                top: o.top,
+                originX: "center",
+                originY: "center",
+                radius: o.height / 2,
+                fill: "transparent",
+                stroke: o.stroke,
+                strokeWidth: 3,
+                selectable: false
+            });
+            if (inst) {
+                inst.objectId = ++idCounter.current;
+                canvas.add(inst);
+            }
+        });
+        canvas.renderAll();
+        // И сразу шлём обратно, чтобы Python узнал новые ID
+        sendBack();
+    }, [
+        initialObjects
+    ]);
     //
     // 2) Функции зума
     //
@@ -25224,14 +25273,13 @@ function App({ args }) {
     // 5) При любом рендере ещё подстраиваем iframe
     //
     (0, _react.useLayoutEffect)(()=>{
-        const TOOLBAR_HEIGHT = 50;
+        const TOOLBAR_HEIGHT = 40;
         (0, _streamlitComponentLib.Streamlit).setFrameHeight(canvasHeight + TOOLBAR_HEIGHT);
     });
     //
     // 6) JSX
     //
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        ref: wrapperRef,
         style: {
             display: "inline-block"
         },
@@ -25245,7 +25293,7 @@ function App({ args }) {
                 }
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 311,
+                lineNumber: 358,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _toolbarDefault.default), {
@@ -25255,17 +25303,17 @@ function App({ args }) {
                 zoomOut: handleZoomOut
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 317,
+                lineNumber: 364,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 307,
+        lineNumber: 357,
         columnNumber: 5
     }, this);
 }
-_s(App, "hyxRDdA0WlDAkgjazrxnDUy5M+c=");
+_s(App, "zgeGHykXUwFR8EK7JPTZWabq778=");
 _c = App;
 exports.default = _c1 = (0, _streamlitComponentLib.withStreamlitConnection)(App);
 var _c, _c1;

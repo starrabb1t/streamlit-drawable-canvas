@@ -15,12 +15,13 @@ function App({ args }) {
     drawingMode,
     canvasWidth,
     canvasHeight,
+    initialObjects = [],     // <-- аргумент от Python
   } = args
 
   const mountRef   = useRef(null)
   const canvasRef  = useRef(null)
-  const wrapperRef = useRef(null)
   const idCounter  = useRef(0)
+  const initialLoaded = useRef(false)
 
   //
   // 1) Инициализация Fabric.Canvas + фон + паннинг
@@ -97,15 +98,64 @@ function App({ args }) {
  
     // cleanup
     return () => {
-      canvas.dispose()
       el.removeEventListener("mousedown", startPan)
       el.removeEventListener("mousemove", doPan)
       el.removeEventListener("mouseup", stopPan)
       el.removeEventListener("contextmenu", e => e.preventDefault())
+      canvas.dispose()
     }
-
-    return () => canvas.dispose()
   }, [])
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    // если мы уже импортировали initialObjects ранее — ничего не делаем
+    if (initialLoaded.current) {
+      return
+    }
+    initialLoaded.current = true
+
+    // Сохраним фон, потому что clear() его сбросит
+    const bg = canvas.backgroundImage
+    canvas.clear()
+    if (bg) canvas.setBackgroundImage(bg, canvas.renderAll.bind(canvas))
+
+    // Сбросим счётчик ID
+    idCounter.current = 0
+
+    // Добавляем объекты из initialObjects
+    initialObjects.forEach(o => {
+      let inst = null
+      if (o.type === "rect") {
+        inst = new fabric.Rect({
+          left: o.left, top: o.top,
+          originX: "left", originY: "top",
+          width: o.width, height: o.height,
+          fill: "transparent",
+          stroke: o.stroke, strokeWidth: 2,
+          selectable: false,
+        })
+      } else if (o.type === "circle") {
+        inst = new fabric.Circle({
+          left: o.left, top: o.top,
+          originX: "center", originY: "center",
+          radius: o.height/2,
+          fill: "transparent",
+          stroke: o.stroke, strokeWidth: 3,
+          selectable: false,
+        })
+      }
+      if (inst) {
+        inst.objectId = ++idCounter.current
+        canvas.add(inst)
+      }
+    })
+    canvas.renderAll()
+
+    // И сразу шлём обратно, чтобы Python узнал новые ID
+    sendBack()
+  }, [initialObjects])
 
   //
   // 2) Функции зума
@@ -296,7 +346,7 @@ function App({ args }) {
   // 5) При любом рендере ещё подстраиваем iframe
   //
   useLayoutEffect(() => {
-    const TOOLBAR_HEIGHT = 50
+    const TOOLBAR_HEIGHT = 40
     Streamlit.setFrameHeight(canvasHeight + TOOLBAR_HEIGHT)
   })
 
@@ -304,10 +354,7 @@ function App({ args }) {
   // 6) JSX
   //
   return (
-    <div
-      ref={wrapperRef}
-      style={{ display: "inline-block" }}
-    >
+    <div style={{ display: "inline-block" }}>
       <canvas
         ref={mountRef}
         width={canvasWidth}

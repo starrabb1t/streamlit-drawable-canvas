@@ -30,6 +30,7 @@ def st_canvas(
     drawing_mode: str = "rect",
     height: int = 400,
     width: int = 600,
+    initial_objects: list[dict] = None,   # <-- добавили сюда
     key=None,
 ):
     """
@@ -40,18 +41,23 @@ def st_canvas(
     if background_image is not None:
         bg_url = _image_to_data_url(background_image)
 
-    # Вызов фронтенда
-    objects = _st_canvas(
+    # если не передали — пустой список
+    initial_objects = initial_objects or []
+
+    # вызываем компонент, передаём initialObjects
+    objs = _st_canvas(
         backgroundImageURL=bg_url,
         color=color,
         drawingMode=drawing_mode,
         canvasWidth=width,
         canvasHeight=height,
+        initialObjects=initial_objects,   
         key=key,
     )
 
-    if objects is None:
+    # если ещё не нажали ничего
+    if objs is None:
         return []
 
-    # возвращаем сразу список словарей
-    return objects
+    # возвращаем сразу список с полями id и т.д.
+    return objs

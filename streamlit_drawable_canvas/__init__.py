@@ -14,7 +14,7 @@ if not _RELEASE:
 else:
     parent = os.path.dirname(__file__)
     _st_canvas = components.declare_component(
-        "st_canvas", path=os.path.join(parent, "front/dist")
+        "st_canvas", path=os.path.join(parent, "frontend/dist")
     )
 
 

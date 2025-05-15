@@ -6,6 +6,7 @@ import streamlit.components.v1 as components
 from PIL import Image
 
 _RELEASE = True
+_RELEASE = False
 
 if not _RELEASE:
     _st_canvas = components.declare_component(
@@ -28,9 +29,10 @@ def st_canvas(
     background_image: Image.Image = None,
     color: str = "red",
     drawing_mode: str = "rect",
-    height: int = 400,
-    width: int = 600,
+    height: int = 360, #TODO
+    width: int = 640,
     initial_objects: list[dict] = None,   # <-- добавили сюда
+    pointRadius = 3,
     key=None,
 ):
     """
@@ -52,6 +54,7 @@ def st_canvas(
         canvasWidth=width,
         canvasHeight=height,
         initialObjects=initial_objects,   
+        pointRadius = pointRadius,
         key=key,
     )
 

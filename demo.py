@@ -2,7 +2,14 @@ import streamlit as st
 from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 
-bg = Image.open("image.png")  # ваш файл
+images = ("image2.png", "image.png")
+index = st.selectbox("Выберите изображение:", images)
+
+if type(index) == int:
+    index = images[index]
+print("FOO", index)
+
+bg = Image.open(index)
 
 mode = st.pills("Режим:", ["rect", "point"])
 if mode is None:
@@ -17,7 +24,7 @@ res = st_canvas(
     background_image=bg,
     color="cyan",
     drawing_mode=mode,
-    key="mini",
+    key=index,
     initial_objects=initial
 )
 

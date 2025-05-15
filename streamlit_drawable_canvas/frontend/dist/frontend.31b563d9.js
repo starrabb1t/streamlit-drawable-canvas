@@ -24960,7 +24960,7 @@ const MAX_ZOOM = 10;
 const MIN_ZOOM = 1;
 function App({ args }) {
     _s();
-    const { backgroundImageURL, color, drawingMode, canvasWidth, canvasHeight, initialObjects = [] } = args;
+    const { backgroundImageURL, color, drawingMode, canvasWidth, canvasHeight, initialObjects = [], pointRadius } = args;
     const mountRef = (0, _react.useRef)(null);
     const canvasRef = (0, _react.useRef)(null);
     const idCounter = (0, _react.useRef)(0);
@@ -25075,7 +25075,7 @@ function App({ args }) {
                 top: o.top,
                 originX: "center",
                 originY: "center",
-                radius: o.height / 2,
+                radius: pointRadius,
                 fill: "transparent",
                 stroke: o.stroke,
                 strokeWidth: 3,
@@ -25205,14 +25205,14 @@ function App({ args }) {
         } else if (drawingMode === "point") {
             canvas.selection = false;
             canvas.defaultCursor = "pointer";
-            const R = 5;
+            //const R = 0
             canvas.on("mouse:down", (opt)=>{
                 const p = canvas.getPointer(opt.e);
                 const c = new (0, _fabric.fabric).Circle({
                     left: p.x,
                     top: p.y,
-                    radius: R,
-                    fill: "transparent",
+                    radius: pointRadius,
+                    fill: "red",
                     stroke: color,
                     strokeWidth: 3,
                     originX: "center",
@@ -25293,7 +25293,7 @@ function App({ args }) {
                 }
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 358,
+                lineNumber: 359,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _toolbarDefault.default), {
@@ -25303,13 +25303,13 @@ function App({ args }) {
                 zoomOut: handleZoomOut
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 364,
+                lineNumber: 365,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 357,
+        lineNumber: 358,
         columnNumber: 5
     }, this);
 }

@@ -16,6 +16,7 @@ function App({ args }) {
     canvasWidth,
     canvasHeight,
     initialObjects = [],     // <-- аргумент от Python
+    pointRadius
   } = args
 
   const mountRef   = useRef(null)
@@ -140,7 +141,7 @@ function App({ args }) {
         inst = new fabric.Circle({
           left: o.left, top: o.top,
           originX: "center", originY: "center",
-          radius: o.height/2,
+          radius: pointRadius,
           fill: "transparent",
           stroke: o.stroke, strokeWidth: 3,
           selectable: false,
@@ -278,15 +279,15 @@ function App({ args }) {
     else if (drawingMode === "point") {
       canvas.selection = false
       canvas.defaultCursor = "pointer"
-      const R = 5
+      //const R = 0
 
       canvas.on("mouse:down", opt => {
         const p = canvas.getPointer(opt.e)
         const c = new fabric.Circle({
           left: p.x,
           top: p.y,
-          radius: R,
-          fill: "transparent",
+          radius: pointRadius,
+          fill: "red",
           stroke: color,
           strokeWidth: 3,
           originX: "center",

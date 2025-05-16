@@ -271,9 +271,24 @@ function App({ args }) {
         canvas.renderAll()
       })
       canvas.on("mouse:up", () => {
+
+        //console.log('foo')
+
         if (!isDown) return
         isDown = false
-        sendBack()
+        // only keep it if both width and height ≥ threshold
+        const w = rect.width
+        const h = rect.height
+        const MIN_RECT_SIDE = 10
+
+        if (w < MIN_RECT_SIDE || h < MIN_RECT_SIDE) {
+          canvas.remove(rect)
+          canvas.renderAll()
+          //console.log('bar')
+        }
+        else {
+          sendBack()
+        }
       })
     }
     else if (drawingMode === "point") {
@@ -287,7 +302,7 @@ function App({ args }) {
           left: p.x,
           top: p.y,
           radius: pointRadius,
-          fill: "red",
+          fill: "transparent",
           stroke: color,
           strokeWidth: 3,
           originX: "center",

@@ -25198,9 +25198,18 @@ function App({ args }) {
                 canvas.renderAll();
             });
             canvas.on("mouse:up", ()=>{
+                //console.log('foo')
                 if (!isDown) return;
                 isDown = false;
-                sendBack();
+                // only keep it if both width and height ≥ threshold
+                const w = rect.width;
+                const h = rect.height;
+                const MIN_RECT_SIDE = 10;
+                if (w < MIN_RECT_SIDE || h < MIN_RECT_SIDE) {
+                    canvas.remove(rect);
+                    canvas.renderAll();
+                //console.log('bar')
+                } else sendBack();
             });
         } else if (drawingMode === "point") {
             canvas.selection = false;
@@ -25212,7 +25221,7 @@ function App({ args }) {
                     left: p.x,
                     top: p.y,
                     radius: pointRadius,
-                    fill: "red",
+                    fill: "transparent",
                     stroke: color,
                     strokeWidth: 3,
                     originX: "center",
@@ -25293,7 +25302,7 @@ function App({ args }) {
                 }
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 359,
+                lineNumber: 374,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _toolbarDefault.default), {
@@ -25303,13 +25312,13 @@ function App({ args }) {
                 zoomOut: handleZoomOut
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 365,
+                lineNumber: 380,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 358,
+        lineNumber: 373,
         columnNumber: 5
     }, this);
 }

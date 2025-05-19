@@ -84,9 +84,44 @@ export default function FabricCanvas({
     fabric.util.enlivenObjects(
       snapshot,                 // массив JSON-объектов, полученных через o.toObject([...])
       enlivedObjects => {
-        enlivedObjects.forEach(obj => {
+        enlivedObjects.forEach(o => {
           // Каждый obj уже имеет все свойства, в том числе objectId
-          canvas.add(obj);
+          // canvas.add(obj);
+          // console.log(obj);
+          let inst = null
+          if (o.type === "rect") {
+            inst = new fabric.Rect({
+              left:         o.left,
+              top:          o.top,
+              originX:      "left",
+              originY:      "top",
+              width:        o.width,
+              height:       o.height,
+              fill:         "transparent",
+              stroke:       o.stroke,
+              strokeWidth:  2,
+              selectable:   false,
+              strokeUniform: true,
+              objectId:     o.objectId,
+            })
+          }
+          else if (o.type === "circle") {
+            inst = new fabric.Circle({
+              left:         o.left,
+              top:          o.top,
+              originX:      "center",
+              originY:      "center",
+              radius:       pointRadius,
+              fill:         "transparent",
+              stroke:       o.stroke,
+              strokeWidth:  3,
+              selectable:   false,
+              objectId:     o.objectId,
+            })
+          }
+          if (inst) {
+            canvas.add(inst)
+          }
         });
         canvas.renderAll();
         rawSendBack();         // шлём обновлённый список в Streamlit

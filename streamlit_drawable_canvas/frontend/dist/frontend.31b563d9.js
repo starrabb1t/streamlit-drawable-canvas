@@ -49244,9 +49244,38 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
         canvas.getObjects().forEach((o)=>canvas.remove(o));
         // enlivenObjects(snapshot, callback)
         (0, _fabric.fabric).util.enlivenObjects(snapshot, (enlivedObjects)=>{
-            enlivedObjects.forEach((obj)=>{
+            enlivedObjects.forEach((o)=>{
                 // Каждый obj уже имеет все свойства, в том числе objectId
-                canvas.add(obj);
+                // canvas.add(obj);
+                // console.log(obj);
+                let inst = null;
+                if (o.type === "rect") inst = new (0, _fabric.fabric).Rect({
+                    left: o.left,
+                    top: o.top,
+                    originX: "left",
+                    originY: "top",
+                    width: o.width,
+                    height: o.height,
+                    fill: "transparent",
+                    stroke: o.stroke,
+                    strokeWidth: 2,
+                    selectable: false,
+                    strokeUniform: true,
+                    objectId: o.objectId
+                });
+                else if (o.type === "circle") inst = new (0, _fabric.fabric).Circle({
+                    left: o.left,
+                    top: o.top,
+                    originX: "center",
+                    originY: "center",
+                    radius: pointRadius,
+                    fill: "transparent",
+                    stroke: o.stroke,
+                    strokeWidth: 3,
+                    selectable: false,
+                    objectId: o.objectId
+                });
+                if (inst) canvas.add(inst);
             });
             canvas.renderAll();
             rawSendBack(); // шлём обновлённый список в Streamlit
@@ -49321,7 +49350,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                 }
             }, void 0, false, {
                 fileName: "src/FabricCanvas.js",
-                lineNumber: 142,
+                lineNumber: 177,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _toolbarDefault.default), {
@@ -49333,7 +49362,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                 reset: reset
             }, void 0, false, {
                 fileName: "src/FabricCanvas.js",
-                lineNumber: 148,
+                lineNumber: 183,
                 columnNumber: 7
             }, this)
         ]

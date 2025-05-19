@@ -49168,6 +49168,7 @@ var _toolbarDefault = parcelHelpers.interopDefault(_toolbar);
 var _s = $RefreshSig$();
 function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialObjects, pointRadius, onChange }) {
     _s();
+    console.log('FabricCanvas', mode);
     const mountRef = (0, _react.useRef)(null);
     const canvasRef = (0, _useCanvasInitDefault.default)(mountRef, {
         width,
@@ -49246,8 +49247,8 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
         (0, _fabric.fabric).util.enlivenObjects(snapshot, (enlivedObjects)=>{
             enlivedObjects.forEach((o)=>{
                 // Каждый obj уже имеет все свойства, в том числе objectId
-                // canvas.add(obj);
-                // console.log(obj);
+                let is_transform_mode = mode === "transform";
+                console.log(mode);
                 let inst = null;
                 if (o.type === "rect") inst = new (0, _fabric.fabric).Rect({
                     left: o.left,
@@ -49259,7 +49260,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                     fill: "transparent",
                     stroke: o.stroke,
                     strokeWidth: 2,
-                    selectable: false,
+                    selectable: is_transform_mode,
                     strokeUniform: true,
                     objectId: o.objectId
                 });
@@ -49272,17 +49273,21 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                     fill: "transparent",
                     stroke: o.stroke,
                     strokeWidth: 3,
-                    selectable: false,
+                    selectable: is_transform_mode,
+                    controls: is_transform_mode,
                     objectId: o.objectId
                 });
                 if (inst) canvas.add(inst);
             });
-            canvas.renderAll();
+            canvas.discardActiveObject();
+            canvas.requestRenderAll();
+            //canvas.renderAll();
             rawSendBack(); // шлём обновлённый список в Streamlit
         });
     }, [
         canvasRef,
-        rawSendBack
+        rawSendBack,
+        mode
     ]);
     // undo
     const undo = (0, _react.useCallback)(()=>{
@@ -49350,7 +49355,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                 }
             }, void 0, false, {
                 fileName: "src/FabricCanvas.js",
-                lineNumber: 177,
+                lineNumber: 189,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _toolbarDefault.default), {
@@ -49362,7 +49367,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                 reset: reset
             }, void 0, false, {
                 fileName: "src/FabricCanvas.js",
-                lineNumber: 183,
+                lineNumber: 195,
                 columnNumber: 7
             }, this)
         ]

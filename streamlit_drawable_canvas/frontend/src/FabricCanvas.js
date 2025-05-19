@@ -14,6 +14,9 @@ export default function FabricCanvas({
   initialObjects, pointRadius,
   onChange,
 }) {
+
+  console.log('FabricCanvas', mode)
+
   const mountRef  = useRef(null)
   const canvasRef = useCanvasInit(mountRef, { width, height, backgroundImageURL })
   const idCounter = useRef(0)
@@ -25,6 +28,7 @@ export default function FabricCanvas({
 
   // 1) после первой загрузки initialObjects создаём initial state истории
   useEffect(() => {
+
     const canvas = canvasRef.current
     if (!canvas) return
     // делаем снимок всех объектов (без фона)
@@ -36,6 +40,7 @@ export default function FabricCanvas({
 
   // “сырая” отправка в Streamlit (без истории)
   const rawSendBack = useCallback(() => {
+
     const canvas = canvasRef.current
     if (!canvas) return
     const active = canvas.getActiveObjects()
@@ -54,6 +59,7 @@ export default function FabricCanvas({
 
   // отправка + пуш в историю (если нужно)
   const sendBack = useCallback(() => {
+
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -86,8 +92,11 @@ export default function FabricCanvas({
       enlivedObjects => {
         enlivedObjects.forEach(o => {
           // Каждый obj уже имеет все свойства, в том числе objectId
-          // canvas.add(obj);
-          // console.log(obj);
+          
+          let is_transform_mode = mode === "transform"
+
+          console.log(mode)
+          
           let inst = null
           if (o.type === "rect") {
             inst = new fabric.Rect({
@@ -100,7 +109,7 @@ export default function FabricCanvas({
               fill:         "transparent",
               stroke:       o.stroke,
               strokeWidth:  2,
-              selectable:   false,
+              selectable:   is_transform_mode,
               strokeUniform: true,
               objectId:     o.objectId,
             })
@@ -115,20 +124,23 @@ export default function FabricCanvas({
               fill:         "transparent",
               stroke:       o.stroke,
               strokeWidth:  3,
-              selectable:   false,
-              objectId:     o.objectId,
+              selectable:   is_transform_mode,
+              controls:     is_transform_mode,
+              objectId:     o.objectId
             })
           }
           if (inst) {
             canvas.add(inst)
           }
         });
-        canvas.renderAll();
+        canvas.discardActiveObject();
+        canvas.requestRenderAll();
+        //canvas.renderAll();
         rawSendBack();         // шлём обновлённый список в Streamlit
       }
       // <--- НЕ передаём сюда "objectId"!
     );
-  }, [canvasRef, rawSendBack]);
+  }, [canvasRef, rawSendBack, mode]);
 
   // undo
   const undo = useCallback(() => {

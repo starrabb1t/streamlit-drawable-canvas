@@ -1,52 +1,53 @@
 import React from "react"
-import deleteIconUrl  from "url:./img/delete.svg"
-import zoomInIconUrl  from "url:./img/zoom_in.svg"
-import zoomOutIconUrl from "url:./img/zoom_out.svg"
+import deleteIcon  from "url:./img/delete.svg"
+import resetIcon   from "url:./img/reset.svg"
+import undoIcon    from "url:./img/undo.svg"
+import redoIcon    from "url:./img/redo.svg"
+import zoomInIcon  from "url:./img/zoom_in.svg"
+import zoomOutIcon from "url:./img/zoom_out.svg"
 
-const Toolbar = ({ canvas, sendBack, zoomIn, zoomOut }) => {
-  if (!canvas) return null
-
-  const handleDelete = () => {
-    const active = canvas.getActiveObjects()
-    active.forEach(o => canvas.remove(o))
-    canvas.discardActiveObject()
-    canvas.requestRenderAll()
-    sendBack()
-  }
-
+export default function Toolbar({
+  zoomIn,
+  zoomOut,
+  deleteSelected,
+  undo,
+  redo,
+  reset,
+}) {
   const style = {
-    display: "flex",
-    gap: 8,
-    marginTop: 8,
+    display:    "flex",
+    gap:        8,
+    marginTop:  8,
     alignItems: "center",
   }
-  const iconStyle = { cursor: "pointer", width: 24, height: 24 }
+  const btn = {
+    cursor:     "pointer",
+    width:      24,
+    height:     24,
+    background: "transparent",
+    border:     "none",
+  }
 
   return (
     <div style={style}>
-      <img
-        src={zoomInIconUrl}
-        alt="Zoom In"
-        title="Zoom In"
-        style={iconStyle}
-        onClick={zoomIn}
-      />
-      <img
-        src={zoomOutIconUrl}
-        alt="Zoom Out"
-        title="Zoom Out"
-        style={iconStyle}
-        onClick={zoomOut}
-      />
-      <img
-        src={deleteIconUrl}
-        alt="Delete"
-        title="Delete selected"
-        style={iconStyle}
-        onClick={handleDelete}
-      />
+      <button style={btn} onClick={zoomOut}>
+        <img src={zoomOutIcon} alt="Zoom Out"/>
+      </button>
+      <button style={btn} onClick={zoomIn}>
+        <img src={zoomInIcon} alt="Zoom In"/>
+      </button>
+      <button style={btn} onClick={undo}>
+        <img src={undoIcon} alt="Undo"/>
+      </button>
+      <button style={btn} onClick={redo}>
+        <img src={redoIcon} alt="Redo"/>
+      </button>
+      <button style={btn} onClick={deleteSelected}>
+        <img src={deleteIcon} alt="Delete"/>
+      </button>
+      <button style={btn} onClick={reset}>
+        <img src={resetIcon} alt="Reset"/>
+      </button>
     </div>
   )
 }
-
-export default Toolbar

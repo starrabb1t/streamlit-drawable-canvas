@@ -5,7 +5,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from PIL import Image
 
-_RELEASE = True
+_RELEASE = False
 
 if not _RELEASE:
     _st_canvas = components.declare_component(

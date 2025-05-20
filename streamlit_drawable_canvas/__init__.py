@@ -27,7 +27,6 @@ def _image_to_data_url(img: Image.Image) -> str:
 def st_canvas(
     background_image: Image.Image = None,
     color: str = "red",
-    drawing_mode: str = "rect",
     height: int = 360, #TODO
     width: int = 640,
     initial_objects: list[dict] = None,   # <-- добавили сюда
@@ -49,7 +48,6 @@ def st_canvas(
     objs = _st_canvas(
         backgroundImageURL=bg_url,
         color=color,
-        drawingMode=drawing_mode,
         canvasWidth=width,
         canvasHeight=height,
         initialObjects=initial_objects,   

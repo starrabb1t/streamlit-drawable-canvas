@@ -1,36 +1,44 @@
-import React, { useCallback } from "react"
+import React, { useState, useCallback } from "react"
 import { withStreamlitConnection, Streamlit } from "streamlit-component-lib"
+import ModeSelector from "./ModeSelector"
 import FabricCanvas from "./FabricCanvas"
+
+const STREAMLIT_FRAME_PADDING = 100
 
 function App({ args }) {
   const {
     backgroundImageURL,
     color,
-    drawingMode,
     canvasWidth,
     canvasHeight,
     initialObjects = [],
     pointRadius,
+    // drawingMode,   // больше не берём из Streamlit
   } = args
 
-  // колбэк, который принимает текущий список объектов и
-  // шлёт его в Python + подгоняет высоту iframe
+  // Локальный state для режима
+  const [mode, setMode] = useState("transform")
+
+  // колбэк отправки списка объектов в Python
   const handleChange = useCallback(
     objs => {
       Streamlit.setComponentValue(objs)
-      // зарезервируем 40px под тулбар
-      Streamlit.setFrameHeight(canvasHeight + 40)
+      Streamlit.setFrameHeight(canvasHeight + STREAMLIT_FRAME_PADDING)
     },
     [canvasHeight]
   )
 
   return (
     <div style={{ display: "inline-block" }}>
+      {/* Наши «пиллы» */}
+      <ModeSelector value={mode} onChange={setMode} />
+
+      {/* Канвас, которому передаём режим из React state */}
       <FabricCanvas
         width={canvasWidth}
         height={canvasHeight}
         backgroundImageURL={backgroundImageURL}
-        mode={drawingMode}
+        mode={mode}
         color={color}
         initialObjects={initialObjects}
         pointRadius={pointRadius}

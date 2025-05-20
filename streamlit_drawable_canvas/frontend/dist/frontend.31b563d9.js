@@ -24950,18 +24950,21 @@ var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
 var _streamlitComponentLib = require("streamlit-component-lib");
+var _modeSelector = require("./ModeSelector");
+var _modeSelectorDefault = parcelHelpers.interopDefault(_modeSelector);
 var _fabricCanvas = require("./FabricCanvas");
 var _fabricCanvasDefault = parcelHelpers.interopDefault(_fabricCanvas);
 var _s = $RefreshSig$();
+const STREAMLIT_FRAME_PADDING = 100;
 function App({ args }) {
     _s();
-    const { backgroundImageURL, color, drawingMode, canvasWidth, canvasHeight, initialObjects = [], pointRadius } = args;
-    // колбэк, который принимает текущий список объектов и
-    // шлёт его в Python + подгоняет высоту iframe
+    const { backgroundImageURL, color, canvasWidth, canvasHeight, initialObjects = [], pointRadius } = args;
+    // Локальный state для режима
+    const [mode, setMode] = (0, _react.useState)("transform");
+    // колбэк отправки списка объектов в Python
     const handleChange = (0, _react.useCallback)((objs)=>{
         (0, _streamlitComponentLib.Streamlit).setComponentValue(objs);
-        // зарезервируем 40px под тулбар
-        (0, _streamlitComponentLib.Streamlit).setFrameHeight(canvasHeight + 40);
+        (0, _streamlitComponentLib.Streamlit).setFrameHeight(canvasHeight + STREAMLIT_FRAME_PADDING);
     }, [
         canvasHeight
     ]);
@@ -24969,27 +24972,37 @@ function App({ args }) {
         style: {
             display: "inline-block"
         },
-        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _fabricCanvasDefault.default), {
-            width: canvasWidth,
-            height: canvasHeight,
-            backgroundImageURL: backgroundImageURL,
-            mode: drawingMode,
-            color: color,
-            initialObjects: initialObjects,
-            pointRadius: pointRadius,
-            onChange: handleChange
-        }, void 0, false, {
-            fileName: "src/App.js",
-            lineNumber: 29,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _modeSelectorDefault.default), {
+                value: mode,
+                onChange: setMode
+            }, void 0, false, {
+                fileName: "src/App.js",
+                lineNumber: 34,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _fabricCanvasDefault.default), {
+                width: canvasWidth,
+                height: canvasHeight,
+                backgroundImageURL: backgroundImageURL,
+                mode: mode,
+                color: color,
+                initialObjects: initialObjects,
+                pointRadius: pointRadius,
+                onChange: handleChange
+            }, void 0, false, {
+                fileName: "src/App.js",
+                lineNumber: 37,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 28,
+        lineNumber: 32,
         columnNumber: 5
     }, this);
 }
-_s(App, "y/H5GIiu8jog9Hni7mlqNguo+do=");
+_s(App, "Mlz2uwRehqkkFCCK6gA23eUR3RY=");
 _c = App;
 exports.default = _c1 = (0, _streamlitComponentLib.withStreamlitConnection)(App);
 var _c, _c1;
@@ -25001,7 +25014,7 @@ $RefreshReg$(_c1, "%default%");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","streamlit-component-lib":"iNVE7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./FabricCanvas":"8H51e"}],"iNVE7":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","streamlit-component-lib":"iNVE7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./FabricCanvas":"8H51e","./ModeSelector":"cV8Ek"}],"iNVE7":[function(require,module,exports,__globalThis) {
 /**
  * @license
  * Copyright 2018-2021 Streamlit Inc.
@@ -72789,6 +72802,85 @@ _s(useLoadInitial, "OD7bBpZva5O2jO+Puf00hKivP7c=");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react":"jMk1U","fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}]},["igbXF","a0t4e"], "a0t4e", "parcelRequire5d99", {}, "./", "/", "http://localhost:3001")
+},{"react":"jMk1U","fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"cV8Ek":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$4632 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$4632.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$4632.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>ModeSelector);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react);
+const MODES = [
+    {
+        value: "transform",
+        label: "Transform"
+    },
+    {
+        value: "rect",
+        label: "Rectangle"
+    },
+    {
+        value: "point",
+        label: "Point"
+    }
+];
+function ModeSelector({ value, onChange }) {
+    const container = {
+        display: "flex",
+        gap: "4px",
+        marginBottom: "10px",
+        padding: "10px"
+    };
+    const pillBase = {
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: "#ccc",
+        borderRadius: "50vh",
+        background: "#fff",
+        cursor: "pointer",
+        userSelect: "none",
+        padding: "5px 10px",
+        fontFamily: "Arial",
+        fontSize: "14px"
+    };
+    const pillActive = {
+        ...pillBase,
+        background: "#007bff",
+        color: "#fff",
+        borderColor: "#007bff"
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        style: container,
+        children: MODES.map((m)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                style: value === m.value ? pillActive : pillBase,
+                onClick: ()=>onChange(m.value),
+                children: m.label
+            }, m.value, false, {
+                fileName: "src/ModeSelector.js",
+                lineNumber: 38,
+                columnNumber: 9
+            }, this))
+    }, void 0, false, {
+        fileName: "src/ModeSelector.js",
+        lineNumber: 36,
+        columnNumber: 5
+    }, this);
+}
+_c = ModeSelector;
+var _c;
+$RefreshReg$(_c, "ModeSelector");
+
+  $parcel$ReactRefreshHelpers$4632.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}]},["igbXF","a0t4e"], "a0t4e", "parcelRequire5d99", {}, "./", "/", "http://localhost:3001")
 
 //# sourceMappingURL=frontend.31b563d9.js.map

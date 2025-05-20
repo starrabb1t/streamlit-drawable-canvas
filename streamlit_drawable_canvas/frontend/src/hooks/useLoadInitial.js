@@ -45,7 +45,7 @@ export default function useLoadInitial(
           fill:         "transparent",
           stroke:       o.stroke,
           strokeWidth:  2,
-          selectable:   false,
+          selectable:   true,
           strokeUniform: true,
         })
       }
@@ -59,7 +59,8 @@ export default function useLoadInitial(
           fill:         "transparent",
           stroke:       o.stroke,
           strokeWidth:  3,
-          selectable:   false,
+          selectable:   true,
+          controls: false
         })
       }
 

@@ -79,75 +79,71 @@ export default function FabricCanvas({
   }, [canvasRef, rawSendBack])
 
   // Вспомогательная функция: восстановить состояние из snapshot
-  const restoreSnapshot = useCallback((snapshot) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  // Старый код удалить, а вместо него вставить следующее:
 
-    // Убираем с холста ВСЕ объекты (но фон остаётся)
-    canvas.getObjects().forEach(o => canvas.remove(o));
+const restoreSnapshot = useCallback((snapshot) => {
+  const canvas = canvasRef.current
+  if (!canvas) return
 
-    // Обновляем счётчик idCounter до max(objectId) из снапшота
-    const maxId = snapshot.reduce(
-      (mx, obj) => Math.max(mx, obj.objectId || 0),
-      0
-    );
-    idCounter.current = maxId;
+  // 1) Сохраняем фон и текущее состояние вьюпорта
+  const bg = canvas.backgroundImage
+  const prevViewport = canvas.viewportTransform.concat()
 
-    // enlivenObjects(snapshot, callback)
-    fabric.util.enlivenObjects(
-      snapshot,                 // массив JSON-объектов, полученных через o.toObject([...])
-      enlivedObjects => {
-        enlivedObjects.forEach(o => {
-          // Каждый obj уже имеет все свойства, в том числе objectId
-          
-          let is_transform_mode = mode === "transform"
+  // 2) Обновляем idCounter по максимуму в snapshot
+  idCounter.current = snapshot.reduce(
+    (mx, obj) => Math.max(mx, obj.objectId || 0),
+    0
+  )
 
-          console.log(mode)
-          
-          let inst = null
-          if (o.type === "rect") {
-            inst = new fabric.Rect({
-              left:         o.left,
-              top:          o.top,
-              originX:      "left",
-              originY:      "top",
-              width:        o.width,
-              height:       o.height,
-              fill:         "transparent",
-              stroke:       o.stroke,
-              strokeWidth:  2,
-              selectable:   is_transform_mode,
-              strokeUniform: true,
-              objectId:     o.objectId,
-            })
-          }
-          else if (o.type === "circle") {
-            inst = new fabric.Circle({
-              left:         o.left,
-              top:          o.top,
-              originX:      "center",
-              originY:      "center",
-              radius:       pointRadius,
-              fill:         "transparent",
-              stroke:       o.stroke,
-              strokeWidth:  3,
-              selectable:   is_transform_mode,
-              controls:     is_transform_mode,
-              objectId:     o.objectId
-            })
-          }
-          if (inst) {
-            canvas.add(inst)
-          }
-        });
-        canvas.discardActiveObject();
-        canvas.requestRenderAll();
-        //canvas.renderAll();
-        rawSendBack();         // шлём обновлённый список в Streamlit
+  // 3) Готовим JSON только с объектами
+  const json = { objects: snapshot }
+
+  // 4) Полностью сбрасываем всё и грузим заново
+  canvas.clear()
+  canvas.loadFromJSON(json, () => {
+    // 5) Ставим фон обратно без перезагрузки
+    if (bg) {
+      canvas.setBackgroundImage(
+        bg,
+        canvas.requestRenderAll.bind(canvas)
+      )
+    }
+
+    // 6) Восстанавливаем пан/зум
+    canvas.setViewportTransform(prevViewport)
+
+    // 7) Переключаем selectable/controls по текущему режиму
+    canvas.getObjects().forEach(o => {
+      if (mode !== "transform") {
+        o.set({ selectable: false })
       }
-      // <--- НЕ передаём сюда "objectId"!
-    );
-  }, [canvasRef, rawSendBack, mode]);
+      else if (o.type === "rect") {
+        o.set({
+          selectable: true,
+          hasControls: true,
+          lockScalingX: false,
+          lockScalingY: false,
+          lockRotation: false,
+        })
+      }
+      else if (o.type === "circle") {
+        o.set({
+          selectable: true,
+          hasControls: false,
+          lockScalingX: true,
+          lockScalingY: true,
+          lockRotation: true,
+        })
+      }
+    })
+
+    canvas.discardActiveObject()
+    canvas.requestRenderAll()
+
+    // 8) шлём обновлённый список обратно в Streamlit
+    rawSendBack()
+  })
+}, [canvasRef, rawSendBack, mode])
 
   // undo
   const undo = useCallback(() => {

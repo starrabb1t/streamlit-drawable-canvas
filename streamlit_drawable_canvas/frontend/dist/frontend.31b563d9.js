@@ -49251,54 +49251,50 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
         rawSendBack
     ]);
     // Вспомогательная функция: восстановить состояние из snapshot
+    // Старый код удалить, а вместо него вставить следующее:
     const restoreSnapshot = (0, _react.useCallback)((snapshot)=>{
         const canvas = canvasRef.current;
         if (!canvas) return;
-        // Убираем с холста ВСЕ объекты (но фон остаётся)
-        canvas.getObjects().forEach((o)=>canvas.remove(o));
-        // Обновляем счётчик idCounter до max(objectId) из снапшота
-        const maxId = snapshot.reduce((mx, obj)=>Math.max(mx, obj.objectId || 0), 0);
-        idCounter.current = maxId;
-        // enlivenObjects(snapshot, callback)
-        (0, _fabric.fabric).util.enlivenObjects(snapshot, (enlivedObjects)=>{
-            enlivedObjects.forEach((o)=>{
-                // Каждый obj уже имеет все свойства, в том числе objectId
-                let is_transform_mode = mode === "transform";
-                console.log(mode);
-                let inst = null;
-                if (o.type === "rect") inst = new (0, _fabric.fabric).Rect({
-                    left: o.left,
-                    top: o.top,
-                    originX: "left",
-                    originY: "top",
-                    width: o.width,
-                    height: o.height,
-                    fill: "transparent",
-                    stroke: o.stroke,
-                    strokeWidth: 2,
-                    selectable: is_transform_mode,
-                    strokeUniform: true,
-                    objectId: o.objectId
+        // 1) Сохраняем фон и текущее состояние вьюпорта
+        const bg = canvas.backgroundImage;
+        const prevViewport = canvas.viewportTransform.concat();
+        // 2) Обновляем idCounter по максимуму в snapshot
+        idCounter.current = snapshot.reduce((mx, obj)=>Math.max(mx, obj.objectId || 0), 0);
+        // 3) Готовим JSON только с объектами
+        const json = {
+            objects: snapshot
+        };
+        // 4) Полностью сбрасываем всё и грузим заново
+        canvas.clear();
+        canvas.loadFromJSON(json, ()=>{
+            // 5) Ставим фон обратно без перезагрузки
+            if (bg) canvas.setBackgroundImage(bg, canvas.requestRenderAll.bind(canvas));
+            // 6) Восстанавливаем пан/зум
+            canvas.setViewportTransform(prevViewport);
+            // 7) Переключаем selectable/controls по текущему режиму
+            canvas.getObjects().forEach((o)=>{
+                if (mode !== "transform") o.set({
+                    selectable: false
                 });
-                else if (o.type === "circle") inst = new (0, _fabric.fabric).Circle({
-                    left: o.left,
-                    top: o.top,
-                    originX: "center",
-                    originY: "center",
-                    radius: pointRadius,
-                    fill: "transparent",
-                    stroke: o.stroke,
-                    strokeWidth: 3,
-                    selectable: is_transform_mode,
-                    controls: is_transform_mode,
-                    objectId: o.objectId
+                else if (o.type === "rect") o.set({
+                    selectable: true,
+                    hasControls: true,
+                    lockScalingX: false,
+                    lockScalingY: false,
+                    lockRotation: false
                 });
-                if (inst) canvas.add(inst);
+                else if (o.type === "circle") o.set({
+                    selectable: true,
+                    hasControls: false,
+                    lockScalingX: true,
+                    lockScalingY: true,
+                    lockRotation: true
+                });
             });
             canvas.discardActiveObject();
             canvas.requestRenderAll();
-            //canvas.renderAll();
-            rawSendBack(); // шлём обновлённый список в Streamlit
+            // 8) шлём обновлённый список обратно в Streamlit
+            rawSendBack();
         });
     }, [
         canvasRef,
@@ -49371,7 +49367,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                 }
             }, void 0, false, {
                 fileName: "src/FabricCanvas.js",
-                lineNumber: 196,
+                lineNumber: 192,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _toolbarDefault.default), {
@@ -49383,7 +49379,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                 reset: reset
             }, void 0, false, {
                 fileName: "src/FabricCanvas.js",
-                lineNumber: 202,
+                lineNumber: 198,
                 columnNumber: 7
             }, this)
         ]
@@ -72778,7 +72774,7 @@ function useLoadInitial(canvasRef, initialObjects, idCounterRef, pointRadius, se
                 fill: "transparent",
                 stroke: o.stroke,
                 strokeWidth: 2,
-                selectable: false,
+                selectable: true,
                 strokeUniform: true
             });
             else if (o.type === "circle") inst = new (0, _fabric.fabric).Circle({
@@ -72790,7 +72786,8 @@ function useLoadInitial(canvasRef, initialObjects, idCounterRef, pointRadius, se
                 fill: "transparent",
                 stroke: o.stroke,
                 strokeWidth: 3,
-                selectable: false
+                selectable: true,
+                controls: false
             });
             if (inst) {
                 inst.objectId = ++idCounterRef.current;

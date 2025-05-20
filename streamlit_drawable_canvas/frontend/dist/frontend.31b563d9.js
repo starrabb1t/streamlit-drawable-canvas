@@ -49256,6 +49256,9 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
         if (!canvas) return;
         // Убираем с холста ВСЕ объекты (но фон остаётся)
         canvas.getObjects().forEach((o)=>canvas.remove(o));
+        // Обновляем счётчик idCounter до max(objectId) из снапшота
+        const maxId = snapshot.reduce((mx, obj)=>Math.max(mx, obj.objectId || 0), 0);
+        idCounter.current = maxId;
         // enlivenObjects(snapshot, callback)
         (0, _fabric.fabric).util.enlivenObjects(snapshot, (enlivedObjects)=>{
             enlivedObjects.forEach((o)=>{
@@ -49368,7 +49371,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                 }
             }, void 0, false, {
                 fileName: "src/FabricCanvas.js",
-                lineNumber: 189,
+                lineNumber: 196,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _toolbarDefault.default), {
@@ -49380,7 +49383,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                 reset: reset
             }, void 0, false, {
                 fileName: "src/FabricCanvas.js",
-                lineNumber: 195,
+                lineNumber: 202,
                 columnNumber: 7
             }, this)
         ]

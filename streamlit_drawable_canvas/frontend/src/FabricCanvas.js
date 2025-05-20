@@ -86,6 +86,13 @@ export default function FabricCanvas({
     // Убираем с холста ВСЕ объекты (но фон остаётся)
     canvas.getObjects().forEach(o => canvas.remove(o));
 
+    // Обновляем счётчик idCounter до max(objectId) из снапшота
+    const maxId = snapshot.reduce(
+      (mx, obj) => Math.max(mx, obj.objectId || 0),
+      0
+    );
+    idCounter.current = maxId;
+
     // enlivenObjects(snapshot, callback)
     fabric.util.enlivenObjects(
       snapshot,                 // массив JSON-объектов, полученных через o.toObject([...])

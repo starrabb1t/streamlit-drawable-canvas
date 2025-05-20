@@ -72744,16 +72744,25 @@ var _s = $RefreshSig$();
 function useLoadInitial(canvasRef, initialObjects, idCounterRef, pointRadius, sendBack) {
     _s();
     (0, _react.useEffect)(()=>{
-        if (!canvasRef.current || initialObjects.length === 0) return;
         const canvas = canvasRef.current;
-        // флаг, чтобы не загружать повторно
-        if (canvas._initialLoaded) return;
-        canvas._initialLoaded = true;
-        // сохраним фон, очистим всё, вернём фон
+        if (!canvas) return;
+        // 1) очистим всё, сохраняя только фон
         const bg = canvas.backgroundImage;
         canvas.clear();
-        if (bg) canvas.setBackgroundImage(bg, canvas.renderAll.bind(canvas));
+        if (bg) // восстановим фон
+        canvas.setBackgroundImage(bg, canvas.requestRenderAll.bind(canvas));
+        // 2) сброс счетчика ID
         idCounterRef.current = 0;
+        // 3) сброс вьюпорта (убрать паны/зумы, если нужно)
+        canvas.setViewportTransform([
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+        ]);
+        // 4) добавим новые initialObjects
         initialObjects.forEach((o)=>{
             let inst = null;
             if (o.type === "rect") inst = new (0, _fabric.fabric).Rect({
@@ -72785,14 +72794,15 @@ function useLoadInitial(canvasRef, initialObjects, idCounterRef, pointRadius, se
                 canvas.add(inst);
             }
         });
-        canvas.renderAll();
+        // 5) рендерим и отдаем состояние назад
+        canvas.requestRenderAll();
         sendBack();
+    // эффект должен реагировать на смену initialObjects
     }, [
         canvasRef,
         initialObjects,
         pointRadius,
-        sendBack,
-        idCounterRef
+        sendBack
     ]);
 }
 _s(useLoadInitial, "OD7bBpZva5O2jO+Puf00hKivP7c=");

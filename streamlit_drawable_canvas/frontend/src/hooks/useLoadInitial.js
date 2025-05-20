@@ -9,22 +9,31 @@ export default function useLoadInitial(
   sendBack
 ) {
   useEffect(() => {
-    if (!canvasRef.current || initialObjects.length === 0) return
-
     const canvas = canvasRef.current
-    // флаг, чтобы не загружать повторно
-    if (canvas._initialLoaded) return
-    canvas._initialLoaded = true
+    if (!canvas) return
 
-    // сохраним фон, очистим всё, вернём фон
+    // 1) очистим всё, сохраняя только фон
     const bg = canvas.backgroundImage
     canvas.clear()
-    if (bg) canvas.setBackgroundImage(bg, canvas.renderAll.bind(canvas))
 
+    if (bg) {
+      // восстановим фон
+      canvas.setBackgroundImage(
+        bg,
+        canvas.requestRenderAll.bind(canvas)
+      )
+    }
+
+    // 2) сброс счетчика ID
     idCounterRef.current = 0
 
+    // 3) сброс вьюпорта (убрать паны/зумы, если нужно)
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0])
+
+    // 4) добавим новые initialObjects
     initialObjects.forEach(o => {
       let inst = null
+
       if (o.type === "rect") {
         inst = new fabric.Rect({
           left:         o.left,
@@ -53,13 +62,17 @@ export default function useLoadInitial(
           selectable:   false,
         })
       }
+
       if (inst) {
         inst.objectId = ++idCounterRef.current
         canvas.add(inst)
       }
     })
 
-    canvas.renderAll()
+    // 5) рендерим и отдаем состояние назад
+    canvas.requestRenderAll()
     sendBack()
-  }, [canvasRef, initialObjects, pointRadius, sendBack, idCounterRef])
+
+    // эффект должен реагировать на смену initialObjects
+  }, [canvasRef, initialObjects, pointRadius, sendBack])
 }

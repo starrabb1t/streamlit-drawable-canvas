@@ -27,7 +27,6 @@ def _image_to_data_url(img: Image.Image) -> str:
 def st_canvas(
     annotation_schema : list[dict], 
     background_image: Image.Image = None,
-    color: str = "red",
     height: int = 360, #TODO
     width: int = 640,
     initial_objects: list[dict] = None,   # <-- добавили сюда
@@ -48,7 +47,6 @@ def st_canvas(
     # вызываем компонент, передаём initialObjects
     objs = _st_canvas(
         backgroundImageURL=bg_url,
-        color=color,
         canvasWidth=width,
         canvasHeight=height,
         initialObjects=initial_objects,   

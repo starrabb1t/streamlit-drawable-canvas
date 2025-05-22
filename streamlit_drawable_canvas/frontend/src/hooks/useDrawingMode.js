@@ -6,7 +6,7 @@ const MIN_SIDE = 10
 
 export default function useDrawingMode(
   canvasRef,
-  { mode, color, pointRadius, figureIdCounter, sendBack, objectId, classId }
+  { mode, classColor, keypointColor, pointRadius, figureIdCounter, sendBack, objectId, classId, keypointName }
 ) {
   useEffect(() => {
     const canvas = canvasRef.current
@@ -42,7 +42,7 @@ export default function useDrawingMode(
           width:        0,
           height:       0,
           fill:         "transparent",
-          stroke:       color,
+          stroke:       classColor,
           strokeWidth:  2,
           selectable:   false,
           strokeUniform: true,
@@ -85,7 +85,7 @@ export default function useDrawingMode(
       canvas.on("mouse:move", handlers.mouseMove)
       canvas.on("mouse:up",   handlers.mouseUp)
     }
-    else if (mode === "point") {
+    else if (mode === "point" && keypointName) {
       canvas.selection = false
       canvas.defaultCursor = "pointer"
 
@@ -98,7 +98,7 @@ export default function useDrawingMode(
           originY:      "center",
           radius:       pointRadius,
           fill:         "transparent",
-          stroke:       color,
+          stroke:       keypointColor,
           strokeWidth:  3,
           selectable:   false,
           lockRotation: true,
@@ -109,6 +109,7 @@ export default function useDrawingMode(
         c.figureId  = ++figureIdCounter.current
         c.objectId = objectId
         c.classId  = classId
+        c.keypointName = keypointName
         canvas.add(c)
         canvas.requestRenderAll()
         sendBack()
@@ -168,5 +169,5 @@ export default function useDrawingMode(
       if (handlers.selectionUpdated) canvas.off("selection:updated",  handlers.selectionUpdated)
       if (handlers.selectionCleared) canvas.off("selection:cleared",  handlers.selectionCleared)
     }
-  }, [mode, color, pointRadius, sendBack, figureIdCounter, objectId, classId])
+  }, [mode, classColor, keypointColor, pointRadius, sendBack, figureIdCounter, objectId, classId, keypointName])
 }

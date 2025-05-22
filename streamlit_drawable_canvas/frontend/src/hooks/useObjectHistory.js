@@ -20,6 +20,7 @@ export default function useObjectHistory(
       objectId:   o.objectId,
       figureId:   o.figureId,
       classId:    o.classId,
+      keypointName: o.keypointName,
       type:        o.type,
       left:        o.left,
       top:         o.top,
@@ -47,7 +48,7 @@ export default function useObjectHistory(
       // пушим новый снимок
       const snapshot = canvas
         .getObjects()
-        .map(o => o.toObject(["figureId", "objectId", "classId"]))
+        .map(o => o.toObject(["figureId", "objectId", "classId", "keypointName"]))
 
       historyRef.current.push(snapshot)
       historyIndexRef.current++
@@ -63,7 +64,7 @@ export default function useObjectHistory(
 
     const snapshot = canvas
       .getObjects()
-      .map(o => o.toObject(["figureId", "objectId", "classId"]))
+      .map(o => o.toObject(["figureId", "objectId", "classId", "keypointName"]))
 
     historyRef.current      = [snapshot]
     historyIndexRef.current = 0
@@ -128,6 +129,7 @@ export default function useObjectHistory(
                 figureId:      o.figureId,
                 objectId:      o.objectId,
                 classId:       o.classId,
+                keypointName: o.keypointName,
                 lockRotation: true,
                 hasRotatingPoint: false,
                 lockScalingX: true,

@@ -1,7 +1,8 @@
 // src/App.js
-import React, { useState, useCallback } from "react"
+import React, { useState, useCallback, useEffect } from "react"
 import { withStreamlitConnection, Streamlit } from "streamlit-component-lib"
 import ClassSelector from "./components/ClassSelector"
+import KeypointSelector from "./components/KeypointSelector"
 import ModeSelector  from "./components/ModeSelector"
 import FabricCanvas  from "./components/FabricCanvas"
 import ObjectIdInput from "./components/ObjectIdInput"
@@ -32,10 +33,10 @@ function App({ args }) {
   ]
 
   // 1) выбираем класс (по умолчанию первый)
-  const [selectedClass, setSelectedClass] = useState(annotationSchema[0].bbox)
+  const [classId, setClassId] = useState(annotationSchema[0].bbox)
   const [classColor,   setClassColor]   = useState(annotationSchema[0].color)
   const handleClassSelect = cls => {
-    setSelectedClass(cls)
+    setClassId(cls)
     const item = annotationSchema.find(x => x.bbox === cls)
     setClassColor(item.color)
   }
@@ -47,6 +48,19 @@ function App({ args }) {
   const [objectId, setObjectId] = useState(1)
   const incObjectId = () => setObjectId(i => i + 1)
   const decObjectId = () => setObjectId(i => Math.max(1, i - 1))
+
+  const [keypointName, setKeypoint] = useState(null)
+  // сбрасываем keypoint, когда меняем режим или класс
+  useEffect(() => {
+    setKeypoint(null)
+  }, [mode, classId])
+
+  // вычисляем цвет для текущего keypoint (или fallback на classColor)
+  const keypointColor = keypointName
+    ? annotationSchema
+        .find(x => x.bbox === classId)
+        .keypoints[keypointName].color
+    : classColor
 
   // колбэк отправки в Python
   const handleChange = useCallback(
@@ -62,7 +76,7 @@ function App({ args }) {
       {/* — первый ряд: Классы + режимы */}
       <ClassSelector
         schema={annotationSchema}
-        selectedClass={selectedClass}
+        classId={classId}
         onSelect={handleClassSelect}
       />
       <ModeSelector value={mode} onChange={setMode}/>
@@ -75,15 +89,28 @@ function App({ args }) {
         onDecrement={decObjectId}
       />
 
+      {/* третий ряд: keypoints (только в режиме point) */}
+      {mode === "point" && (
+        <KeypointSelector
+          keypoints={
+            annotationSchema.find(x => x.bbox === classId).keypoints
+          }
+          selected={keypointName}
+          onSelect={setKeypoint}
+        />
+      )}
+
       {/* — сам Canvas, прокидываем classColor и objectId */}
       <FabricCanvas
         width={canvasWidth}
         height={canvasHeight}
         backgroundImageURL={backgroundImageURL}
         mode={mode}
-        color={classColor}           // будем использовать этот цвет для рисования
-        classId={selectedClass}
+        classColor={classColor}    
+        keypointColor={keypointColor}
+        classId={classId}
         objectId={objectId}
+        keypointName={keypointName}
         initialObjects={initialObjects}
         pointRadius={pointRadius}
         onChange={handleChange}

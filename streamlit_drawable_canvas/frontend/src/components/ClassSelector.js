@@ -19,11 +19,11 @@ const pillBase = {
   fontSize:     "14px",
 }
 
-export default function ClassSelector({ schema, selectedClass, onSelect }) {
+export default function ClassSelector({ schema, classId, onSelect }) {
   return (
     <div style={container}>
       {schema.map(item => {
-        const active = item.bbox === selectedClass
+        const active = item.bbox === classId
         return (
           <div
             key={item.bbox}

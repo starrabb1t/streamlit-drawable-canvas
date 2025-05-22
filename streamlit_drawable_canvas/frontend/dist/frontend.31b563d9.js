@@ -24953,6 +24953,8 @@ var _reactDefault = parcelHelpers.interopDefault(_react);
 var _streamlitComponentLib = require("streamlit-component-lib");
 var _classSelector = require("./components/ClassSelector");
 var _classSelectorDefault = parcelHelpers.interopDefault(_classSelector);
+var _keypointSelector = require("./components/KeypointSelector");
+var _keypointSelectorDefault = parcelHelpers.interopDefault(_keypointSelector);
 var _modeSelector = require("./components/ModeSelector");
 var _modeSelectorDefault = parcelHelpers.interopDefault(_modeSelector);
 var _fabricCanvas = require("./components/FabricCanvas");
@@ -24992,10 +24994,10 @@ function App({ args }) {
         }
     ];
     // 1) выбираем класс (по умолчанию первый)
-    const [selectedClass, setSelectedClass] = (0, _react.useState)(annotationSchema[0].bbox);
+    const [classId, setClassId] = (0, _react.useState)(annotationSchema[0].bbox);
     const [classColor, setClassColor] = (0, _react.useState)(annotationSchema[0].color);
     const handleClassSelect = (cls)=>{
-        setSelectedClass(cls);
+        setClassId(cls);
         const item = annotationSchema.find((x)=>x.bbox === cls);
         setClassColor(item.color);
     };
@@ -25005,6 +25007,16 @@ function App({ args }) {
     const [objectId, setObjectId] = (0, _react.useState)(1);
     const incObjectId = ()=>setObjectId((i)=>i + 1);
     const decObjectId = ()=>setObjectId((i)=>Math.max(1, i - 1));
+    const [keypointName, setKeypoint] = (0, _react.useState)(null);
+    // сбрасываем keypoint, когда меняем режим или класс
+    (0, _react.useEffect)(()=>{
+        setKeypoint(null);
+    }, [
+        mode,
+        classId
+    ]);
+    // вычисляем цвет для текущего keypoint (или fallback на classColor)
+    const keypointColor = keypointName ? annotationSchema.find((x)=>x.bbox === classId).keypoints[keypointName].color : classColor;
     // колбэк отправки в Python
     const handleChange = (0, _react.useCallback)((objs)=>{
         (0, _streamlitComponentLib.Streamlit).setComponentValue(objs);
@@ -25019,11 +25031,11 @@ function App({ args }) {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _classSelectorDefault.default), {
                 schema: annotationSchema,
-                selectedClass: selectedClass,
+                classId: classId,
                 onSelect: handleClassSelect
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 63,
+                lineNumber: 77,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _modeSelectorDefault.default), {
@@ -25031,7 +25043,7 @@ function App({ args }) {
                 onChange: setMode
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 68,
+                lineNumber: 82,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _objectIdInputDefault.default), {
@@ -25041,33 +25053,44 @@ function App({ args }) {
                 onDecrement: decObjectId
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 71,
+                lineNumber: 85,
                 columnNumber: 7
+            }, this),
+            mode === "point" && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _keypointSelectorDefault.default), {
+                keypoints: annotationSchema.find((x)=>x.bbox === classId).keypoints,
+                selected: keypointName,
+                onSelect: setKeypoint
+            }, void 0, false, {
+                fileName: "src/App.js",
+                lineNumber: 94,
+                columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _fabricCanvasDefault.default), {
                 width: canvasWidth,
                 height: canvasHeight,
                 backgroundImageURL: backgroundImageURL,
                 mode: mode,
-                color: classColor,
-                classId: selectedClass,
+                classColor: classColor,
+                keypointColor: keypointColor,
+                classId: classId,
                 objectId: objectId,
+                keypointName: keypointName,
                 initialObjects: initialObjects,
                 pointRadius: pointRadius,
                 onChange: handleChange
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 79,
+                lineNumber: 104,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 61,
+        lineNumber: 75,
         columnNumber: 5
     }, this);
 }
-_s(App, "oiuT5GlsYqpowFOoEZGNmVndLlU=");
+_s(App, "G9gQgsdiEbHk8W85W+saI2PYjZw=");
 _c = App;
 exports.default = _c1 = (0, _streamlitComponentLib.withStreamlitConnection)(App);
 var _c, _c1;
@@ -25079,7 +25102,7 @@ $RefreshReg$(_c1, "%default%");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","streamlit-component-lib":"iNVE7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./components/FabricCanvas":"9a1Yb","./components/ModeSelector":"7tqrS","./components/ClassSelector":"5zPlX","./components/ObjectIdInput":"clITX"}],"iNVE7":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","streamlit-component-lib":"iNVE7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./components/FabricCanvas":"9a1Yb","./components/ModeSelector":"7tqrS","./components/ClassSelector":"5zPlX","./components/ObjectIdInput":"clITX","./components/KeypointSelector":"coEwc"}],"iNVE7":[function(require,module,exports,__globalThis) {
 /**
  * @license
  * Copyright 2018-2021 Streamlit Inc.
@@ -49245,7 +49268,7 @@ var _useObjectHistoryDefault = parcelHelpers.interopDefault(_useObjectHistory);
 var _toolbar = require("./Toolbar");
 var _toolbarDefault = parcelHelpers.interopDefault(_toolbar);
 var _s = $RefreshSig$();
-function FabricCanvas({ width, height, backgroundImageURL, mode, color, classId, objectId, initialObjects = [], pointRadius, onChange }) {
+function FabricCanvas({ width, height, backgroundImageURL, mode, classColor, keypointColor, classId, objectId, keypointName, initialObjects = [], pointRadius, onChange }) {
     _s();
     // Ссылка на <canvas> и объект Fabric
     const mountRef = (0, _react.useRef)(null);
@@ -49268,12 +49291,14 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, classId,
     // Логика рисования в разных режимах
     (0, _useDrawingModeDefault.default)(canvasRef, {
         mode,
-        color,
+        classColor,
+        keypointColor,
         pointRadius,
         figureIdCounter,
         sendBack,
         objectId,
-        classId
+        classId,
+        keypointName
     });
     // Зум + пэннинг
     const { zoomIn, zoomOut } = (0, _useZoomDefault.default)(canvasRef, {
@@ -49291,7 +49316,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, classId,
     }, [
         sendBack
     ]);
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("canvas", {
                 ref: mountRef,
@@ -49302,7 +49327,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, classId,
                 }
             }, void 0, false, {
                 fileName: "src/components/FabricCanvas.js",
-                lineNumber: 56,
+                lineNumber: 58,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _toolbarDefault.default), {
@@ -49314,11 +49339,15 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, classId,
                 reset: reset
             }, void 0, false, {
                 fileName: "src/components/FabricCanvas.js",
-                lineNumber: 62,
+                lineNumber: 64,
                 columnNumber: 7
             }, this)
         ]
-    }, void 0, true);
+    }, void 0, true, {
+        fileName: "src/components/FabricCanvas.js",
+        lineNumber: 57,
+        columnNumber: 5
+    }, this);
 }
 _s(FabricCanvas, "e8Y+WlGuukI3WPQcfhOiXT9tuK8=", false, function() {
     return [
@@ -72588,7 +72617,7 @@ var _react = require("react");
 var _fabric = require("fabric");
 var _s = $RefreshSig$();
 const MIN_SIDE = 10;
-function useDrawingMode(canvasRef, { mode, color, pointRadius, figureIdCounter, sendBack, objectId, classId }) {
+function useDrawingMode(canvasRef, { mode, classColor, keypointColor, pointRadius, figureIdCounter, sendBack, objectId, classId, keypointName }) {
     _s();
     (0, _react.useEffect)(()=>{
         const canvas = canvasRef.current;
@@ -72622,7 +72651,7 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, figureIdCounter, 
                     width: 0,
                     height: 0,
                     fill: "transparent",
-                    stroke: color,
+                    stroke: classColor,
                     strokeWidth: 2,
                     selectable: false,
                     strokeUniform: true,
@@ -72660,7 +72689,7 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, figureIdCounter, 
             canvas.on("mouse:down", handlers.mouseDown);
             canvas.on("mouse:move", handlers.mouseMove);
             canvas.on("mouse:up", handlers.mouseUp);
-        } else if (mode === "point") {
+        } else if (mode === "point" && keypointName) {
             canvas.selection = false;
             canvas.defaultCursor = "pointer";
             handlers.mouseDown = (opt)=>{
@@ -72672,7 +72701,7 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, figureIdCounter, 
                     originY: "center",
                     radius: pointRadius,
                     fill: "transparent",
-                    stroke: color,
+                    stroke: keypointColor,
                     strokeWidth: 3,
                     selectable: false,
                     lockRotation: true,
@@ -72683,6 +72712,7 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, figureIdCounter, 
                 c.figureId = ++figureIdCounter.current;
                 c.objectId = objectId;
                 c.classId = classId;
+                c.keypointName = keypointName;
                 canvas.add(c);
                 canvas.requestRenderAll();
                 sendBack();
@@ -72733,12 +72763,14 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, figureIdCounter, 
         };
     }, [
         mode,
-        color,
+        classColor,
+        keypointColor,
         pointRadius,
         sendBack,
         figureIdCounter,
         objectId,
-        classId
+        classId,
+        keypointName
     ]);
 }
 _s(useDrawingMode, "OD7bBpZva5O2jO+Puf00hKivP7c=");
@@ -72830,6 +72862,7 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, figureIdC
                 objectId: o.objectId,
                 figureId: o.figureId,
                 classId: o.classId,
+                keypointName: o.keypointName,
                 type: o.type,
                 left: o.left,
                 top: o.top,
@@ -72853,7 +72886,8 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, figureIdC
             const snapshot = canvas.getObjects().map((o)=>o.toObject([
                     "figureId",
                     "objectId",
-                    "classId"
+                    "classId",
+                    "keypointName"
                 ]));
             historyRef.current.push(snapshot);
             historyIndexRef.current++;
@@ -72870,7 +72904,8 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, figureIdC
         const snapshot = canvas.getObjects().map((o)=>o.toObject([
                 "figureId",
                 "objectId",
-                "classId"
+                "classId",
+                "keypointName"
             ]));
         historyRef.current = [
             snapshot
@@ -72925,6 +72960,7 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, figureIdC
                     figureId: o.figureId,
                     objectId: o.objectId,
                     classId: o.classId,
+                    keypointName: o.keypointName,
                     lockRotation: true,
                     hasRotatingPoint: false,
                     lockScalingX: true,
@@ -73092,11 +73128,11 @@ const pillBase = {
     fontFamily: "Arial",
     fontSize: "14px"
 };
-function ClassSelector({ schema, selectedClass, onSelect }) {
+function ClassSelector({ schema, classId, onSelect }) {
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         style: container,
         children: schema.map((item)=>{
-            const active = item.bbox === selectedClass;
+            const active = item.bbox === classId;
             return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                 onClick: ()=>onSelect(item.bbox),
                 style: {
@@ -73216,6 +73252,77 @@ var _c;
 $RefreshReg$(_c, "ObjectIdInput");
 
   $parcel$ReactRefreshHelpers$7704.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"coEwc":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$235b = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$235b.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$235b.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>KeypointSelector);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react);
+const container = {
+    display: "flex",
+    gap: "6px",
+    margin: "0 10px 10px 10px",
+    flexWrap: "wrap"
+};
+const pillBase = {
+    borderWidth: "1px",
+    borderStyle: "solid",
+    borderRadius: "50vh",
+    background: "#fff",
+    cursor: "pointer",
+    userSelect: "none",
+    padding: "4px 8px",
+    fontFamily: "Arial",
+    fontSize: "13px"
+};
+const pillActive = {
+    ...pillBase,
+    background: "#333",
+    color: "#fff"
+};
+function KeypointSelector({ keypoints, selected, onSelect }) {
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        style: container,
+        children: Object.entries(keypoints).map(([name, { color }])=>{
+            const active = name === selected;
+            return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                onClick: ()=>onSelect(active ? null : name),
+                style: {
+                    ...active ? pillActive : pillBase,
+                    borderColor: color,
+                    color: active ? "#fff" : color,
+                    background: active ? color : "#fff"
+                },
+                children: name
+            }, name, false, {
+                fileName: "src/components/KeypointSelector.js",
+                lineNumber: 38,
+                columnNumber: 11
+            }, this);
+        })
+    }, void 0, false, {
+        fileName: "src/components/KeypointSelector.js",
+        lineNumber: 34,
+        columnNumber: 5
+    }, this);
+}
+_c = KeypointSelector;
+var _c;
+$RefreshReg$(_c, "KeypointSelector");
+
+  $parcel$ReactRefreshHelpers$235b.postlude(module);
 } finally {
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;

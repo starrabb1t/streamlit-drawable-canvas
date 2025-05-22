@@ -39,7 +39,6 @@ initial = []
 res = st_canvas(
     annotation_schema,
     background_image=bg,
-    color="cyan",
     key=index,
     initial_objects=initial
 )

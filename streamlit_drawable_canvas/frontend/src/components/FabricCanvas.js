@@ -12,9 +12,11 @@ export default function FabricCanvas({
   height,
   backgroundImageURL,
   mode,
-  color,
+  classColor,
+  keypointColor,
   classId, 
   objectId,
+  keypointName,
   initialObjects = [],
   pointRadius,
   onChange,
@@ -36,7 +38,7 @@ export default function FabricCanvas({
   useLoadInitial(canvasRef, initialObjects, figureIdCounter, sendBack)
 
   // Логика рисования в разных режимах
-  useDrawingMode(canvasRef, { mode, color, pointRadius, figureIdCounter, sendBack, objectId, classId })
+  useDrawingMode(canvasRef, { mode, classColor, keypointColor, pointRadius, figureIdCounter, sendBack, objectId, classId, keypointName })
 
   // Зум + пэннинг
   const { zoomIn, zoomOut } = useZoom(canvasRef, { width, height })
@@ -52,7 +54,7 @@ export default function FabricCanvas({
   }, [sendBack])
 
   return (
-    <>
+    <div>
       <canvas
         ref={mountRef}
         width={width}
@@ -67,6 +69,6 @@ export default function FabricCanvas({
         redo={redo}
         reset={reset}
       />
-    </>
+    </div>
   )
 }

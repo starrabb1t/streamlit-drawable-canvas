@@ -72521,26 +72521,20 @@ var prevRefreshSig = globalThis.$RefreshSig$;
 $parcel$ReactRefreshHelpers$5b6d.prelude(module);
 
 try {
+// src/hooks/useDrawingMode.js
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>useDrawingMode);
 var _react = require("react");
 var _fabric = require("fabric");
 var _s = $RefreshSig$();
+const MIN_SIDE = 10;
 function useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBack }) {
     _s();
     (0, _react.useEffect)(()=>{
         const canvas = canvasRef.current;
         if (!canvas) return;
-        // сбросим старые слушатели
-        canvas.off("mouse:down");
-        canvas.off("mouse:move");
-        canvas.off("mouse:up");
-        canvas.off("object:modified");
-        canvas.off("selection:created");
-        canvas.off("selection:updated");
-        canvas.off("selection:cleared");
-        // очистим выбор если не трансформируем
+        // 0) общий сброс селекта при выходе из трансформа
         if (mode !== "transform") {
             canvas.discardActiveObject();
             canvas.forEachObject((o)=>o.set({
@@ -72548,18 +72542,22 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBa
                 }));
             canvas.requestRenderAll();
         }
+        // Обработчики из разных режимов
+        const handlers = {};
         if (mode === "rect") {
             canvas.selection = false;
             canvas.defaultCursor = "crosshair";
-            let rect, isDown = false, sx = 0, sy = 0;
-            canvas.on("mouse:down", (opt)=>{
+            let rect = null;
+            let isDown = false;
+            let startX = 0, startY = 0;
+            handlers.mouseDown = (opt)=>{
                 isDown = true;
                 const p = canvas.getPointer(opt.e);
-                sx = p.x;
-                sy = p.y;
+                startX = p.x;
+                startY = p.y;
                 rect = new (0, _fabric.fabric).Rect({
-                    left: sx,
-                    top: sy,
+                    left: startX,
+                    top: startY,
                     originX: "left",
                     originY: "top",
                     width: 0,
@@ -72567,35 +72565,39 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBa
                     fill: "transparent",
                     stroke: color,
                     strokeWidth: 2,
-                    selectable: false
+                    selectable: false,
+                    strokeUniform: true
                 });
                 rect.objectId = ++idCounter.current;
                 canvas.add(rect);
-            });
-            canvas.on("mouse:move", (opt)=>{
+            };
+            handlers.mouseMove = (opt)=>{
                 if (!isDown || !rect) return;
                 const p = canvas.getPointer(opt.e);
-                const w = p.x - sx, h = p.y - sy;
+                const w = p.x - startX;
+                const h = p.y - startY;
                 rect.set({
-                    left: w < 0 ? p.x : sx,
-                    top: h < 0 ? p.y : sy,
+                    left: w < 0 ? p.x : startX,
+                    top: h < 0 ? p.y : startY,
                     width: Math.abs(w),
                     height: Math.abs(h)
                 });
                 rect.setCoords();
-                canvas.renderAll();
-            });
-            canvas.on("mouse:up", ()=>{
+                canvas.requestRenderAll();
+            };
+            handlers.mouseUp = ()=>{
                 if (!isDown) return;
                 isDown = false;
-                const MIN_SIDE = 10;
                 if (rect.width < MIN_SIDE || rect.height < MIN_SIDE) canvas.remove(rect);
                 else sendBack();
-            });
+            };
+            canvas.on("mouse:down", handlers.mouseDown);
+            canvas.on("mouse:move", handlers.mouseMove);
+            canvas.on("mouse:up", handlers.mouseUp);
         } else if (mode === "point") {
             canvas.selection = false;
             canvas.defaultCursor = "pointer";
-            canvas.on("mouse:down", (opt)=>{
+            handlers.mouseDown = (opt)=>{
                 const p = canvas.getPointer(opt.e);
                 const c = new (0, _fabric.fabric).Circle({
                     left: p.x,
@@ -72610,42 +72612,59 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBa
                 });
                 c.objectId = ++idCounter.current;
                 canvas.add(c);
-                canvas.renderAll();
+                canvas.requestRenderAll();
                 sendBack();
-            });
+            };
+            canvas.on("mouse:down", handlers.mouseDown);
         } else if (mode === "transform") {
             canvas.selection = true;
             canvas.defaultCursor = "move";
-            canvas.forEachObject((o)=>{
+            // выставим атрибуты на всех объектах
+            canvas.getObjects().forEach((o)=>{
                 if (o.type === "rect") o.set({
                     selectable: true,
+                    hasControls: true,
                     lockRotation: false,
                     lockScalingX: false,
-                    lockScalingY: false,
-                    hasControls: true
+                    lockScalingY: false
                 });
                 else if (o.type === "circle") o.set({
                     selectable: true,
+                    hasControls: false,
                     lockRotation: true,
                     lockScalingX: true,
-                    lockScalingY: true,
-                    hasControls: false
+                    lockScalingY: true
                 });
             });
-            canvas.on("object:modified", sendBack);
-            canvas.on("selection:created", sendBack);
-            canvas.on("selection:updated", sendBack);
-            canvas.on("selection:cleared", sendBack);
+            // подписываемся на события трансформации
+            handlers.objectModified = ()=>sendBack();
+            handlers.selectionCreated = ()=>sendBack();
+            handlers.selectionUpdated = ()=>sendBack();
+            handlers.selectionCleared = ()=>sendBack();
+            canvas.on("object:modified", handlers.objectModified);
+            canvas.on("selection:created", handlers.selectionCreated);
+            canvas.on("selection:updated", handlers.selectionUpdated);
+            canvas.on("selection:cleared", handlers.selectionCleared);
         } else {
             canvas.selection = false;
             canvas.defaultCursor = "default";
         }
+        // Cleanup: снимаем ВСЕ навешанные выше обработчики
+        return ()=>{
+            if (handlers.mouseDown) canvas.off("mouse:down", handlers.mouseDown);
+            if (handlers.mouseMove) canvas.off("mouse:move", handlers.mouseMove);
+            if (handlers.mouseUp) canvas.off("mouse:up", handlers.mouseUp);
+            if (handlers.objectModified) canvas.off("object:modified", handlers.objectModified);
+            if (handlers.selectionCreated) canvas.off("selection:created", handlers.selectionCreated);
+            if (handlers.selectionUpdated) canvas.off("selection:updated", handlers.selectionUpdated);
+            if (handlers.selectionCleared) canvas.off("selection:cleared", handlers.selectionCleared);
+        };
     }, [
         mode,
         color,
         pointRadius,
-        idCounter,
-        sendBack
+        sendBack,
+        idCounter
     ]);
 }
 _s(useDrawingMode, "OD7bBpZva5O2jO+Puf00hKivP7c=");

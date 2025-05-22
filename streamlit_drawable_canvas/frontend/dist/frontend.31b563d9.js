@@ -72545,7 +72545,9 @@ function useLoadInitial(canvasRef, initialObjects, idCounterRef, pointRadius, se
                 stroke: o.stroke,
                 strokeWidth: 2,
                 selectable: true,
-                strokeUniform: true
+                strokeUniform: true,
+                lockRotation: true,
+                hasRotatingPoint: false
             });
             else if (o.type === "circle") inst = new (0, _fabric.fabric).Circle({
                 left: o.left,
@@ -72557,7 +72559,11 @@ function useLoadInitial(canvasRef, initialObjects, idCounterRef, pointRadius, se
                 stroke: o.stroke,
                 strokeWidth: 3,
                 selectable: true,
-                controls: false
+                controls: false,
+                lockRotation: true,
+                hasRotatingPoint: false,
+                lockScalingX: true,
+                lockScalingY: true
             });
             if (inst) {
                 inst.objectId = ++idCounterRef.current;
@@ -72634,7 +72640,9 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBa
                     stroke: color,
                     strokeWidth: 2,
                     selectable: false,
-                    strokeUniform: true
+                    strokeUniform: true,
+                    lockRotation: true,
+                    hasRotatingPoint: false
                 });
                 rect.objectId = ++idCounter.current;
                 canvas.add(rect);
@@ -72676,7 +72684,11 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBa
                     fill: "transparent",
                     stroke: color,
                     strokeWidth: 3,
-                    selectable: false
+                    selectable: false,
+                    lockRotation: true,
+                    hasRotatingPoint: false,
+                    lockScalingX: true,
+                    lockScalingY: true
                 });
                 c.objectId = ++idCounter.current;
                 canvas.add(c);
@@ -72894,7 +72906,9 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, pointRadi
                     strokeWidth: 2,
                     selectable: isT,
                     strokeUniform: true,
-                    objectId: o.objectId
+                    objectId: o.objectId,
+                    lockRotation: true,
+                    hasRotatingPoint: false
                 });
                 else if (o.type === "circle") inst = new (0, _fabric.fabric).Circle({
                     left: o.left,
@@ -72907,10 +72921,11 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, pointRadi
                     strokeWidth: 3,
                     selectable: isT,
                     hasControls: isT,
-                    lockScalingX: !isT,
-                    lockScalingY: !isT,
-                    lockRotation: !isT,
-                    objectId: o.objectId
+                    objectId: o.objectId,
+                    lockRotation: true,
+                    hasRotatingPoint: false,
+                    lockScalingX: true,
+                    lockScalingY: true
                 });
                 if (inst) canvas.add(inst);
             });

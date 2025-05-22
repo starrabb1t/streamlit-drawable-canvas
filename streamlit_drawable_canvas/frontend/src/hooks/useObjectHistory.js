@@ -106,6 +106,8 @@ export default function useObjectHistory(
                 selectable:    isT,
                 strokeUniform: true,
                 objectId:      o.objectId,
+                lockRotation: true,
+                hasRotatingPoint: false
               })
             }
             else if (o.type === "circle") {
@@ -120,10 +122,11 @@ export default function useObjectHistory(
                 strokeWidth:   3,
                 selectable:    isT,
                 hasControls:   isT,
-                lockScalingX:  !isT,
-                lockScalingY:  !isT,
-                lockRotation:  !isT,
                 objectId:      o.objectId,
+                lockRotation: true,
+                hasRotatingPoint: false,
+                lockScalingX: true,
+                lockScalingY: true
               })
             }
 

@@ -46,6 +46,8 @@ export default function useDrawingMode(
           strokeWidth:  2,
           selectable:   false,
           strokeUniform: true,
+          lockRotation: true,
+          hasRotatingPoint: false
         })
         rect.objectId = ++idCounter.current
         canvas.add(rect)
@@ -97,6 +99,10 @@ export default function useDrawingMode(
           stroke:       color,
           strokeWidth:  3,
           selectable:   false,
+          lockRotation: true,
+          hasRotatingPoint: false,
+          lockScalingX: true,
+          lockScalingY: true
         })
         c.objectId = ++idCounter.current
         canvas.add(c)

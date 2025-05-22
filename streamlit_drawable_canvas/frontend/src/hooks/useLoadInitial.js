@@ -47,6 +47,8 @@ export default function useLoadInitial(
           strokeWidth:  2,
           selectable:   true,
           strokeUniform: true,
+          lockRotation: true,
+          hasRotatingPoint: false
         })
       }
       else if (o.type === "circle") {
@@ -60,7 +62,11 @@ export default function useLoadInitial(
           stroke:       o.stroke,
           strokeWidth:  3,
           selectable:   true,
-          controls: false
+          controls: false,
+          lockRotation: true,
+          hasRotatingPoint: false,
+          lockScalingX: true,
+          lockScalingY: true
         })
       }
 

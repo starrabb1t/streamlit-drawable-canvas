@@ -24950,9 +24950,9 @@ var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
 var _streamlitComponentLib = require("streamlit-component-lib");
-var _modeSelector = require("./ModeSelector");
+var _modeSelector = require("./components/ModeSelector");
 var _modeSelectorDefault = parcelHelpers.interopDefault(_modeSelector);
-var _fabricCanvas = require("./FabricCanvas");
+var _fabricCanvas = require("./components/FabricCanvas");
 var _fabricCanvasDefault = parcelHelpers.interopDefault(_fabricCanvas);
 var _s = $RefreshSig$();
 const STREAMLIT_FRAME_PADDING = 100;
@@ -25014,7 +25014,7 @@ $RefreshReg$(_c1, "%default%");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","streamlit-component-lib":"iNVE7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./ModeSelector":"cV8Ek","./FabricCanvas":"8H51e"}],"iNVE7":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","streamlit-component-lib":"iNVE7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./components/ModeSelector":"7tqrS","./components/FabricCanvas":"9a1Yb"}],"iNVE7":[function(require,module,exports,__globalThis) {
 /**
  * @license
  * Copyright 2018-2021 Streamlit Inc.
@@ -49152,12 +49152,12 @@ function $da9882e673ac146b$var$ErrorOverlay() {
     return null;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"cV8Ek":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$4632 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-$parcel$ReactRefreshHelpers$4632.init();
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"7tqrS":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$e894 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$e894.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
 var prevRefreshSig = globalThis.$RefreshSig$;
-$parcel$ReactRefreshHelpers$4632.prelude(module);
+$parcel$ReactRefreshHelpers$e894.prelude(module);
 
 try {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -49212,12 +49212,12 @@ function ModeSelector({ value, onChange }) {
                 onClick: ()=>onChange(m.value),
                 children: m.label
             }, m.value, false, {
-                fileName: "src/ModeSelector.js",
+                fileName: "src/components/ModeSelector.js",
                 lineNumber: 38,
                 columnNumber: 9
             }, this))
     }, void 0, false, {
-        fileName: "src/ModeSelector.js",
+        fileName: "src/components/ModeSelector.js",
         lineNumber: 36,
         columnNumber: 5
     }, this);
@@ -49226,17 +49226,17 @@ _c = ModeSelector;
 var _c;
 $RefreshReg$(_c, "ModeSelector");
 
-  $parcel$ReactRefreshHelpers$4632.postlude(module);
+  $parcel$ReactRefreshHelpers$e894.postlude(module);
 } finally {
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"8H51e":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$c3a6 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-$parcel$ReactRefreshHelpers$c3a6.init();
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"9a1Yb":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$955c = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$955c.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
 var prevRefreshSig = globalThis.$RefreshSig$;
-$parcel$ReactRefreshHelpers$c3a6.prelude(module);
+$parcel$ReactRefreshHelpers$955c.prelude(module);
 
 try {
 // src/FabricCanvas.js
@@ -49246,168 +49246,41 @@ parcelHelpers.export(exports, "default", ()=>FabricCanvas);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
-var _fabric = require("fabric");
-var _useCanvasInit = require("./hooks/useCanvasInit");
+var _useCanvasInit = require("../hooks/useCanvasInit");
 var _useCanvasInitDefault = parcelHelpers.interopDefault(_useCanvasInit);
-var _useLoadInitial = require("./hooks/useLoadInitial");
+var _useLoadInitial = require("../hooks/useLoadInitial");
 var _useLoadInitialDefault = parcelHelpers.interopDefault(_useLoadInitial);
-var _useDrawingMode = require("./hooks/useDrawingMode");
+var _useDrawingMode = require("../hooks/useDrawingMode");
 var _useDrawingModeDefault = parcelHelpers.interopDefault(_useDrawingMode);
-var _useZoom = require("./hooks/useZoom");
+var _useZoom = require("../hooks/useZoom");
 var _useZoomDefault = parcelHelpers.interopDefault(_useZoom);
+var _useObjectHistory = require("../hooks/useObjectHistory");
+var _useObjectHistoryDefault = parcelHelpers.interopDefault(_useObjectHistory);
 var _toolbar = require("./Toolbar");
 var _toolbarDefault = parcelHelpers.interopDefault(_toolbar);
 var _s = $RefreshSig$();
-function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialObjects, pointRadius, onChange }) {
+function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialObjects = [], pointRadius, onChange }) {
     _s();
-    console.log('FabricCanvas', mode);
+    // Ссылка на <canvas> и объект Fabric
     const mountRef = (0, _react.useRef)(null);
     const canvasRef = (0, _useCanvasInitDefault.default)(mountRef, {
         width,
         height,
         backgroundImageURL
     });
+    // Счётчик для выдачи objectId новым фигурам
     const idCounter = (0, _react.useRef)(0);
-    // история: массив снимков объектов, текущий индекс и флаг
-    const historyRef = (0, _react.useRef)([]);
-    const historyIndexRef = (0, _react.useRef)(-1);
-    const skipHistoryRef = (0, _react.useRef)(false);
-    // 1) после первой загрузки initialObjects создаём initial state истории
-    (0, _react.useEffect)(()=>{
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        // делаем снимок всех объектов (без фона)
-        const snapshot = canvas.getObjects().map((o)=>o.toObject([
-                "objectId"
-            ]));
-        historyRef.current = [
-            snapshot
-        ];
-        historyIndexRef.current = 0;
-        skipHistoryRef.current = false;
-    }, [
-        initialObjects
-    ]);
-    // “сырая” отправка в Streamlit (без истории)
-    const rawSendBack = (0, _react.useCallback)(()=>{
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const active = canvas.getActiveObjects();
-        const objs = canvas.getObjects().map((o)=>({
-                id: o.objectId,
-                type: o.type,
-                left: o.left,
-                top: o.top,
-                width: o.width * (o.scaleX || 1),
-                height: o.height * (o.scaleY || 1),
-                stroke: o.stroke,
-                is_selected: active.includes(o)
-            }));
-        onChange(objs);
-    }, [
-        onChange
-    ]);
-    // отправка + пуш в историю (если нужно)
-    const sendBack = (0, _react.useCallback)(()=>{
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        if (!skipHistoryRef.current) {
-            // если мы не в режиме undo/redo, то пушим новый снимок
-            if (historyIndexRef.current < historyRef.current.length - 1) // обрезаем «будущие» после undo
-            historyRef.current = historyRef.current.slice(0, historyIndexRef.current + 1);
-            const snapshot = canvas.getObjects().map((o)=>o.toObject([
-                    "objectId"
-                ]));
-            historyRef.current.push(snapshot);
-            historyIndexRef.current++;
-        }
-        skipHistoryRef.current = false;
-        rawSendBack();
-    }, [
-        rawSendBack
-    ]);
-    // Вспомогательная функция: восстановить состояние из snapshot
-    // Старый код удалить, а вместо него вставить следующее:
-    const restoreSnapshot = (0, _react.useCallback)((snapshot)=>{
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        // 1) Сохраняем фон и текущее состояние вьюпорта
-        const bg = canvas.backgroundImage;
-        const prevViewport = canvas.viewportTransform.concat();
-        // 2) Обновляем idCounter по максимуму в snapshot
-        idCounter.current = snapshot.reduce((mx, obj)=>Math.max(mx, obj.objectId || 0), 0);
-        // 3) Готовим JSON только с объектами
-        const json = {
-            objects: snapshot
-        };
-        // 4) Полностью сбрасываем всё и грузим заново
-        canvas.clear();
-        canvas.loadFromJSON(json, ()=>{
-            // 5) Ставим фон обратно без перезагрузки
-            if (bg) canvas.setBackgroundImage(bg, canvas.requestRenderAll.bind(canvas));
-            // 6) Восстанавливаем пан/зум
-            canvas.setViewportTransform(prevViewport);
-            // 7) Переключаем selectable/controls по текущему режиму
-            canvas.getObjects().forEach((o)=>{
-                if (mode !== "transform") o.set({
-                    selectable: false
-                });
-                else if (o.type === "rect") o.set({
-                    selectable: true,
-                    hasControls: true,
-                    lockScalingX: false,
-                    lockScalingY: false,
-                    lockRotation: false
-                });
-                else if (o.type === "circle") o.set({
-                    selectable: true,
-                    hasControls: false,
-                    lockScalingX: true,
-                    lockScalingY: true,
-                    lockRotation: true
-                });
-            });
-            canvas.discardActiveObject();
-            canvas.requestRenderAll();
-            // 8) шлём обновлённый список обратно в Streamlit
-            rawSendBack();
-        });
-    }, [
-        rawSendBack,
-        mode
-    ]);
-    // undo
-    const undo = (0, _react.useCallback)(()=>{
-        if (historyIndexRef.current <= 0) return;
-        historyIndexRef.current--;
-        skipHistoryRef.current = true;
-        const prev = historyRef.current[historyIndexRef.current];
-        restoreSnapshot(prev);
-    }, [
-        restoreSnapshot
-    ]);
-    // redo
-    const redo = (0, _react.useCallback)(()=>{
-        if (historyIndexRef.current >= historyRef.current.length - 1) return;
-        historyIndexRef.current++;
-        skipHistoryRef.current = true;
-        const next = historyRef.current[historyIndexRef.current];
-        restoreSnapshot(next);
-    }, [
-        restoreSnapshot
-    ]);
-    // reset (к первому состоянию)
-    const reset = (0, _react.useCallback)(()=>{
-        if (historyRef.current.length === 0) return;
-        historyIndexRef.current = 0;
-        skipHistoryRef.current = true;
-        const first = historyRef.current[0];
-        restoreSnapshot(first);
-    }, [
-        restoreSnapshot
-    ]);
-    // ставим initialObjects и прочую логику рисования
+    // Хук истории: sendBack, undo, redo, reset
+    const { sendBack, undo, redo, reset } = (0, _useObjectHistoryDefault.default)(canvasRef, {
+        initialObjects,
+        onChange,
+        mode,
+        pointRadius,
+        idCounter
+    });
+    // Загрузка initialObjects на канву
     (0, _useLoadInitialDefault.default)(canvasRef, initialObjects, idCounter, pointRadius, sendBack);
+    // Логика рисования в разных режимах
     (0, _useDrawingModeDefault.default)(canvasRef, {
         mode,
         color,
@@ -49415,17 +49288,18 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
         idCounter,
         sendBack
     });
+    // Зум + пэннинг
     const { zoomIn, zoomOut } = (0, _useZoomDefault.default)(canvasRef, {
         width,
         height
     });
-    // кнопка Delete
+    // Удаление выбранных фигур
     const deleteSelected = (0, _react.useCallback)(()=>{
-        const c = canvasRef.current;
-        if (!c) return;
-        c.getActiveObjects().forEach((o)=>c.remove(o));
-        c.discardActiveObject();
-        c.requestRenderAll();
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        canvas.getActiveObjects().forEach((o)=>canvas.remove(o));
+        canvas.discardActiveObject();
+        canvas.requestRenderAll();
         sendBack();
     }, [
         sendBack
@@ -49440,8 +49314,8 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                     border: "1px solid #888"
                 }
             }, void 0, false, {
-                fileName: "src/FabricCanvas.js",
-                lineNumber: 192,
+                fileName: "src/components/FabricCanvas.js",
+                lineNumber: 54,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _toolbarDefault.default), {
@@ -49452,16 +49326,17 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                 redo: redo,
                 reset: reset
             }, void 0, false, {
-                fileName: "src/FabricCanvas.js",
-                lineNumber: 198,
+                fileName: "src/components/FabricCanvas.js",
+                lineNumber: 60,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true);
 }
-_s(FabricCanvas, "riKmn55rHDuYfVfm15pm/9Vcz+E=", false, function() {
+_s(FabricCanvas, "KTElVxBBTgg47q6kB459rPtHnMI=", false, function() {
     return [
         (0, _useCanvasInitDefault.default),
+        (0, _useObjectHistoryDefault.default),
         (0, _useLoadInitialDefault.default),
         (0, _useDrawingModeDefault.default),
         (0, _useZoomDefault.default)
@@ -49471,12 +49346,299 @@ _c = FabricCanvas;
 var _c;
 $RefreshReg$(_c, "FabricCanvas");
 
-  $parcel$ReactRefreshHelpers$c3a6.postlude(module);
+  $parcel$ReactRefreshHelpers$955c.postlude(module);
 } finally {
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","fabric":"fVwBJ","./hooks/useCanvasInit":"f2Cwh","./hooks/useLoadInitial":"kQlKI","./hooks/useDrawingMode":"cbNPl","./hooks/useZoom":"ghy95","./Toolbar":"YxYIo","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"fVwBJ":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./Toolbar":"ipmop","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","../hooks/useCanvasInit":"f2Cwh","../hooks/useLoadInitial":"kQlKI","../hooks/useDrawingMode":"cbNPl","../hooks/useZoom":"ghy95","../hooks/useObjectHistory":"1sSxf"}],"ipmop":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$bba1 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$bba1.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$bba1.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>Toolbar);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react);
+var _deleteSvg = require("url:../img/delete.svg");
+var _deleteSvgDefault = parcelHelpers.interopDefault(_deleteSvg);
+var _resetSvg = require("url:../img/reset.svg");
+var _resetSvgDefault = parcelHelpers.interopDefault(_resetSvg);
+var _undoSvg = require("url:../img/undo.svg");
+var _undoSvgDefault = parcelHelpers.interopDefault(_undoSvg);
+var _redoSvg = require("url:../img/redo.svg");
+var _redoSvgDefault = parcelHelpers.interopDefault(_redoSvg);
+var _zoomInSvg = require("url:../img/zoom_in.svg");
+var _zoomInSvgDefault = parcelHelpers.interopDefault(_zoomInSvg);
+var _zoomOutSvg = require("url:../img/zoom_out.svg");
+var _zoomOutSvgDefault = parcelHelpers.interopDefault(_zoomOutSvg);
+function Toolbar({ zoomIn, zoomOut, deleteSelected, undo, redo, reset }) {
+    const style = {
+        display: "flex",
+        gap: 8,
+        marginTop: 8,
+        alignItems: "center"
+    };
+    const btn = {
+        cursor: "pointer",
+        width: 24,
+        height: 24,
+        background: "transparent",
+        border: "none"
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        style: style,
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                style: btn,
+                onClick: zoomOut,
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
+                    src: (0, _zoomOutSvgDefault.default),
+                    alt: "Zoom Out"
+                }, void 0, false, {
+                    fileName: "src/components/Toolbar.js",
+                    lineNumber: 34,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "src/components/Toolbar.js",
+                lineNumber: 33,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                style: btn,
+                onClick: zoomIn,
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
+                    src: (0, _zoomInSvgDefault.default),
+                    alt: "Zoom In"
+                }, void 0, false, {
+                    fileName: "src/components/Toolbar.js",
+                    lineNumber: 37,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "src/components/Toolbar.js",
+                lineNumber: 36,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                style: btn,
+                onClick: undo,
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
+                    src: (0, _undoSvgDefault.default),
+                    alt: "Undo"
+                }, void 0, false, {
+                    fileName: "src/components/Toolbar.js",
+                    lineNumber: 40,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "src/components/Toolbar.js",
+                lineNumber: 39,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                style: btn,
+                onClick: redo,
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
+                    src: (0, _redoSvgDefault.default),
+                    alt: "Redo"
+                }, void 0, false, {
+                    fileName: "src/components/Toolbar.js",
+                    lineNumber: 43,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "src/components/Toolbar.js",
+                lineNumber: 42,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                style: btn,
+                onClick: deleteSelected,
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
+                    src: (0, _deleteSvgDefault.default),
+                    alt: "Delete"
+                }, void 0, false, {
+                    fileName: "src/components/Toolbar.js",
+                    lineNumber: 46,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "src/components/Toolbar.js",
+                lineNumber: 45,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                style: btn,
+                onClick: reset,
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
+                    src: (0, _resetSvgDefault.default),
+                    alt: "Reset"
+                }, void 0, false, {
+                    fileName: "src/components/Toolbar.js",
+                    lineNumber: 49,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "src/components/Toolbar.js",
+                lineNumber: 48,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/components/Toolbar.js",
+        lineNumber: 32,
+        columnNumber: 5
+    }, this);
+}
+_c = Toolbar;
+var _c;
+$RefreshReg$(_c, "Toolbar");
+
+  $parcel$ReactRefreshHelpers$bba1.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","url:../img/delete.svg":"eToa8","url:../img/reset.svg":"l9z8i","url:../img/undo.svg":"1rW43","url:../img/redo.svg":"7jd64","url:../img/zoom_in.svg":"2CQHM","url:../img/zoom_out.svg":"25RcJ"}],"eToa8":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("delete.877e1b97.svg") + "?" + Date.now();
+
+},{}],"l9z8i":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("reset.77be6178.svg") + "?" + Date.now();
+
+},{}],"1rW43":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("undo.c3ab1cf6.svg") + "?" + Date.now();
+
+},{}],"7jd64":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("redo.7be6742b.svg") + "?" + Date.now();
+
+},{}],"2CQHM":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("zoom_in.fad9dae4.svg") + "?" + Date.now();
+
+},{}],"25RcJ":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("zoom_out.dc48a1f2.svg") + "?" + Date.now();
+
+},{}],"f2Cwh":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$0c4d = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$0c4d.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$0c4d.prelude(module);
+
+try {
+// src/hooks/useCanvasInit.js
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>useCanvasInit);
+var _react = require("react");
+var _fabric = require("fabric");
+var _s = $RefreshSig$();
+function useCanvasInit(mountRef, { width, height, backgroundImageURL }) {
+    _s();
+    const canvasRef = (0, _react.useRef)(null);
+    // -- 1) Создание канвы и пэннинг: только один раз на маунте
+    (0, _react.useEffect)(()=>{
+        const canvas = new (0, _fabric.fabric).Canvas(mountRef.current, {
+            selection: false,
+            preserveObjectStacking: true
+        });
+        canvasRef.current = canvas;
+        // Паннинг на среднюю кнопку
+        const el = canvas.upperCanvasEl;
+        let isPanning = false, lastX = 0, lastY = 0;
+        const onDown = (e)=>{
+            if (e.button === 1) {
+                isPanning = true;
+                lastX = e.clientX;
+                lastY = e.clientY;
+                e.preventDefault();
+            }
+        };
+        const onMove = (e)=>{
+            if (!isPanning) return;
+            const dx = e.clientX - lastX, dy = e.clientY - lastY;
+            canvas.relativePan({
+                x: dx,
+                y: dy
+            });
+            lastX = e.clientX;
+            lastY = e.clientY;
+            // Ограничитель панинга, чтобы фон не ушёл в пустоту
+            const vpt = canvas.viewportTransform;
+            const zoom = vpt[0];
+            const sw = width * zoom, sh = height * zoom;
+            const minX = width - sw, minY = height - sh;
+            vpt[4] = Math.max(minX, Math.min(vpt[4], 0));
+            vpt[5] = Math.max(minY, Math.min(vpt[5], 0));
+            canvas.setViewportTransform(vpt);
+        };
+        const onUp = (e)=>{
+            if (e.button === 1) isPanning = false;
+        };
+        const onContext = (e)=>e.preventDefault();
+        el.addEventListener("mousedown", onDown);
+        el.addEventListener("mousemove", onMove);
+        el.addEventListener("mouseup", onUp);
+        el.addEventListener("contextmenu", onContext);
+        return ()=>{
+            el.removeEventListener("mousedown", onDown);
+            el.removeEventListener("mousemove", onMove);
+            el.removeEventListener("mouseup", onUp);
+            el.removeEventListener("contextmenu", onContext);
+            canvas.dispose();
+        };
+    }, []);
+    // -- 2) Реакция на изменение размеров или URL фона
+    (0, _react.useEffect)(()=>{
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        // 2.1) Обновляем размеры холста
+        canvas.setWidth(width);
+        canvas.setHeight(height);
+        // 2.2) Обновляем фон
+        if (backgroundImageURL) {
+            const bg = canvas.backgroundImage;
+            // Если URL не изменился, просто рескейлим
+            if (bg && bg._element?.src === backgroundImageURL) {
+                bg.scaleToWidth(width);
+                bg.scaleToHeight(height);
+                canvas.requestRenderAll();
+            } else // Загружаем новый фон
+            (0, _fabric.fabric).Image.fromURL(backgroundImageURL, (img)=>{
+                img.set({
+                    originX: "left",
+                    originY: "top",
+                    selectable: false
+                });
+                img.scaleToWidth(width);
+                img.scaleToHeight(height);
+                canvas.setBackgroundImage(img, canvas.requestRenderAll.bind(canvas));
+            }, {
+                crossOrigin: "anonymous"
+            });
+        } else // Сбрасываем фон
+        canvas.setBackgroundImage(null, canvas.requestRenderAll.bind(canvas));
+    }, [
+        width,
+        height,
+        backgroundImageURL
+    ]);
+    return canvasRef;
+}
+_s(useCanvasInit, "1O11hef6JMAr7xpSnL0aZ5Ib60Q=");
+
+  $parcel$ReactRefreshHelpers$0c4d.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react":"jMk1U","fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"fVwBJ":[function(require,module,exports,__globalThis) {
 /* build: `node build.js modules=ALL exclude=gestures,accessors,erasing requirejs minifier=uglifyjs` */ /*! Fabric.js Copyright 2008-2015, Printio (Juriy Zaytsev, Maxim Chernyak) */ var Buffer = require("b43f9182a9448437").Buffer;
 var fabric = fabric || {
     version: '5.5.2'
@@ -72334,121 +72496,7 @@ fabric.util.object.extend(fabric.IText.prototype, /** @lends fabric.IText.protot
 },{"b43f9182a9448437":"bCaf4","b4a27d366f7bc59d":"eoH60","cf55851068aa21de":"eoH60","c8b81afb3b25b3ab":"eoH60"}],"eoH60":[function(require,module,exports,__globalThis) {
 "use strict";
 
-},{}],"f2Cwh":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$0c4d = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-$parcel$ReactRefreshHelpers$0c4d.init();
-var prevRefreshReg = globalThis.$RefreshReg$;
-var prevRefreshSig = globalThis.$RefreshSig$;
-$parcel$ReactRefreshHelpers$0c4d.prelude(module);
-
-try {
-// src/hooks/useCanvasInit.js
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "default", ()=>useCanvasInit);
-var _react = require("react");
-var _fabric = require("fabric");
-var _s = $RefreshSig$();
-function useCanvasInit(mountRef, { width, height, backgroundImageURL }) {
-    _s();
-    const canvasRef = (0, _react.useRef)(null);
-    // -- 1) Создание канвы и пэннинг: только один раз на маунте
-    (0, _react.useEffect)(()=>{
-        const canvas = new (0, _fabric.fabric).Canvas(mountRef.current, {
-            selection: false,
-            preserveObjectStacking: true
-        });
-        canvasRef.current = canvas;
-        // Паннинг на среднюю кнопку
-        const el = canvas.upperCanvasEl;
-        let isPanning = false, lastX = 0, lastY = 0;
-        const onDown = (e)=>{
-            if (e.button === 1) {
-                isPanning = true;
-                lastX = e.clientX;
-                lastY = e.clientY;
-                e.preventDefault();
-            }
-        };
-        const onMove = (e)=>{
-            if (!isPanning) return;
-            const dx = e.clientX - lastX, dy = e.clientY - lastY;
-            canvas.relativePan({
-                x: dx,
-                y: dy
-            });
-            lastX = e.clientX;
-            lastY = e.clientY;
-            // Ограничитель панинга, чтобы фон не ушёл в пустоту
-            const vpt = canvas.viewportTransform;
-            const zoom = vpt[0];
-            const sw = width * zoom, sh = height * zoom;
-            const minX = width - sw, minY = height - sh;
-            vpt[4] = Math.max(minX, Math.min(vpt[4], 0));
-            vpt[5] = Math.max(minY, Math.min(vpt[5], 0));
-            canvas.setViewportTransform(vpt);
-        };
-        const onUp = (e)=>{
-            if (e.button === 1) isPanning = false;
-        };
-        const onContext = (e)=>e.preventDefault();
-        el.addEventListener("mousedown", onDown);
-        el.addEventListener("mousemove", onMove);
-        el.addEventListener("mouseup", onUp);
-        el.addEventListener("contextmenu", onContext);
-        return ()=>{
-            el.removeEventListener("mousedown", onDown);
-            el.removeEventListener("mousemove", onMove);
-            el.removeEventListener("mouseup", onUp);
-            el.removeEventListener("contextmenu", onContext);
-            canvas.dispose();
-        };
-    }, []);
-    // -- 2) Реакция на изменение размеров или URL фона
-    (0, _react.useEffect)(()=>{
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        // 2.1) Обновляем размеры холста
-        canvas.setWidth(width);
-        canvas.setHeight(height);
-        // 2.2) Обновляем фон
-        if (backgroundImageURL) {
-            const bg = canvas.backgroundImage;
-            // Если URL не изменился, просто рескейлим
-            if (bg && bg._element?.src === backgroundImageURL) {
-                bg.scaleToWidth(width);
-                bg.scaleToHeight(height);
-                canvas.requestRenderAll();
-            } else // Загружаем новый фон
-            (0, _fabric.fabric).Image.fromURL(backgroundImageURL, (img)=>{
-                img.set({
-                    originX: "left",
-                    originY: "top",
-                    selectable: false
-                });
-                img.scaleToWidth(width);
-                img.scaleToHeight(height);
-                canvas.setBackgroundImage(img, canvas.requestRenderAll.bind(canvas));
-            }, {
-                crossOrigin: "anonymous"
-            });
-        } else // Сбрасываем фон
-        canvas.setBackgroundImage(null, canvas.requestRenderAll.bind(canvas));
-    }, [
-        width,
-        height,
-        backgroundImageURL
-    ]);
-    return canvasRef;
-}
-_s(useCanvasInit, "1O11hef6JMAr7xpSnL0aZ5Ib60Q=");
-
-  $parcel$ReactRefreshHelpers$0c4d.postlude(module);
-} finally {
-  globalThis.$RefreshReg$ = prevRefreshReg;
-  globalThis.$RefreshSig$ = prevRefreshSig;
-}
-},{"react":"jMk1U","fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"kQlKI":[function(require,module,exports,__globalThis) {
+},{}],"kQlKI":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$d73d = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 $parcel$ReactRefreshHelpers$d73d.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
@@ -72747,179 +72795,175 @@ _s(useZoom, "yjnoJ+nFqHVKSvTPF57irs8MCfM=");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react":"jMk1U","fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"YxYIo":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$ac60 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-$parcel$ReactRefreshHelpers$ac60.init();
+},{"react":"jMk1U","fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"1sSxf":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$b7b4 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$b7b4.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
 var prevRefreshSig = globalThis.$RefreshSig$;
-$parcel$ReactRefreshHelpers$ac60.prelude(module);
+$parcel$ReactRefreshHelpers$b7b4.prelude(module);
 
 try {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "default", ()=>Toolbar);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
+parcelHelpers.export(exports, "default", ()=>useObjectHistory);
 var _react = require("react");
-var _reactDefault = parcelHelpers.interopDefault(_react);
-var _deleteSvg = require("url:./img/delete.svg");
-var _deleteSvgDefault = parcelHelpers.interopDefault(_deleteSvg);
-var _resetSvg = require("url:./img/reset.svg");
-var _resetSvgDefault = parcelHelpers.interopDefault(_resetSvg);
-var _undoSvg = require("url:./img/undo.svg");
-var _undoSvgDefault = parcelHelpers.interopDefault(_undoSvg);
-var _redoSvg = require("url:./img/redo.svg");
-var _redoSvgDefault = parcelHelpers.interopDefault(_redoSvg);
-var _zoomInSvg = require("url:./img/zoom_in.svg");
-var _zoomInSvgDefault = parcelHelpers.interopDefault(_zoomInSvg);
-var _zoomOutSvg = require("url:./img/zoom_out.svg");
-var _zoomOutSvgDefault = parcelHelpers.interopDefault(_zoomOutSvg);
-function Toolbar({ zoomIn, zoomOut, deleteSelected, undo, redo, reset }) {
-    const style = {
-        display: "flex",
-        gap: 8,
-        marginTop: 8,
-        alignItems: "center"
+var _fabric = require("fabric");
+var _s = $RefreshSig$();
+function useObjectHistory(canvasRef, { initialObjects, onChange, mode, pointRadius, idCounter }) {
+    _s();
+    // история снапшотов
+    const historyRef = (0, _react.useRef)([]);
+    const historyIndexRef = (0, _react.useRef)(-1);
+    const skipHistoryRef = (0, _react.useRef)(false);
+    // «сырая» отправка в Python
+    const rawSendBack = (0, _react.useCallback)(()=>{
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const active = canvas.getActiveObjects();
+        const objs = canvas.getObjects().map((o)=>({
+                id: o.objectId,
+                type: o.type,
+                left: o.left,
+                top: o.top,
+                width: o.width * (o.scaleX || 1),
+                height: o.height * (o.scaleY || 1),
+                stroke: o.stroke,
+                is_selected: active.includes(o)
+            }));
+        onChange(objs);
+    }, [
+        onChange
+    ]);
+    // «отправка+пуш в историю»
+    const sendBack = (0, _react.useCallback)(()=>{
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        if (!skipHistoryRef.current) {
+            // если мы откатились — обрезаем «будущее»
+            if (historyIndexRef.current < historyRef.current.length - 1) historyRef.current = historyRef.current.slice(0, historyIndexRef.current + 1);
+            // пушим новый снимок
+            const snapshot = canvas.getObjects().map((o)=>o.toObject([
+                    "objectId"
+                ]));
+            historyRef.current.push(snapshot);
+            historyIndexRef.current++;
+        }
+        skipHistoryRef.current = false;
+        rawSendBack();
+    }, [
+        rawSendBack
+    ]);
+    // при смене initialObjects — сбрасываем историю
+    (0, _react.useEffect)(()=>{
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const snapshot = canvas.getObjects().map((o)=>o.toObject([
+                "objectId"
+            ]));
+        historyRef.current = [
+            snapshot
+        ];
+        historyIndexRef.current = 0;
+        skipHistoryRef.current = false;
+    }, [
+        initialObjects
+    ]);
+    // восстановить состояние из снапшота
+    const restoreSnapshot = (0, _react.useCallback)((snapshot)=>{
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        // 1) убираем все объекты (фон остаётся)
+        canvas.getObjects().forEach((o)=>canvas.remove(o));
+        // 2) обновляем счётчик ID до максимума из снапшота
+        idCounter.current = snapshot.reduce((mx, o)=>Math.max(mx, o.objectId || 0), 0);
+        // 3) «оживляем» объекты
+        (0, _fabric.fabric).util.enlivenObjects(snapshot, (enlived)=>{
+            enlived.forEach((o)=>{
+                // каждый o уже содержит все JSON-поля, включая objectId
+                const isT = mode === "transform";
+                let inst = null;
+                if (o.type === "rect") inst = new (0, _fabric.fabric).Rect({
+                    left: o.left,
+                    top: o.top,
+                    originX: "left",
+                    originY: "top",
+                    width: o.width,
+                    height: o.height,
+                    fill: "transparent",
+                    stroke: o.stroke,
+                    strokeWidth: 2,
+                    selectable: isT,
+                    strokeUniform: true,
+                    objectId: o.objectId
+                });
+                else if (o.type === "circle") inst = new (0, _fabric.fabric).Circle({
+                    left: o.left,
+                    top: o.top,
+                    originX: "center",
+                    originY: "center",
+                    radius: pointRadius,
+                    fill: "transparent",
+                    stroke: o.stroke,
+                    strokeWidth: 3,
+                    selectable: isT,
+                    hasControls: isT,
+                    lockScalingX: !isT,
+                    lockScalingY: !isT,
+                    lockRotation: !isT,
+                    objectId: o.objectId
+                });
+                if (inst) canvas.add(inst);
+            });
+            canvas.discardActiveObject();
+            canvas.requestRenderAll();
+            rawSendBack();
+        });
+    }, [
+        rawSendBack,
+        mode,
+        pointRadius,
+        idCounter
+    ]);
+    // undo / redo / reset
+    const undo = (0, _react.useCallback)(()=>{
+        if (historyIndexRef.current <= 0) return;
+        historyIndexRef.current--;
+        skipHistoryRef.current = true;
+        restoreSnapshot(historyRef.current[historyIndexRef.current]);
+    }, [
+        restoreSnapshot
+    ]);
+    const redo = (0, _react.useCallback)(()=>{
+        if (historyIndexRef.current >= historyRef.current.length - 1) return;
+        historyIndexRef.current++;
+        skipHistoryRef.current = true;
+        restoreSnapshot(historyRef.current[historyIndexRef.current]);
+    }, [
+        restoreSnapshot
+    ]);
+    const reset = (0, _react.useCallback)(()=>{
+        if (!historyRef.current.length) return;
+        historyIndexRef.current = 0;
+        skipHistoryRef.current = true;
+        restoreSnapshot(historyRef.current[0]);
+    }, [
+        restoreSnapshot
+    ]);
+    return {
+        rawSendBack,
+        sendBack,
+        undo,
+        redo,
+        reset
     };
-    const btn = {
-        cursor: "pointer",
-        width: 24,
-        height: 24,
-        background: "transparent",
-        border: "none"
-    };
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        style: style,
-        children: [
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                style: btn,
-                onClick: zoomOut,
-                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
-                    src: (0, _zoomOutSvgDefault.default),
-                    alt: "Zoom Out"
-                }, void 0, false, {
-                    fileName: "src/Toolbar.js",
-                    lineNumber: 34,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "src/Toolbar.js",
-                lineNumber: 33,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                style: btn,
-                onClick: zoomIn,
-                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
-                    src: (0, _zoomInSvgDefault.default),
-                    alt: "Zoom In"
-                }, void 0, false, {
-                    fileName: "src/Toolbar.js",
-                    lineNumber: 37,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "src/Toolbar.js",
-                lineNumber: 36,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                style: btn,
-                onClick: undo,
-                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
-                    src: (0, _undoSvgDefault.default),
-                    alt: "Undo"
-                }, void 0, false, {
-                    fileName: "src/Toolbar.js",
-                    lineNumber: 40,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "src/Toolbar.js",
-                lineNumber: 39,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                style: btn,
-                onClick: redo,
-                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
-                    src: (0, _redoSvgDefault.default),
-                    alt: "Redo"
-                }, void 0, false, {
-                    fileName: "src/Toolbar.js",
-                    lineNumber: 43,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "src/Toolbar.js",
-                lineNumber: 42,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                style: btn,
-                onClick: deleteSelected,
-                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
-                    src: (0, _deleteSvgDefault.default),
-                    alt: "Delete"
-                }, void 0, false, {
-                    fileName: "src/Toolbar.js",
-                    lineNumber: 46,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "src/Toolbar.js",
-                lineNumber: 45,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                style: btn,
-                onClick: reset,
-                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
-                    src: (0, _resetSvgDefault.default),
-                    alt: "Reset"
-                }, void 0, false, {
-                    fileName: "src/Toolbar.js",
-                    lineNumber: 49,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "src/Toolbar.js",
-                lineNumber: 48,
-                columnNumber: 7
-            }, this)
-        ]
-    }, void 0, true, {
-        fileName: "src/Toolbar.js",
-        lineNumber: 32,
-        columnNumber: 5
-    }, this);
 }
-_c = Toolbar;
-var _c;
-$RefreshReg$(_c, "Toolbar");
+_s(useObjectHistory, "NJVk+qtNIytb7FtzrpU0/mfl6SI=");
 
-  $parcel$ReactRefreshHelpers$ac60.postlude(module);
+  $parcel$ReactRefreshHelpers$b7b4.postlude(module);
 } finally {
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","url:./img/delete.svg":"eToa8","url:./img/reset.svg":"l9z8i","url:./img/undo.svg":"1rW43","url:./img/redo.svg":"7jd64","url:./img/zoom_in.svg":"2CQHM","url:./img/zoom_out.svg":"25RcJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"eToa8":[function(require,module,exports,__globalThis) {
-module.exports = module.bundle.resolve("delete.877e1b97.svg") + "?" + Date.now();
-
-},{}],"l9z8i":[function(require,module,exports,__globalThis) {
-module.exports = module.bundle.resolve("reset.77be6178.svg") + "?" + Date.now();
-
-},{}],"1rW43":[function(require,module,exports,__globalThis) {
-module.exports = module.bundle.resolve("undo.c3ab1cf6.svg") + "?" + Date.now();
-
-},{}],"7jd64":[function(require,module,exports,__globalThis) {
-module.exports = module.bundle.resolve("redo.7be6742b.svg") + "?" + Date.now();
-
-},{}],"2CQHM":[function(require,module,exports,__globalThis) {
-module.exports = module.bundle.resolve("zoom_in.fad9dae4.svg") + "?" + Date.now();
-
-},{}],"25RcJ":[function(require,module,exports,__globalThis) {
-module.exports = module.bundle.resolve("zoom_out.dc48a1f2.svg") + "?" + Date.now();
-
-},{}]},["igbXF","a0t4e"], "a0t4e", "parcelRequire5d99", {}, "./", "/", "http://localhost:3001")
+},{"react":"jMk1U","fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}]},["igbXF","a0t4e"], "a0t4e", "parcelRequire5d99", {}, "./", "/", "http://localhost:3001")
 
 //# sourceMappingURL=frontend.31b563d9.js.map

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react"
 import { withStreamlitConnection, Streamlit } from "streamlit-component-lib"
-import ModeSelector from "./ModeSelector"
-import FabricCanvas from "./FabricCanvas"
+import ModeSelector from "./components/ModeSelector"
+import FabricCanvas from "./components/FabricCanvas"
 
 const STREAMLIT_FRAME_PADDING = 100
 

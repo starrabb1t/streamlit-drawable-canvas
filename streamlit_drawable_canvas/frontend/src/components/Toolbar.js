@@ -1,10 +1,10 @@
 import React from "react"
-import deleteIcon  from "url:./img/delete.svg"
-import resetIcon   from "url:./img/reset.svg"
-import undoIcon    from "url:./img/undo.svg"
-import redoIcon    from "url:./img/redo.svg"
-import zoomInIcon  from "url:./img/zoom_in.svg"
-import zoomOutIcon from "url:./img/zoom_out.svg"
+import deleteIcon  from "url:../img/delete.svg"
+import resetIcon   from "url:../img/reset.svg"
+import undoIcon    from "url:../img/undo.svg"
+import redoIcon    from "url:../img/redo.svg"
+import zoomInIcon  from "url:../img/zoom_in.svg"
+import zoomOutIcon from "url:../img/zoom_out.svg"
 
 export default function Toolbar({
   zoomIn,

@@ -25,6 +25,7 @@ def _image_to_data_url(img: Image.Image) -> str:
 
 
 def st_canvas(
+    annotation_schema : list[dict], 
     background_image: Image.Image = None,
     color: str = "red",
     height: int = 360, #TODO
@@ -53,6 +54,7 @@ def st_canvas(
         initialObjects=initial_objects,   
         pointRadius = pointRadius,
         key=key,
+        annotationSchema = annotation_schema
     )
 
     # если ещё не нажали ничего

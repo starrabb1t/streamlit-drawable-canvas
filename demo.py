@@ -16,7 +16,28 @@ initial = [
   {"type":"circle", "left":200,"top":100,"width":10,  "height":10, "stroke":"blue"},
 ]
 
+annotation_schema = [   
+    {
+        "bbox" : "person",
+        "color" : "#66FFCC",
+        "keypoints": {
+            "nose": {
+                "color": "#FF6666"
+            },
+            "left_eye": {
+                "color": "#FF9966"
+            },
+            "right_eye": {
+                "color": "#FFCC66"
+            }
+        }
+    }
+]
+
+initial = []
+
 res = st_canvas(
+    annotation_schema,
     background_image=bg,
     color="cyan",
     key=index,

@@ -24952,13 +24952,45 @@ var _reactDefault = parcelHelpers.interopDefault(_react);
 var _streamlitComponentLib = require("streamlit-component-lib");
 var _modeSelector = require("./components/ModeSelector");
 var _modeSelectorDefault = parcelHelpers.interopDefault(_modeSelector);
+var _classSelector = require("./components/ClassSelector");
+var _classSelectorDefault = parcelHelpers.interopDefault(_classSelector);
 var _fabricCanvas = require("./components/FabricCanvas");
 var _fabricCanvasDefault = parcelHelpers.interopDefault(_fabricCanvas);
 var _s = $RefreshSig$();
-const STREAMLIT_FRAME_PADDING = 100;
+const STREAMLIT_FRAME_PADDING = 150;
 function App({ args }) {
     _s();
     const { backgroundImageURL, color, canvasWidth, canvasHeight, initialObjects = [], pointRadius } = args;
+    // Временный dummy-схема, потом придёт из Python
+    const annotationSchema = [
+        {
+            bbox: "person",
+            color: "#66FFCC",
+            keypoints: {
+                nose: {
+                    color: "#FF6666"
+                },
+                left_eye: {
+                    color: "#FF9966"
+                },
+                right_eye: {
+                    color: "#FFCC66"
+                }
+            }
+        },
+        {
+            bbox: "dog",
+            color: "#FFAA00",
+            keypoints: {
+                head: {
+                    color: "#0000FF"
+                },
+                tail: {
+                    color: "#00CCFF"
+                }
+            }
+        }
+    ];
     // Локальный state для режима
     const [mode, setMode] = (0, _react.useState)("transform");
     // колбэк отправки списка объектов в Python
@@ -24978,7 +25010,14 @@ function App({ args }) {
                 onChange: setMode
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 34,
+                lineNumber: 56,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _classSelectorDefault.default), {
+                schema: annotationSchema
+            }, void 0, false, {
+                fileName: "src/App.js",
+                lineNumber: 59,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _fabricCanvasDefault.default), {
@@ -24992,13 +25031,13 @@ function App({ args }) {
                 onChange: handleChange
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 37,
+                lineNumber: 62,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 32,
+        lineNumber: 54,
         columnNumber: 5
     }, this);
 }
@@ -25014,7 +25053,7 @@ $RefreshReg$(_c1, "%default%");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","streamlit-component-lib":"iNVE7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./components/ModeSelector":"7tqrS","./components/FabricCanvas":"9a1Yb"}],"iNVE7":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","streamlit-component-lib":"iNVE7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./components/FabricCanvas":"9a1Yb","./components/ModeSelector":"7tqrS","./components/ClassSelector":"5zPlX"}],"iNVE7":[function(require,module,exports,__globalThis) {
 /**
  * @license
  * Copyright 2018-2021 Streamlit Inc.
@@ -49152,86 +49191,7 @@ function $da9882e673ac146b$var$ErrorOverlay() {
     return null;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"7tqrS":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$e894 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-$parcel$ReactRefreshHelpers$e894.init();
-var prevRefreshReg = globalThis.$RefreshReg$;
-var prevRefreshSig = globalThis.$RefreshSig$;
-$parcel$ReactRefreshHelpers$e894.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "default", ()=>ModeSelector);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _react = require("react");
-var _reactDefault = parcelHelpers.interopDefault(_react);
-const MODES = [
-    {
-        value: "transform",
-        label: "Transform"
-    },
-    {
-        value: "rect",
-        label: "Rectangle"
-    },
-    {
-        value: "point",
-        label: "Point"
-    }
-];
-function ModeSelector({ value, onChange }) {
-    const container = {
-        display: "flex",
-        gap: "4px",
-        marginBottom: "10px",
-        padding: "10px"
-    };
-    const pillBase = {
-        borderWidth: "1px",
-        borderStyle: "solid",
-        borderColor: "#ccc",
-        borderRadius: "50vh",
-        background: "#fff",
-        cursor: "pointer",
-        userSelect: "none",
-        padding: "5px 10px",
-        fontFamily: "Arial",
-        fontSize: "14px"
-    };
-    const pillActive = {
-        ...pillBase,
-        background: "#007bff",
-        color: "#fff",
-        borderColor: "#007bff"
-    };
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        style: container,
-        children: MODES.map((m)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                style: value === m.value ? pillActive : pillBase,
-                onClick: ()=>onChange(m.value),
-                children: m.label
-            }, m.value, false, {
-                fileName: "src/components/ModeSelector.js",
-                lineNumber: 38,
-                columnNumber: 9
-            }, this))
-    }, void 0, false, {
-        fileName: "src/components/ModeSelector.js",
-        lineNumber: 36,
-        columnNumber: 5
-    }, this);
-}
-_c = ModeSelector;
-var _c;
-$RefreshReg$(_c, "ModeSelector");
-
-  $parcel$ReactRefreshHelpers$e894.postlude(module);
-} finally {
-  globalThis.$RefreshReg$ = prevRefreshReg;
-  globalThis.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"9a1Yb":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"9a1Yb":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$955c = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 $parcel$ReactRefreshHelpers$955c.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
@@ -72979,6 +72939,150 @@ _s(useObjectHistory, "NJVk+qtNIytb7FtzrpU0/mfl6SI=");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react":"jMk1U","fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}]},["igbXF","a0t4e"], "a0t4e", "parcelRequire5d99", {}, "./", "/", "http://localhost:3001")
+},{"react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","fabric":"fVwBJ"}],"7tqrS":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$e894 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$e894.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$e894.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>ModeSelector);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react);
+const MODES = [
+    {
+        value: "transform",
+        label: "Transform"
+    },
+    {
+        value: "rect",
+        label: "Rectangle"
+    },
+    {
+        value: "point",
+        label: "Point"
+    }
+];
+function ModeSelector({ value, onChange }) {
+    const container = {
+        display: "flex",
+        gap: "4px",
+        marginBottom: "10px",
+        padding: "10px"
+    };
+    const pillBase = {
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: "#ccc",
+        borderRadius: "50vh",
+        background: "#fff",
+        cursor: "pointer",
+        userSelect: "none",
+        padding: "5px 10px",
+        fontFamily: "Arial",
+        fontSize: "14px"
+    };
+    const pillActive = {
+        ...pillBase,
+        background: "#007bff",
+        color: "#fff",
+        borderColor: "#007bff"
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        style: container,
+        children: MODES.map((m)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                style: value === m.value ? pillActive : pillBase,
+                onClick: ()=>onChange(m.value),
+                children: m.label
+            }, m.value, false, {
+                fileName: "src/components/ModeSelector.js",
+                lineNumber: 38,
+                columnNumber: 9
+            }, this))
+    }, void 0, false, {
+        fileName: "src/components/ModeSelector.js",
+        lineNumber: 36,
+        columnNumber: 5
+    }, this);
+}
+_c = ModeSelector;
+var _c;
+$RefreshReg$(_c, "ModeSelector");
+
+  $parcel$ReactRefreshHelpers$e894.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"5zPlX":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$56a9 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$56a9.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$56a9.prelude(module);
+
+try {
+// src/components/ClassSelector.js
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>ClassSelector);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react);
+const container = {
+    display: "flex",
+    gap: "4px",
+    marginBottom: "10px",
+    padding: "0 10px 10px 10px"
+};
+const pillBase = {
+    borderWidth: "1px",
+    borderStyle: "solid",
+    borderRadius: "50vh",
+    background: "#fff",
+    cursor: "pointer",
+    userSelect: "none",
+    padding: "5px 10px",
+    fontFamily: "Arial",
+    fontSize: "14px"
+};
+function ClassSelector({ schema }) {
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        style: container,
+        children: schema.map((item)=>{
+            const color = item.color || "#ccc";
+            return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                style: {
+                    ...pillBase,
+                    borderColor: color,
+                    color: color
+                },
+                children: item.bbox
+            }, item.bbox, false, {
+                fileName: "src/components/ClassSelector.js",
+                lineNumber: 28,
+                columnNumber: 11
+            }, this);
+        })
+    }, void 0, false, {
+        fileName: "src/components/ClassSelector.js",
+        lineNumber: 24,
+        columnNumber: 5
+    }, this);
+}
+_c = ClassSelector;
+var _c;
+$RefreshReg$(_c, "ClassSelector");
+
+  $parcel$ReactRefreshHelpers$56a9.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}]},["igbXF","a0t4e"], "a0t4e", "parcelRequire5d99", {}, "./", "/", "http://localhost:3001")
 
 //# sourceMappingURL=frontend.31b563d9.js.map

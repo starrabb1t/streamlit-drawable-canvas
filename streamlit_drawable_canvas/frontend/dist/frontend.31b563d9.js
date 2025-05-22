@@ -72342,6 +72342,7 @@ var prevRefreshSig = globalThis.$RefreshSig$;
 $parcel$ReactRefreshHelpers$0c4d.prelude(module);
 
 try {
+// src/hooks/useCanvasInit.js
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>useCanvasInit);
@@ -72351,26 +72352,14 @@ var _s = $RefreshSig$();
 function useCanvasInit(mountRef, { width, height, backgroundImageURL }) {
     _s();
     const canvasRef = (0, _react.useRef)(null);
+    // -- 1) Создание канвы и пэннинг: только один раз на маунте
     (0, _react.useEffect)(()=>{
         const canvas = new (0, _fabric.fabric).Canvas(mountRef.current, {
             selection: false,
             preserveObjectStacking: true
         });
         canvasRef.current = canvas;
-        // фон
-        if (backgroundImageURL) (0, _fabric.fabric).Image.fromURL(backgroundImageURL, (img)=>{
-            img.set({
-                originX: "left",
-                originY: "top",
-                selectable: false
-            });
-            img.scaleToWidth(width);
-            img.scaleToHeight(height);
-            canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
-        }, {
-            crossOrigin: "anonymous"
-        });
-        // паннинг (средняя кнопка)
+        // Паннинг на среднюю кнопку
         const el = canvas.upperCanvasEl;
         let isPanning = false, lastX = 0, lastY = 0;
         const onDown = (e)=>{
@@ -72390,7 +72379,7 @@ function useCanvasInit(mountRef, { width, height, backgroundImageURL }) {
             });
             lastX = e.clientX;
             lastY = e.clientY;
-            // clamp
+            // Ограничитель панинга, чтобы фон не ушёл в пустоту
             const vpt = canvas.viewportTransform;
             const zoom = vpt[0];
             const sw = width * zoom, sh = height * zoom;
@@ -72414,6 +72403,37 @@ function useCanvasInit(mountRef, { width, height, backgroundImageURL }) {
             el.removeEventListener("contextmenu", onContext);
             canvas.dispose();
         };
+    }, []);
+    // -- 2) Реакция на изменение размеров или URL фона
+    (0, _react.useEffect)(()=>{
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        // 2.1) Обновляем размеры холста
+        canvas.setWidth(width);
+        canvas.setHeight(height);
+        // 2.2) Обновляем фон
+        if (backgroundImageURL) {
+            const bg = canvas.backgroundImage;
+            // Если URL не изменился, просто рескейлим
+            if (bg && bg._element?.src === backgroundImageURL) {
+                bg.scaleToWidth(width);
+                bg.scaleToHeight(height);
+                canvas.requestRenderAll();
+            } else // Загружаем новый фон
+            (0, _fabric.fabric).Image.fromURL(backgroundImageURL, (img)=>{
+                img.set({
+                    originX: "left",
+                    originY: "top",
+                    selectable: false
+                });
+                img.scaleToWidth(width);
+                img.scaleToHeight(height);
+                canvas.setBackgroundImage(img, canvas.requestRenderAll.bind(canvas));
+            }, {
+                crossOrigin: "anonymous"
+            });
+        } else // Сбрасываем фон
+        canvas.setBackgroundImage(null, canvas.requestRenderAll.bind(canvas));
     }, [
         width,
         height,
@@ -72421,7 +72441,7 @@ function useCanvasInit(mountRef, { width, height, backgroundImageURL }) {
     ]);
     return canvasRef;
 }
-_s(useCanvasInit, "UJgi7ynoup7eqypjnwyX/s32POg=");
+_s(useCanvasInit, "1O11hef6JMAr7xpSnL0aZ5Ib60Q=");
 
   $parcel$ReactRefreshHelpers$0c4d.postlude(module);
 } finally {

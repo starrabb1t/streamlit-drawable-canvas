@@ -1,9 +1,11 @@
+// src/hooks/useCanvasInit.js
 import { useEffect, useRef } from "react"
 import { fabric } from "fabric"
 
 export default function useCanvasInit(mountRef, { width, height, backgroundImageURL }) {
   const canvasRef = useRef(null)
 
+  // -- 1) Создание канвы и пэннинг: только один раз на маунте
   useEffect(() => {
     const canvas = new fabric.Canvas(mountRef.current, {
       selection: false,
@@ -11,21 +13,7 @@ export default function useCanvasInit(mountRef, { width, height, backgroundImage
     })
     canvasRef.current = canvas
 
-    // фон
-    if (backgroundImageURL) {
-      fabric.Image.fromURL(
-        backgroundImageURL,
-        img => {
-          img.set({ originX: "left", originY: "top", selectable: false })
-          img.scaleToWidth(width)
-          img.scaleToHeight(height)
-          canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas))
-        },
-        { crossOrigin: "anonymous" }
-      )
-    }
-
-    // паннинг (средняя кнопка)
+    // Паннинг на среднюю кнопку
     const el = canvas.upperCanvasEl
     let isPanning = false, lastX = 0, lastY = 0
 
@@ -42,7 +30,7 @@ export default function useCanvasInit(mountRef, { width, height, backgroundImage
       canvas.relativePan({ x: dx, y: dy })
       lastX = e.clientX; lastY = e.clientY
 
-      // clamp
+      // Ограничитель панинга, чтобы фон не ушёл в пустоту
       const vpt = canvas.viewportTransform
       const zoom = vpt[0]
       const sw = width * zoom, sh = height * zoom
@@ -51,8 +39,9 @@ export default function useCanvasInit(mountRef, { width, height, backgroundImage
       vpt[5] = Math.max(minY, Math.min(vpt[5], 0))
       canvas.setViewportTransform(vpt)
     }
-    const onUp = e => { if (e.button === 1) isPanning = false }
-
+    const onUp = e => {
+      if (e.button === 1) isPanning = false
+    }
     const onContext = e => e.preventDefault()
 
     el.addEventListener("mousedown", onDown)
@@ -66,6 +55,48 @@ export default function useCanvasInit(mountRef, { width, height, backgroundImage
       el.removeEventListener("mouseup",   onUp)
       el.removeEventListener("contextmenu", onContext)
       canvas.dispose()
+    }
+  }, [])
+
+  // -- 2) Реакция на изменение размеров или URL фона
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    // 2.1) Обновляем размеры холста
+    canvas.setWidth(width)
+    canvas.setHeight(height)
+
+    // 2.2) Обновляем фон
+    if (backgroundImageURL) {
+      const bg = canvas.backgroundImage
+
+      // Если URL не изменился, просто рескейлим
+      if (bg && bg._element?.src === backgroundImageURL) {
+        bg.scaleToWidth(width)
+        bg.scaleToHeight(height)
+        canvas.requestRenderAll()
+      }
+      else {
+        // Загружаем новый фон
+        fabric.Image.fromURL(
+          backgroundImageURL,
+          img => {
+            img.set({ originX: "left", originY: "top", selectable: false })
+            img.scaleToWidth(width)
+            img.scaleToHeight(height)
+            canvas.setBackgroundImage(
+              img,
+              canvas.requestRenderAll.bind(canvas)
+            )
+          },
+          { crossOrigin: "anonymous" }
+        )
+      }
+    }
+    else {
+      // Сбрасываем фон
+      canvas.setBackgroundImage(null, canvas.requestRenderAll.bind(canvas))
     }
   }, [width, height, backgroundImageURL])
 

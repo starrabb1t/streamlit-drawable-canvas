@@ -1,47 +1,54 @@
+// src/App.js
 import React, { useState, useCallback } from "react"
 import { withStreamlitConnection, Streamlit } from "streamlit-component-lib"
-import ModeSelector from "./components/ModeSelector"
 import ClassSelector from "./components/ClassSelector"
-import FabricCanvas from "./components/FabricCanvas"
+import ModeSelector  from "./components/ModeSelector"
+import FabricCanvas  from "./components/FabricCanvas"
+import ObjectIdInput from "./components/ObjectIdInput"
 
 const STREAMLIT_FRAME_PADDING = 150
 
 function App({ args }) {
   const {
     backgroundImageURL,
-    color,
     canvasWidth,
     canvasHeight,
     initialObjects = [],
     pointRadius,
-    // drawingMode,   // больше не берём из Streamlit
   } = args
 
-  // Временный dummy-схема, потом придёт из Python
+  // временная схема (потом придёт из Python)
   const annotationSchema = [
     {
       bbox: "person",
       color: "#66FFCC",
-      keypoints: {
-        nose:       { color: "#FF6666" },
-        left_eye:   { color: "#FF9966" },
-        right_eye:  { color: "#FFCC66" },
-      },
+      keypoints: { nose: { color: "#FF6666" }, left_eye: { color: "#FF9966" } },
     },
     {
       bbox: "dog",
       color: "#FFAA00",
-      keypoints: {
-        head:      { color: "#0000FF" },
-        tail:      { color: "#00CCFF" },
-      },
+      keypoints: { head: { color: "#0000FF" }, tail: { color: "#00CCFF" } },
     },
   ]
 
-  // Локальный state для режима
+  // 1) выбираем класс (по умолчанию первый)
+  const [selectedClass, setSelectedClass] = useState(annotationSchema[0].bbox)
+  const [classColor,   setClassColor]   = useState(annotationSchema[0].color)
+  const handleClassSelect = cls => {
+    setSelectedClass(cls)
+    const item = annotationSchema.find(x => x.bbox === cls)
+    setClassColor(item.color)
+  }
+
+  // 2) режим Transform/Rect/Point
   const [mode, setMode] = useState("transform")
 
-  // колбэк отправки списка объектов в Python
+  // 3) object_id (натуральные числа начиная с 1)
+  const [objectId, setObjectId] = useState(1)
+  const incObjectId = () => setObjectId(i => i + 1)
+  const decObjectId = () => setObjectId(i => Math.max(1, i - 1))
+
+  // колбэк отправки в Python
   const handleChange = useCallback(
     objs => {
       Streamlit.setComponentValue(objs)
@@ -52,19 +59,31 @@ function App({ args }) {
 
   return (
     <div style={{ display: "inline-block" }}>
-      {/* Наши «пиллы» */}
-      <ModeSelector value={mode} onChange={setMode} />
+      {/* — первый ряд: Классы + режимы */}
+      <ClassSelector
+        schema={annotationSchema}
+        selectedClass={selectedClass}
+        onSelect={handleClassSelect}
+      />
+      <ModeSelector value={mode} onChange={setMode}/>
 
-      {/* строка #2: список классов из нашей схемы */}
-      <ClassSelector schema={annotationSchema} />
+      {/* — второй ряд: object_id input */}
+      <ObjectIdInput
+        value={objectId}
+        onChange={setObjectId}
+        onIncrement={incObjectId}
+        onDecrement={decObjectId}
+      />
 
-      {/* Канвас, которому передаём режим из React state */}
+      {/* — сам Canvas, прокидываем classColor и objectId */}
       <FabricCanvas
         width={canvasWidth}
         height={canvasHeight}
         backgroundImageURL={backgroundImageURL}
         mode={mode}
-        color={color}
+        color={classColor}           // будем использовать этот цвет для рисования
+        selectedClass={selectedClass}
+        objectId={objectId}
         initialObjects={initialObjects}
         pointRadius={pointRadius}
         onChange={handleChange}

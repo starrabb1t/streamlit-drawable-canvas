@@ -4,8 +4,8 @@ import React from "react"
 const container = {
   display:      "flex",
   gap:          "4px",
-  marginBottom: "10px",
-  padding:      "0 10px 10px 10px",
+  paddingLeft: "10px",
+  paddingBottom: "10px"
 }
 const pillBase = {
   borderWidth:  "1px",
@@ -19,18 +19,20 @@ const pillBase = {
   fontSize:     "14px",
 }
 
-export default function ClassSelector({ schema }) {
+export default function ClassSelector({ schema, selectedClass, onSelect }) {
   return (
     <div style={container}>
       {schema.map(item => {
-        const color = item.color || "#ccc"
+        const active = item.bbox === selectedClass
         return (
           <div
             key={item.bbox}
+            onClick={() => onSelect(item.bbox)}
             style={{
               ...pillBase,
-              borderColor: color,
-              color:       color,
+              borderColor: item.color,
+              color:       active ? "#fff" : item.color,
+              background:  active ? item.color : "#fff",
             }}
           >
             {item.bbox}

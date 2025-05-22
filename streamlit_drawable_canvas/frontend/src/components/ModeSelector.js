@@ -10,8 +10,8 @@ export default function ModeSelector({ value, onChange }) {
   const container = {
     display:      "flex",
     gap:          "4px",
-    marginBottom: "10px",
-    padding:      "10px",
+    paddingLeft: "10px",
+    paddingBottom: "10px"
   }
   const pillBase = {
     borderWidth:  "1px",

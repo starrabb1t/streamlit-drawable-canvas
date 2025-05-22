@@ -13,6 +13,7 @@ export default function FabricCanvas({
   backgroundImageURL,
   mode,
   color,
+  selectedClass, objectId,
   initialObjects = [],
   pointRadius,
   onChange,
@@ -34,7 +35,7 @@ export default function FabricCanvas({
   useLoadInitial(canvasRef, initialObjects, idCounter, pointRadius, sendBack)
 
   // Логика рисования в разных режимах
-  useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBack })
+  useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBack, objectId })
 
   // Зум + пэннинг
   const { zoomIn, zoomOut } = useZoom(canvasRef, { width, height })

@@ -24944,24 +24944,27 @@ var prevRefreshSig = globalThis.$RefreshSig$;
 $parcel$ReactRefreshHelpers$4089.prelude(module);
 
 try {
+// src/App.js
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
 var _streamlitComponentLib = require("streamlit-component-lib");
-var _modeSelector = require("./components/ModeSelector");
-var _modeSelectorDefault = parcelHelpers.interopDefault(_modeSelector);
 var _classSelector = require("./components/ClassSelector");
 var _classSelectorDefault = parcelHelpers.interopDefault(_classSelector);
+var _modeSelector = require("./components/ModeSelector");
+var _modeSelectorDefault = parcelHelpers.interopDefault(_modeSelector);
 var _fabricCanvas = require("./components/FabricCanvas");
 var _fabricCanvasDefault = parcelHelpers.interopDefault(_fabricCanvas);
+var _objectIdInput = require("./components/ObjectIdInput");
+var _objectIdInputDefault = parcelHelpers.interopDefault(_objectIdInput);
 var _s = $RefreshSig$();
 const STREAMLIT_FRAME_PADDING = 150;
 function App({ args }) {
     _s();
-    const { backgroundImageURL, color, canvasWidth, canvasHeight, initialObjects = [], pointRadius } = args;
-    // Временный dummy-схема, потом придёт из Python
+    const { backgroundImageURL, canvasWidth, canvasHeight, initialObjects = [], pointRadius } = args;
+    // временная схема (потом придёт из Python)
     const annotationSchema = [
         {
             bbox: "person",
@@ -24972,9 +24975,6 @@ function App({ args }) {
                 },
                 left_eye: {
                     color: "#FF9966"
-                },
-                right_eye: {
-                    color: "#FFCC66"
                 }
             }
         },
@@ -24991,9 +24991,21 @@ function App({ args }) {
             }
         }
     ];
-    // Локальный state для режима
+    // 1) выбираем класс (по умолчанию первый)
+    const [selectedClass, setSelectedClass] = (0, _react.useState)(annotationSchema[0].bbox);
+    const [classColor, setClassColor] = (0, _react.useState)(annotationSchema[0].color);
+    const handleClassSelect = (cls)=>{
+        setSelectedClass(cls);
+        const item = annotationSchema.find((x)=>x.bbox === cls);
+        setClassColor(item.color);
+    };
+    // 2) режим Transform/Rect/Point
     const [mode, setMode] = (0, _react.useState)("transform");
-    // колбэк отправки списка объектов в Python
+    // 3) object_id (натуральные числа начиная с 1)
+    const [objectId, setObjectId] = (0, _react.useState)(1);
+    const incObjectId = ()=>setObjectId((i)=>i + 1);
+    const decObjectId = ()=>setObjectId((i)=>Math.max(1, i - 1));
+    // колбэк отправки в Python
     const handleChange = (0, _react.useCallback)((objs)=>{
         (0, _streamlitComponentLib.Streamlit).setComponentValue(objs);
         (0, _streamlitComponentLib.Streamlit).setFrameHeight(canvasHeight + STREAMLIT_FRAME_PADDING);
@@ -25005,19 +25017,31 @@ function App({ args }) {
             display: "inline-block"
         },
         children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _classSelectorDefault.default), {
+                schema: annotationSchema,
+                selectedClass: selectedClass,
+                onSelect: handleClassSelect
+            }, void 0, false, {
+                fileName: "src/App.js",
+                lineNumber: 63,
+                columnNumber: 7
+            }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _modeSelectorDefault.default), {
                 value: mode,
                 onChange: setMode
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 56,
+                lineNumber: 68,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _classSelectorDefault.default), {
-                schema: annotationSchema
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _objectIdInputDefault.default), {
+                value: objectId,
+                onChange: setObjectId,
+                onIncrement: incObjectId,
+                onDecrement: decObjectId
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 59,
+                lineNumber: 71,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _fabricCanvasDefault.default), {
@@ -25025,23 +25049,25 @@ function App({ args }) {
                 height: canvasHeight,
                 backgroundImageURL: backgroundImageURL,
                 mode: mode,
-                color: color,
+                color: classColor,
+                selectedClass: selectedClass,
+                objectId: objectId,
                 initialObjects: initialObjects,
                 pointRadius: pointRadius,
                 onChange: handleChange
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 62,
+                lineNumber: 79,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 54,
+        lineNumber: 61,
         columnNumber: 5
     }, this);
 }
-_s(App, "Mlz2uwRehqkkFCCK6gA23eUR3RY=");
+_s(App, "oiuT5GlsYqpowFOoEZGNmVndLlU=");
 _c = App;
 exports.default = _c1 = (0, _streamlitComponentLib.withStreamlitConnection)(App);
 var _c, _c1;
@@ -25053,7 +25079,7 @@ $RefreshReg$(_c1, "%default%");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","streamlit-component-lib":"iNVE7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./components/FabricCanvas":"9a1Yb","./components/ModeSelector":"7tqrS","./components/ClassSelector":"5zPlX"}],"iNVE7":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","streamlit-component-lib":"iNVE7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./components/FabricCanvas":"9a1Yb","./components/ModeSelector":"7tqrS","./components/ClassSelector":"5zPlX","./components/ObjectIdInput":"clITX"}],"iNVE7":[function(require,module,exports,__globalThis) {
 /**
  * @license
  * Copyright 2018-2021 Streamlit Inc.
@@ -49219,7 +49245,7 @@ var _useObjectHistoryDefault = parcelHelpers.interopDefault(_useObjectHistory);
 var _toolbar = require("./Toolbar");
 var _toolbarDefault = parcelHelpers.interopDefault(_toolbar);
 var _s = $RefreshSig$();
-function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialObjects = [], pointRadius, onChange }) {
+function FabricCanvas({ width, height, backgroundImageURL, mode, color, selectedClass, objectId, initialObjects = [], pointRadius, onChange }) {
     _s();
     // Ссылка на <canvas> и объект Fabric
     const mountRef = (0, _react.useRef)(null);
@@ -49246,7 +49272,8 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
         color,
         pointRadius,
         idCounter,
-        sendBack
+        sendBack,
+        objectId
     });
     // Зум + пэннинг
     const { zoomIn, zoomOut } = (0, _useZoomDefault.default)(canvasRef, {
@@ -49275,7 +49302,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                 }
             }, void 0, false, {
                 fileName: "src/components/FabricCanvas.js",
-                lineNumber: 54,
+                lineNumber: 55,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _toolbarDefault.default), {
@@ -49287,7 +49314,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
                 reset: reset
             }, void 0, false, {
                 fileName: "src/components/FabricCanvas.js",
-                lineNumber: 60,
+                lineNumber: 61,
                 columnNumber: 7
             }, this)
         ]
@@ -72971,8 +72998,8 @@ function ModeSelector({ value, onChange }) {
     const container = {
         display: "flex",
         gap: "4px",
-        marginBottom: "10px",
-        padding: "10px"
+        paddingLeft: "10px",
+        paddingBottom: "10px"
     };
     const pillBase = {
         borderWidth: "1px",
@@ -73036,8 +73063,8 @@ var _reactDefault = parcelHelpers.interopDefault(_react);
 const container = {
     display: "flex",
     gap: "4px",
-    marginBottom: "10px",
-    padding: "0 10px 10px 10px"
+    paddingLeft: "10px",
+    paddingBottom: "10px"
 };
 const pillBase = {
     borderWidth: "1px",
@@ -73050,16 +73077,18 @@ const pillBase = {
     fontFamily: "Arial",
     fontSize: "14px"
 };
-function ClassSelector({ schema }) {
+function ClassSelector({ schema, selectedClass, onSelect }) {
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         style: container,
         children: schema.map((item)=>{
-            const color = item.color || "#ccc";
+            const active = item.bbox === selectedClass;
             return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                onClick: ()=>onSelect(item.bbox),
                 style: {
                     ...pillBase,
-                    borderColor: color,
-                    color: color
+                    borderColor: item.color,
+                    color: active ? "#fff" : item.color,
+                    background: active ? item.color : "#fff"
                 },
                 children: item.bbox
             }, item.bbox, false, {
@@ -73079,6 +73108,99 @@ var _c;
 $RefreshReg$(_c, "ClassSelector");
 
   $parcel$ReactRefreshHelpers$56a9.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"clITX":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$7704 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$7704.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$7704.prelude(module);
+
+try {
+// src/components/ObjectIdInput.js
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>ObjectIdInput);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react);
+const containerStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "4px",
+    paddingLeft: "10px",
+    paddingBottom: "10px"
+};
+const btnStyle = {
+    width: 24,
+    height: 24,
+    borderRadius: "50%",
+    border: "none",
+    background: "#ccc",
+    color: "#fff",
+    cursor: "pointer",
+    userSelect: "none"
+};
+const inputStyle = {
+    width: 60,
+    textAlign: "center",
+    borderRadius: "50vh",
+    height: 20,
+    border: "1px solid #ccc",
+    color: "#333"
+};
+function ObjectIdInput({ value, min = 1, onChange, onIncrement, onDecrement }) {
+    const handleInput = (e)=>{
+        const v = Math.max(min, Number(e.target.value) || min);
+        onChange(v);
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        style: containerStyle,
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                style: btnStyle,
+                onClick: ()=>onDecrement(),
+                children: "\u2013"
+            }, void 0, false, {
+                fileName: "src/components/ObjectIdInput.js",
+                lineNumber: 46,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                type: "number",
+                min: min,
+                value: value,
+                onChange: handleInput,
+                style: inputStyle
+            }, void 0, false, {
+                fileName: "src/components/ObjectIdInput.js",
+                lineNumber: 49,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                style: btnStyle,
+                onClick: ()=>onIncrement(),
+                children: "+"
+            }, void 0, false, {
+                fileName: "src/components/ObjectIdInput.js",
+                lineNumber: 56,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/components/ObjectIdInput.js",
+        lineNumber: 45,
+        columnNumber: 5
+    }, this);
+}
+_c = ObjectIdInput;
+var _c;
+$RefreshReg$(_c, "ObjectIdInput");
+
+  $parcel$ReactRefreshHelpers$7704.postlude(module);
 } finally {
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;

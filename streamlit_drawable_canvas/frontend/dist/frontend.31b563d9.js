@@ -25050,7 +25050,7 @@ function App({ args }) {
                 backgroundImageURL: backgroundImageURL,
                 mode: mode,
                 color: classColor,
-                selectedClass: selectedClass,
+                classId: selectedClass,
                 objectId: objectId,
                 initialObjects: initialObjects,
                 pointRadius: pointRadius,
@@ -49245,7 +49245,7 @@ var _useObjectHistoryDefault = parcelHelpers.interopDefault(_useObjectHistory);
 var _toolbar = require("./Toolbar");
 var _toolbarDefault = parcelHelpers.interopDefault(_toolbar);
 var _s = $RefreshSig$();
-function FabricCanvas({ width, height, backgroundImageURL, mode, color, selectedClass, objectId, initialObjects = [], pointRadius, onChange }) {
+function FabricCanvas({ width, height, backgroundImageURL, mode, color, classId, objectId, initialObjects = [], pointRadius, onChange }) {
     _s();
     // Ссылка на <canvas> и объект Fabric
     const mountRef = (0, _react.useRef)(null);
@@ -49255,25 +49255,25 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, selected
         backgroundImageURL
     });
     // Счётчик для выдачи objectId новым фигурам
-    const idCounter = (0, _react.useRef)(0);
+    const figureIdCounter = (0, _react.useRef)(0);
     // Хук истории: sendBack, undo, redo, reset
     const { sendBack, undo, redo, reset } = (0, _useObjectHistoryDefault.default)(canvasRef, {
         initialObjects,
         onChange,
         mode,
-        pointRadius,
-        idCounter
+        figureIdCounter
     });
     // Загрузка initialObjects на канву
-    (0, _useLoadInitialDefault.default)(canvasRef, initialObjects, idCounter, pointRadius, sendBack);
+    (0, _useLoadInitialDefault.default)(canvasRef, initialObjects, figureIdCounter, sendBack);
     // Логика рисования в разных режимах
     (0, _useDrawingModeDefault.default)(canvasRef, {
         mode,
         color,
         pointRadius,
-        idCounter,
+        figureIdCounter,
         sendBack,
-        objectId
+        objectId,
+        classId
     });
     // Зум + пэннинг
     const { zoomIn, zoomOut } = (0, _useZoomDefault.default)(canvasRef, {
@@ -49302,7 +49302,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, selected
                 }
             }, void 0, false, {
                 fileName: "src/components/FabricCanvas.js",
-                lineNumber: 55,
+                lineNumber: 56,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _toolbarDefault.default), {
@@ -49314,13 +49314,13 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, selected
                 reset: reset
             }, void 0, false, {
                 fileName: "src/components/FabricCanvas.js",
-                lineNumber: 61,
+                lineNumber: 62,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true);
 }
-_s(FabricCanvas, "KTElVxBBTgg47q6kB459rPtHnMI=", false, function() {
+_s(FabricCanvas, "e8Y+WlGuukI3WPQcfhOiXT9tuK8=", false, function() {
     return [
         (0, _useCanvasInitDefault.default),
         (0, _useObjectHistoryDefault.default),
@@ -72497,7 +72497,7 @@ parcelHelpers.export(exports, "default", ()=>useLoadInitial);
 var _react = require("react");
 var _fabric = require("fabric");
 var _s = $RefreshSig$();
-function useLoadInitial(canvasRef, initialObjects, idCounterRef, pointRadius, sendBack) {
+function useLoadInitial(canvasRef, initialObjects, figureIdCounter, sendBack) {
     _s();
     (0, _react.useEffect)(()=>{
         const canvas = canvasRef.current;
@@ -72508,7 +72508,7 @@ function useLoadInitial(canvasRef, initialObjects, idCounterRef, pointRadius, se
         if (bg) // восстановим фон
         canvas.setBackgroundImage(bg, canvas.requestRenderAll.bind(canvas));
         // 2) сброс счетчика ID
-        idCounterRef.current = 0;
+        figureIdCounter.current = 0;
         // 3) сброс вьюпорта (убрать паны/зумы, если нужно)
         canvas.setViewportTransform([
             1,
@@ -72541,7 +72541,7 @@ function useLoadInitial(canvasRef, initialObjects, idCounterRef, pointRadius, se
                 top: o.top,
                 originX: "center",
                 originY: "center",
-                radius: pointRadius,
+                radius: o.radius,
                 fill: "transparent",
                 stroke: o.stroke,
                 strokeWidth: 3,
@@ -72562,9 +72562,7 @@ function useLoadInitial(canvasRef, initialObjects, idCounterRef, pointRadius, se
         sendBack();
     // эффект должен реагировать на смену initialObjects
     }, [
-        initialObjects,
-        pointRadius,
-        sendBack
+        initialObjects
     ]);
 }
 _s(useLoadInitial, "OD7bBpZva5O2jO+Puf00hKivP7c=");
@@ -72590,7 +72588,7 @@ var _react = require("react");
 var _fabric = require("fabric");
 var _s = $RefreshSig$();
 const MIN_SIDE = 10;
-function useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBack }) {
+function useDrawingMode(canvasRef, { mode, color, pointRadius, figureIdCounter, sendBack, objectId, classId }) {
     _s();
     (0, _react.useEffect)(()=>{
         const canvas = canvasRef.current;
@@ -72631,7 +72629,12 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBa
                     lockRotation: true,
                     hasRotatingPoint: false
                 });
-                rect.objectId = ++idCounter.current;
+                rect.figureId = ++figureIdCounter.current // старый идентификатор фигуры
+                ;
+                rect.objectId = objectId // идентификатор «object»
+                ;
+                rect.classId = classId // класс объекта
+                ;
                 canvas.add(rect);
             };
             handlers.mouseMove = (opt)=>{
@@ -72677,7 +72680,9 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBa
                     lockScalingX: true,
                     lockScalingY: true
                 });
-                c.objectId = ++idCounter.current;
+                c.figureId = ++figureIdCounter.current;
+                c.objectId = objectId;
+                c.classId = classId;
                 canvas.add(c);
                 canvas.requestRenderAll();
                 sendBack();
@@ -72731,7 +72736,9 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBa
         color,
         pointRadius,
         sendBack,
-        idCounter
+        figureIdCounter,
+        objectId,
+        classId
     ]);
 }
 _s(useDrawingMode, "OD7bBpZva5O2jO+Puf00hKivP7c=");
@@ -72808,7 +72815,7 @@ parcelHelpers.export(exports, "default", ()=>useObjectHistory);
 var _react = require("react");
 var _fabric = require("fabric");
 var _s = $RefreshSig$();
-function useObjectHistory(canvasRef, { initialObjects, onChange, mode, pointRadius, idCounter }) {
+function useObjectHistory(canvasRef, { initialObjects, onChange, mode, figureIdCounter }) {
     _s();
     // история снапшотов
     const historyRef = (0, _react.useRef)([]);
@@ -72820,7 +72827,9 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, pointRadi
         if (!canvas) return;
         const active = canvas.getActiveObjects();
         const objs = canvas.getObjects().map((o)=>({
-                id: o.objectId,
+                objectId: o.objectId,
+                figureId: o.figureId,
+                classId: o.classId,
                 type: o.type,
                 left: o.left,
                 top: o.top,
@@ -72842,7 +72851,9 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, pointRadi
             if (historyIndexRef.current < historyRef.current.length - 1) historyRef.current = historyRef.current.slice(0, historyIndexRef.current + 1);
             // пушим новый снимок
             const snapshot = canvas.getObjects().map((o)=>o.toObject([
-                    "objectId"
+                    "figureId",
+                    "objectId",
+                    "classId"
                 ]));
             historyRef.current.push(snapshot);
             historyIndexRef.current++;
@@ -72857,7 +72868,9 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, pointRadi
         const canvas = canvasRef.current;
         if (!canvas) return;
         const snapshot = canvas.getObjects().map((o)=>o.toObject([
-                "objectId"
+                "figureId",
+                "objectId",
+                "classId"
             ]));
         historyRef.current = [
             snapshot
@@ -72874,11 +72887,10 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, pointRadi
         // 1) убираем все объекты (фон остаётся)
         canvas.getObjects().forEach((o)=>canvas.remove(o));
         // 2) обновляем счётчик ID до максимума из снапшота
-        idCounter.current = snapshot.reduce((mx, o)=>Math.max(mx, o.objectId || 0), 0);
+        figureIdCounter.current = snapshot.reduce((mx, o)=>Math.max(mx, o.figureId || 0), 0);
         // 3) «оживляем» объекты
         (0, _fabric.fabric).util.enlivenObjects(snapshot, (enlived)=>{
             enlived.forEach((o)=>{
-                // каждый o уже содержит все JSON-поля, включая objectId
                 const isT = mode === "transform";
                 let inst = null;
                 if (o.type === "rect") inst = new (0, _fabric.fabric).Rect({
@@ -72893,7 +72905,9 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, pointRadi
                     strokeWidth: 2,
                     selectable: isT,
                     strokeUniform: true,
+                    figureId: o.figureId,
                     objectId: o.objectId,
+                    classId: o.classId,
                     lockRotation: true,
                     hasRotatingPoint: false
                 });
@@ -72902,13 +72916,15 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, pointRadi
                     top: o.top,
                     originX: "center",
                     originY: "center",
-                    radius: pointRadius,
+                    radius: o.radius,
                     fill: "transparent",
                     stroke: o.stroke,
                     strokeWidth: 3,
                     selectable: isT,
                     hasControls: isT,
+                    figureId: o.figureId,
                     objectId: o.objectId,
+                    classId: o.classId,
                     lockRotation: true,
                     hasRotatingPoint: false,
                     lockScalingX: true,
@@ -72923,8 +72939,7 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, pointRadi
     }, [
         rawSendBack,
         mode,
-        pointRadius,
-        idCounter
+        figureIdCounter
     ]);
     // undo / redo / reset
     const undo = (0, _react.useCallback)(()=>{

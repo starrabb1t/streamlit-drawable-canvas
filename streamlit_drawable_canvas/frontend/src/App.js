@@ -82,7 +82,7 @@ function App({ args }) {
         backgroundImageURL={backgroundImageURL}
         mode={mode}
         color={classColor}           // будем использовать этот цвет для рисования
-        selectedClass={selectedClass}
+        classId={selectedClass}
         objectId={objectId}
         initialObjects={initialObjects}
         pointRadius={pointRadius}

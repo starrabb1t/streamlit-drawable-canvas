@@ -3,7 +3,7 @@ import { fabric } from "fabric"
 
 export default function useObjectHistory(
   canvasRef,
-  { initialObjects, onChange, mode, pointRadius, idCounter }
+  { initialObjects, onChange, mode, figureIdCounter }
 ) {
   // история снапшотов
   const historyRef      = useRef([])
@@ -17,7 +17,9 @@ export default function useObjectHistory(
 
     const active = canvas.getActiveObjects()
     const objs = canvas.getObjects().map(o => ({
-      id:          o.objectId,
+      objectId:   o.objectId,
+      figureId:   o.figureId,
+      classId:    o.classId,
       type:        o.type,
       left:        o.left,
       top:         o.top,
@@ -45,7 +47,7 @@ export default function useObjectHistory(
       // пушим новый снимок
       const snapshot = canvas
         .getObjects()
-        .map(o => o.toObject(["objectId"]))
+        .map(o => o.toObject(["figureId", "objectId", "classId"]))
 
       historyRef.current.push(snapshot)
       historyIndexRef.current++
@@ -61,7 +63,7 @@ export default function useObjectHistory(
 
     const snapshot = canvas
       .getObjects()
-      .map(o => o.toObject(["objectId"]))
+      .map(o => o.toObject(["figureId", "objectId", "classId"]))
 
     historyRef.current      = [snapshot]
     historyIndexRef.current = 0
@@ -78,8 +80,8 @@ export default function useObjectHistory(
       canvas.getObjects().forEach(o => canvas.remove(o))
 
       // 2) обновляем счётчик ID до максимума из снапшота
-      idCounter.current = snapshot.reduce(
-        (mx, o) => Math.max(mx, o.objectId || 0),
+      figureIdCounter.current = snapshot.reduce(
+        (mx, o) => Math.max(mx, o.figureId || 0),
         0
       )
 
@@ -88,7 +90,6 @@ export default function useObjectHistory(
         snapshot,
         enlived => {
           enlived.forEach(o => {
-            // каждый o уже содержит все JSON-поля, включая objectId
             const isT = mode === "transform"
             let inst = null
 
@@ -105,7 +106,9 @@ export default function useObjectHistory(
                 strokeWidth:   2,
                 selectable:    isT,
                 strokeUniform: true,
+                figureId:      o.figureId,
                 objectId:      o.objectId,
+                classId:       o.classId,
                 lockRotation: true,
                 hasRotatingPoint: false
               })
@@ -116,13 +119,15 @@ export default function useObjectHistory(
                 top:           o.top,
                 originX:       "center",
                 originY:       "center",
-                radius:        pointRadius,
+                radius:        o.radius,
                 fill:          "transparent",
                 stroke:        o.stroke,
                 strokeWidth:   3,
                 selectable:    isT,
                 hasControls:   isT,
+                figureId:      o.figureId,
                 objectId:      o.objectId,
+                classId:       o.classId,
                 lockRotation: true,
                 hasRotatingPoint: false,
                 lockScalingX: true,
@@ -137,10 +142,9 @@ export default function useObjectHistory(
           canvas.requestRenderAll()
           rawSendBack()
         }
-        // note: мы передаём только snapshot (без objectId в `propertiesToInclude`)
       )
     },
-    [rawSendBack, mode, pointRadius, idCounter]
+    [rawSendBack, mode, figureIdCounter]
   )
 
   // undo / redo / reset

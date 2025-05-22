@@ -1,59 +1,12 @@
-[   
+[
     {
-        "bbox" : "person",
-        "color" : "#66FFCC",
-        "keypoints": {
-            "nose": {
-                "color": "#FF6666"
-            },
-            "left_eye": {
-                "color": "#FF9966"
-            },
-            "right_eye": {
-                "color": "#FFCC66"
-            },
-            "left_ear": {
-                "color": "#FFFF66"
-            },
-            "right_ear": {
-                "color": "#CCFF66"
-            },
-            "left_shoulder": {
-                "color": "#99FF99"
-            },
-            "right_shoulder": {
-                "color": "#66FFCC"
-            },
-            "left_elbow": {
-                "color": "#66CCFF"
-            },
-            "right_elbow": {
-                "color": "#9999FF"
-            },
-            "left_wrist": {
-                "color": "#CC99FF"
-            },
-            "right_wrist": {
-                "color": "#FF99FF"
-            },
-            "left_hip": {
-                "color": "#FF66CC"
-            },
-            "right_hip": {
-                "color": "#FF6699"
-            },
-            "left_knee": {
-                "color": "#FF3366"
-            },
-            "right_knee": {
-                "color": "#CC6699"
-            },
-            "left_ankle": {
-                "color": "#9966FF"
-            },
-            "right_ankle": {
-                "color": "#6699FF"
-            }
-        }
+        "id": 1,
+        "type": "rect",
+        "left": 107.66355140186916,
+        "top": 53.70165745856354,
+        "width": 133.58255451713399,
+        "height": 204.86187845303868,
+        "stroke": "#66FFCC",
+        "is_selected": false
     }
 ]

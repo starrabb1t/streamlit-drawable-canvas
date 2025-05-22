@@ -13,7 +13,8 @@ export default function FabricCanvas({
   backgroundImageURL,
   mode,
   color,
-  selectedClass, objectId,
+  classId, 
+  objectId,
   initialObjects = [],
   pointRadius,
   onChange,
@@ -23,19 +24,19 @@ export default function FabricCanvas({
   const canvasRef = useCanvasInit(mountRef, { width, height, backgroundImageURL })
 
   // Счётчик для выдачи objectId новым фигурам
-  const idCounter = useRef(0)
+  const figureIdCounter = useRef(0)
 
   // Хук истории: sendBack, undo, redo, reset
   const { sendBack, undo, redo, reset } = useObjectHistory(
     canvasRef,
-    { initialObjects, onChange, mode, pointRadius, idCounter }
+    { initialObjects, onChange, mode, figureIdCounter }
   )
 
   // Загрузка initialObjects на канву
-  useLoadInitial(canvasRef, initialObjects, idCounter, pointRadius, sendBack)
+  useLoadInitial(canvasRef, initialObjects, figureIdCounter, sendBack)
 
   // Логика рисования в разных режимах
-  useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBack, objectId })
+  useDrawingMode(canvasRef, { mode, color, pointRadius, figureIdCounter, sendBack, objectId, classId })
 
   // Зум + пэннинг
   const { zoomIn, zoomOut } = useZoom(canvasRef, { width, height })

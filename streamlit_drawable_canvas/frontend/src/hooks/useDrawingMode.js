@@ -6,7 +6,7 @@ const MIN_SIDE = 10
 
 export default function useDrawingMode(
   canvasRef,
-  { mode, color, pointRadius, idCounter, sendBack }
+  { mode, color, pointRadius, figureIdCounter, sendBack, objectId, classId }
 ) {
   useEffect(() => {
     const canvas = canvasRef.current
@@ -49,7 +49,9 @@ export default function useDrawingMode(
           lockRotation: true,
           hasRotatingPoint: false
         })
-        rect.objectId = ++idCounter.current
+        rect.figureId  = ++figureIdCounter.current      // старый идентификатор фигуры
+        rect.objectId = objectId                  // идентификатор «object»
+        rect.classId  = classId             // класс объекта
         canvas.add(rect)
       }
 
@@ -104,7 +106,9 @@ export default function useDrawingMode(
           lockScalingX: true,
           lockScalingY: true
         })
-        c.objectId = ++idCounter.current
+        c.figureId  = ++figureIdCounter.current
+        c.objectId = objectId
+        c.classId  = classId
         canvas.add(c)
         canvas.requestRenderAll()
         sendBack()
@@ -164,5 +168,5 @@ export default function useDrawingMode(
       if (handlers.selectionUpdated) canvas.off("selection:updated",  handlers.selectionUpdated)
       if (handlers.selectionCleared) canvas.off("selection:cleared",  handlers.selectionCleared)
     }
-  }, [mode, color, pointRadius, sendBack, idCounter])
+  }, [mode, color, pointRadius, sendBack, figureIdCounter, objectId, classId])
 }

@@ -4,8 +4,7 @@ import { fabric } from "fabric"
 export default function useLoadInitial(
   canvasRef,
   initialObjects,
-  idCounterRef,
-  pointRadius,
+  figureIdCounter,
   sendBack
 ) {
   useEffect(() => {
@@ -25,7 +24,7 @@ export default function useLoadInitial(
     }
 
     // 2) сброс счетчика ID
-    idCounterRef.current = 0
+    figureIdCounter.current = 0
 
     // 3) сброс вьюпорта (убрать паны/зумы, если нужно)
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0])
@@ -57,7 +56,7 @@ export default function useLoadInitial(
           top:          o.top,
           originX:      "center",
           originY:      "center",
-          radius:       pointRadius,
+          radius:       o.radius,
           fill:         "transparent",
           stroke:       o.stroke,
           strokeWidth:  3,
@@ -81,5 +80,5 @@ export default function useLoadInitial(
     sendBack()
 
     // эффект должен реагировать на смену initialObjects
-  }, [initialObjects, pointRadius, sendBack])
+  }, [initialObjects])
 }

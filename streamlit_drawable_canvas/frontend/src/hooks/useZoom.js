@@ -13,7 +13,7 @@ export default function useZoom(canvasRef, { width, height }) {
     const z = canvas.getZoom() || 1
     canvas.zoomToPoint(center, Math.min(z * ZOOM_FACTOR, MAX_Z))
     canvas.requestRenderAll()
-  }, [canvasRef, width, height])
+  }, [width, height])
 
   const zoomOut = useCallback(() => {
     const canvas = canvasRef.current
@@ -22,7 +22,7 @@ export default function useZoom(canvasRef, { width, height }) {
     const z = canvas.getZoom() || 1
     canvas.zoomToPoint(center, Math.max(z / ZOOM_FACTOR, MIN_Z))
     canvas.requestRenderAll()
-  }, [canvasRef, width, height])
+  }, [width, height])
 
   return { zoomIn, zoomOut }
 }

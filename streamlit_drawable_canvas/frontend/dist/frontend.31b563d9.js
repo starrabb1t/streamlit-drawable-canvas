@@ -25014,7 +25014,7 @@ $RefreshReg$(_c1, "%default%");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","streamlit-component-lib":"iNVE7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./FabricCanvas":"8H51e","./ModeSelector":"cV8Ek"}],"iNVE7":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","streamlit-component-lib":"iNVE7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./ModeSelector":"cV8Ek","./FabricCanvas":"8H51e"}],"iNVE7":[function(require,module,exports,__globalThis) {
 /**
  * @license
  * Copyright 2018-2021 Streamlit Inc.
@@ -49152,7 +49152,86 @@ function $da9882e673ac146b$var$ErrorOverlay() {
     return null;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"8H51e":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"cV8Ek":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$4632 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$4632.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$4632.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>ModeSelector);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react);
+const MODES = [
+    {
+        value: "transform",
+        label: "Transform"
+    },
+    {
+        value: "rect",
+        label: "Rectangle"
+    },
+    {
+        value: "point",
+        label: "Point"
+    }
+];
+function ModeSelector({ value, onChange }) {
+    const container = {
+        display: "flex",
+        gap: "4px",
+        marginBottom: "10px",
+        padding: "10px"
+    };
+    const pillBase = {
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: "#ccc",
+        borderRadius: "50vh",
+        background: "#fff",
+        cursor: "pointer",
+        userSelect: "none",
+        padding: "5px 10px",
+        fontFamily: "Arial",
+        fontSize: "14px"
+    };
+    const pillActive = {
+        ...pillBase,
+        background: "#007bff",
+        color: "#fff",
+        borderColor: "#007bff"
+    };
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        style: container,
+        children: MODES.map((m)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                style: value === m.value ? pillActive : pillBase,
+                onClick: ()=>onChange(m.value),
+                children: m.label
+            }, m.value, false, {
+                fileName: "src/ModeSelector.js",
+                lineNumber: 38,
+                columnNumber: 9
+            }, this))
+    }, void 0, false, {
+        fileName: "src/ModeSelector.js",
+        lineNumber: 36,
+        columnNumber: 5
+    }, this);
+}
+_c = ModeSelector;
+var _c;
+$RefreshReg$(_c, "ModeSelector");
+
+  $parcel$ReactRefreshHelpers$4632.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"8H51e":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$c3a6 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 $parcel$ReactRefreshHelpers$c3a6.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
@@ -49207,8 +49286,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
         historyIndexRef.current = 0;
         skipHistoryRef.current = false;
     }, [
-        initialObjects,
-        canvasRef
+        initialObjects
     ]);
     // “сырая” отправка в Streamlit (без истории)
     const rawSendBack = (0, _react.useCallback)(()=>{
@@ -49227,7 +49305,6 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
             }));
         onChange(objs);
     }, [
-        canvasRef,
         onChange
     ]);
     // отправка + пуш в историю (если нужно)
@@ -49247,7 +49324,6 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
         skipHistoryRef.current = false;
         rawSendBack();
     }, [
-        canvasRef,
         rawSendBack
     ]);
     // Вспомогательная функция: восстановить состояние из snapshot
@@ -49297,7 +49373,6 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
             rawSendBack();
         });
     }, [
-        canvasRef,
         rawSendBack,
         mode
     ]);
@@ -49353,7 +49428,6 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, color, initialO
         c.requestRenderAll();
         sendBack();
     }, [
-        canvasRef,
         sendBack
     ]);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
@@ -49402,7 +49476,7 @@ $RefreshReg$(_c, "FabricCanvas");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","fabric":"fVwBJ","./hooks/useCanvasInit":"f2Cwh","./hooks/useDrawingMode":"cbNPl","./hooks/useZoom":"ghy95","./Toolbar":"YxYIo","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./hooks/useLoadInitial":"kQlKI"}],"fVwBJ":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","fabric":"fVwBJ","./hooks/useCanvasInit":"f2Cwh","./hooks/useLoadInitial":"kQlKI","./hooks/useDrawingMode":"cbNPl","./hooks/useZoom":"ghy95","./Toolbar":"YxYIo","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"fVwBJ":[function(require,module,exports,__globalThis) {
 /* build: `node build.js modules=ALL exclude=gestures,accessors,erasing requirejs minifier=uglifyjs` */ /*! Fabric.js Copyright 2008-2015, Printio (Juriy Zaytsev, Maxim Chernyak) */ var Buffer = require("b43f9182a9448437").Buffer;
 var fabric = fabric || {
     version: '5.5.2'
@@ -72341,7 +72415,6 @@ function useCanvasInit(mountRef, { width, height, backgroundImageURL }) {
             canvas.dispose();
         };
     }, [
-        mountRef,
         width,
         height,
         backgroundImageURL
@@ -72351,6 +72424,91 @@ function useCanvasInit(mountRef, { width, height, backgroundImageURL }) {
 _s(useCanvasInit, "UJgi7ynoup7eqypjnwyX/s32POg=");
 
   $parcel$ReactRefreshHelpers$0c4d.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react":"jMk1U","fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"kQlKI":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$d73d = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$d73d.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$d73d.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>useLoadInitial);
+var _react = require("react");
+var _fabric = require("fabric");
+var _s = $RefreshSig$();
+function useLoadInitial(canvasRef, initialObjects, idCounterRef, pointRadius, sendBack) {
+    _s();
+    (0, _react.useEffect)(()=>{
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        // 1) очистим всё, сохраняя только фон
+        const bg = canvas.backgroundImage;
+        canvas.clear();
+        if (bg) // восстановим фон
+        canvas.setBackgroundImage(bg, canvas.requestRenderAll.bind(canvas));
+        // 2) сброс счетчика ID
+        idCounterRef.current = 0;
+        // 3) сброс вьюпорта (убрать паны/зумы, если нужно)
+        canvas.setViewportTransform([
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+        ]);
+        // 4) добавим новые initialObjects
+        initialObjects.forEach((o)=>{
+            let inst = null;
+            if (o.type === "rect") inst = new (0, _fabric.fabric).Rect({
+                left: o.left,
+                top: o.top,
+                originX: "left",
+                originY: "top",
+                width: o.width,
+                height: o.height,
+                fill: "transparent",
+                stroke: o.stroke,
+                strokeWidth: 2,
+                selectable: true,
+                strokeUniform: true
+            });
+            else if (o.type === "circle") inst = new (0, _fabric.fabric).Circle({
+                left: o.left,
+                top: o.top,
+                originX: "center",
+                originY: "center",
+                radius: pointRadius,
+                fill: "transparent",
+                stroke: o.stroke,
+                strokeWidth: 3,
+                selectable: true,
+                controls: false
+            });
+            if (inst) {
+                inst.objectId = ++idCounterRef.current;
+                canvas.add(inst);
+            }
+        });
+        // 5) рендерим и отдаем состояние назад
+        canvas.requestRenderAll();
+        sendBack();
+    // эффект должен реагировать на смену initialObjects
+    }, [
+        initialObjects,
+        pointRadius,
+        sendBack
+    ]);
+}
+_s(useLoadInitial, "OD7bBpZva5O2jO+Puf00hKivP7c=");
+
+  $parcel$ReactRefreshHelpers$d73d.postlude(module);
 } finally {
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
@@ -72483,7 +72641,6 @@ function useDrawingMode(canvasRef, { mode, color, pointRadius, idCounter, sendBa
             canvas.defaultCursor = "default";
         }
     }, [
-        canvasRef,
         mode,
         color,
         pointRadius,
@@ -72525,7 +72682,6 @@ function useZoom(canvasRef, { width, height }) {
         canvas.zoomToPoint(center, Math.min(z * ZOOM_FACTOR, MAX_Z));
         canvas.requestRenderAll();
     }, [
-        canvasRef,
         width,
         height
     ]);
@@ -72537,7 +72693,6 @@ function useZoom(canvasRef, { width, height }) {
         canvas.zoomToPoint(center, Math.max(z / ZOOM_FACTOR, MIN_Z));
         canvas.requestRenderAll();
     }, [
-        canvasRef,
         width,
         height
     ]);
@@ -72708,13 +72863,7 @@ $RefreshReg$(_c, "Toolbar");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","url:./img/zoom_in.svg":"2CQHM","url:./img/zoom_out.svg":"25RcJ","url:./img/delete.svg":"eToa8","url:./img/reset.svg":"l9z8i","url:./img/undo.svg":"1rW43","url:./img/redo.svg":"7jd64"}],"2CQHM":[function(require,module,exports,__globalThis) {
-module.exports = module.bundle.resolve("zoom_in.fad9dae4.svg") + "?" + Date.now();
-
-},{}],"25RcJ":[function(require,module,exports,__globalThis) {
-module.exports = module.bundle.resolve("zoom_out.dc48a1f2.svg") + "?" + Date.now();
-
-},{}],"eToa8":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","url:./img/delete.svg":"eToa8","url:./img/reset.svg":"l9z8i","url:./img/undo.svg":"1rW43","url:./img/redo.svg":"7jd64","url:./img/zoom_in.svg":"2CQHM","url:./img/zoom_out.svg":"25RcJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"eToa8":[function(require,module,exports,__globalThis) {
 module.exports = module.bundle.resolve("delete.877e1b97.svg") + "?" + Date.now();
 
 },{}],"l9z8i":[function(require,module,exports,__globalThis) {
@@ -72726,171 +72875,12 @@ module.exports = module.bundle.resolve("undo.c3ab1cf6.svg") + "?" + Date.now();
 },{}],"7jd64":[function(require,module,exports,__globalThis) {
 module.exports = module.bundle.resolve("redo.7be6742b.svg") + "?" + Date.now();
 
-},{}],"kQlKI":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$d73d = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-$parcel$ReactRefreshHelpers$d73d.init();
-var prevRefreshReg = globalThis.$RefreshReg$;
-var prevRefreshSig = globalThis.$RefreshSig$;
-$parcel$ReactRefreshHelpers$d73d.prelude(module);
+},{}],"2CQHM":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("zoom_in.fad9dae4.svg") + "?" + Date.now();
 
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "default", ()=>useLoadInitial);
-var _react = require("react");
-var _fabric = require("fabric");
-var _s = $RefreshSig$();
-function useLoadInitial(canvasRef, initialObjects, idCounterRef, pointRadius, sendBack) {
-    _s();
-    (0, _react.useEffect)(()=>{
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        // 1) очистим всё, сохраняя только фон
-        const bg = canvas.backgroundImage;
-        canvas.clear();
-        if (bg) // восстановим фон
-        canvas.setBackgroundImage(bg, canvas.requestRenderAll.bind(canvas));
-        // 2) сброс счетчика ID
-        idCounterRef.current = 0;
-        // 3) сброс вьюпорта (убрать паны/зумы, если нужно)
-        canvas.setViewportTransform([
-            1,
-            0,
-            0,
-            1,
-            0,
-            0
-        ]);
-        // 4) добавим новые initialObjects
-        initialObjects.forEach((o)=>{
-            let inst = null;
-            if (o.type === "rect") inst = new (0, _fabric.fabric).Rect({
-                left: o.left,
-                top: o.top,
-                originX: "left",
-                originY: "top",
-                width: o.width,
-                height: o.height,
-                fill: "transparent",
-                stroke: o.stroke,
-                strokeWidth: 2,
-                selectable: true,
-                strokeUniform: true
-            });
-            else if (o.type === "circle") inst = new (0, _fabric.fabric).Circle({
-                left: o.left,
-                top: o.top,
-                originX: "center",
-                originY: "center",
-                radius: pointRadius,
-                fill: "transparent",
-                stroke: o.stroke,
-                strokeWidth: 3,
-                selectable: true,
-                controls: false
-            });
-            if (inst) {
-                inst.objectId = ++idCounterRef.current;
-                canvas.add(inst);
-            }
-        });
-        // 5) рендерим и отдаем состояние назад
-        canvas.requestRenderAll();
-        sendBack();
-    // эффект должен реагировать на смену initialObjects
-    }, [
-        canvasRef,
-        initialObjects,
-        pointRadius,
-        sendBack
-    ]);
-}
-_s(useLoadInitial, "OD7bBpZva5O2jO+Puf00hKivP7c=");
+},{}],"25RcJ":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("zoom_out.dc48a1f2.svg") + "?" + Date.now();
 
-  $parcel$ReactRefreshHelpers$d73d.postlude(module);
-} finally {
-  globalThis.$RefreshReg$ = prevRefreshReg;
-  globalThis.$RefreshSig$ = prevRefreshSig;
-}
-},{"react":"jMk1U","fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"cV8Ek":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$4632 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-$parcel$ReactRefreshHelpers$4632.init();
-var prevRefreshReg = globalThis.$RefreshReg$;
-var prevRefreshSig = globalThis.$RefreshSig$;
-$parcel$ReactRefreshHelpers$4632.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "default", ()=>ModeSelector);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _react = require("react");
-var _reactDefault = parcelHelpers.interopDefault(_react);
-const MODES = [
-    {
-        value: "transform",
-        label: "Transform"
-    },
-    {
-        value: "rect",
-        label: "Rectangle"
-    },
-    {
-        value: "point",
-        label: "Point"
-    }
-];
-function ModeSelector({ value, onChange }) {
-    const container = {
-        display: "flex",
-        gap: "4px",
-        marginBottom: "10px",
-        padding: "10px"
-    };
-    const pillBase = {
-        borderWidth: "1px",
-        borderStyle: "solid",
-        borderColor: "#ccc",
-        borderRadius: "50vh",
-        background: "#fff",
-        cursor: "pointer",
-        userSelect: "none",
-        padding: "5px 10px",
-        fontFamily: "Arial",
-        fontSize: "14px"
-    };
-    const pillActive = {
-        ...pillBase,
-        background: "#007bff",
-        color: "#fff",
-        borderColor: "#007bff"
-    };
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        style: container,
-        children: MODES.map((m)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                style: value === m.value ? pillActive : pillBase,
-                onClick: ()=>onChange(m.value),
-                children: m.label
-            }, m.value, false, {
-                fileName: "src/ModeSelector.js",
-                lineNumber: 38,
-                columnNumber: 9
-            }, this))
-    }, void 0, false, {
-        fileName: "src/ModeSelector.js",
-        lineNumber: 36,
-        columnNumber: 5
-    }, this);
-}
-_c = ModeSelector;
-var _c;
-$RefreshReg$(_c, "ModeSelector");
-
-  $parcel$ReactRefreshHelpers$4632.postlude(module);
-} finally {
-  globalThis.$RefreshReg$ = prevRefreshReg;
-  globalThis.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}]},["igbXF","a0t4e"], "a0t4e", "parcelRequire5d99", {}, "./", "/", "http://localhost:3001")
+},{}]},["igbXF","a0t4e"], "a0t4e", "parcelRequire5d99", {}, "./", "/", "http://localhost:3001")
 
 //# sourceMappingURL=frontend.31b563d9.js.map

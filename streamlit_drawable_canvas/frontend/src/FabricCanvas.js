@@ -36,7 +36,7 @@ export default function FabricCanvas({
     historyRef.current = [snapshot]
     historyIndexRef.current = 0
     skipHistoryRef.current = false
-  }, [initialObjects, canvasRef])
+  }, [initialObjects])
 
   // “сырая” отправка в Streamlit (без истории)
   const rawSendBack = useCallback(() => {
@@ -55,7 +55,7 @@ export default function FabricCanvas({
       is_selected: active.includes(o),
     }))
     onChange(objs)
-  }, [canvasRef, onChange])
+  }, [onChange])
 
   // отправка + пуш в историю (если нужно)
   const sendBack = useCallback(() => {
@@ -76,7 +76,7 @@ export default function FabricCanvas({
     skipHistoryRef.current = false
 
     rawSendBack()
-  }, [canvasRef, rawSendBack])
+  }, [rawSendBack])
 
   // Вспомогательная функция: восстановить состояние из snapshot
   // Старый код удалить, а вместо него вставить следующее:
@@ -143,7 +143,7 @@ const restoreSnapshot = useCallback((snapshot) => {
     // 8) шлём обновлённый список обратно в Streamlit
     rawSendBack()
   })
-}, [canvasRef, rawSendBack, mode])
+}, [rawSendBack, mode])
 
   // undo
   const undo = useCallback(() => {
@@ -185,7 +185,7 @@ const restoreSnapshot = useCallback((snapshot) => {
     c.discardActiveObject()
     c.requestRenderAll()
     sendBack()
-  }, [canvasRef, sendBack])
+  }, [sendBack])
 
   return (
     <>

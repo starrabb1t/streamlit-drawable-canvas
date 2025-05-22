@@ -67,7 +67,7 @@ export default function useCanvasInit(mountRef, { width, height, backgroundImage
       el.removeEventListener("contextmenu", onContext)
       canvas.dispose()
     }
-  }, [mountRef, width, height, backgroundImageURL])
+  }, [width, height, backgroundImageURL])
 
   return canvasRef
 }

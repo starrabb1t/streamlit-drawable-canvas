@@ -75,5 +75,5 @@ export default function useLoadInitial(
     sendBack()
 
     // эффект должен реагировать на смену initialObjects
-  }, [canvasRef, initialObjects, pointRadius, sendBack])
+  }, [initialObjects, pointRadius, sendBack])
 }

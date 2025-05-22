@@ -105,5 +105,5 @@ export default function useDrawingMode(
       canvas.selection = false
       canvas.defaultCursor = "default"
     }
-  }, [canvasRef, mode, color, pointRadius, idCounter, sendBack])
+  }, [mode, color, pointRadius, idCounter, sendBack])
 }

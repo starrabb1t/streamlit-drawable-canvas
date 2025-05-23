@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useState, useCallback, useEffect, useRef } from "react"
+import React, { useState, useMemo, useEffect, useRef } from "react"
 import { withStreamlitConnection, Streamlit } from "streamlit-component-lib"
 import ClassSelector from "./components/ClassSelector"
 import KeypointSelector from "./components/KeypointSelector"

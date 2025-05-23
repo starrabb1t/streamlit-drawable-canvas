@@ -6,6 +6,7 @@ import KeypointSelector from "./components/KeypointSelector"
 import ModeSelector  from "./components/ModeSelector"
 import FabricCanvas  from "./components/FabricCanvas"
 import ObjectIdInput from "./components/ObjectIdInput"
+import debounce from "lodash.debounce"
 
 const STREAMLIT_FRAME_PADDING = 250
 
@@ -18,20 +19,6 @@ function App({ args }) {
     initialObjects,
     pointRadius,
   } = args
-
-  // временная схема (потом придёт из Python)
-  /*const annotationSchema = [
-    {
-      bbox: "person",
-      color: "#66FFCC",
-      keypoints: { nose: { color: "#FF6666" }, left_eye: { color: "#FF9966" } },
-    },
-    {
-      bbox: "dog",
-      color: "#FFAA00",
-      keypoints: { head: { color: "#0000FF" }, tail: { color: "#00CCFF" } },
-    },
-  ]*/
 
   // 1) выбираем класс (по умолчанию первый)
   const [classId, setClassId] = useState(annotationSchema[0].bbox)
@@ -67,15 +54,17 @@ function App({ args }) {
   const containerRef = useRef(null)
 
   // колбэк отправки в Python
-  const handleChange = useCallback(
-    objs => {
+  const doChange = objs => {
       const filtered = objs.filter(
         o => o.type === "rect" || o.type === "circle"
       )
       Streamlit.setComponentValue(filtered)
       const h = containerRef.current?.clientHeight|| canvasHeight
       Streamlit.setFrameHeight(h + STREAMLIT_FRAME_PADDING)
-    },
+    }
+
+  const handleChange = useMemo(
+    () => debounce(doChange, 250),
     [canvasHeight]
   )
 

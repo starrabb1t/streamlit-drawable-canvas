@@ -59,8 +59,8 @@ function App({ args }) {
         o => o.type === "rect" || o.type === "circle"
       )
       Streamlit.setComponentValue(filtered)
-      const h = containerRef.current?.clientHeight|| canvasHeight
-      Streamlit.setFrameHeight(h + STREAMLIT_FRAME_PADDING)
+      //const h = containerRef.current?.clientHeight || canvasHeight
+      Streamlit.setFrameHeight(canvasHeight + STREAMLIT_FRAME_PADDING)
     }
 
   const handleChange = useMemo(
@@ -69,7 +69,7 @@ function App({ args }) {
   )
 
   return (
-    <div style={{ display: "inline-block" }}>
+    <div ref={containerRef} style={{ display: "inline-block" }}>
       {/* — первый ряд: Классы + режимы */}
       <ClassSelector
         schema={annotationSchema}
@@ -86,8 +86,6 @@ function App({ args }) {
       />
 
       <ModeSelector value={mode} onChange={setMode}/>
-
-      
 
       {/* третий ряд: keypoints (только в режиме point) */}
       {mode === "point" && (

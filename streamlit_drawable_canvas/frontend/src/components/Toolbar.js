@@ -6,6 +6,7 @@ import redoIcon    from "url:../img/redo.svg"
 import zoomInIcon  from "url:../img/zoom_in.svg"
 import zoomOutIcon from "url:../img/zoom_out.svg"
 import zoomResetIcon from "url:../img/zoom_reset.svg"
+import saveIcon      from "url:../img/save.svg"
 
 export default function Toolbar({
   zoomIn,
@@ -15,6 +16,7 @@ export default function Toolbar({
   undo,
   redo,
   reset,
+  save
 }) {
   const style = {
     display:    "flex",
@@ -28,6 +30,29 @@ export default function Toolbar({
     height:     24,
     background: "transparent",
     border:     "none",
+  }
+
+  const sbtn = {
+    cursor:     "pointer",
+    width:      100,
+    height:     36,
+    border:     "none",
+    //background: "rgb(0, 178, 110)",
+    background:     "linear-gradient(-120deg,rgb(0, 178, 110) 0%,rgb(0, 145, 131) 100%)",
+    marginLeft: "auto",
+    borderRadius: "12px",
+    padding: "3px",
+    display:       "flex",
+    alignItems:    "center",
+    paddingLeft: "22px",
+  }
+
+  const stext = {
+    color:      "#fff",
+    alignContent: "centopter", 
+    marginRight: "2px", 
+    fontFamily: "Arial", 
+    fontSize: "16px",
   }
 
   return (
@@ -53,6 +78,12 @@ export default function Toolbar({
       <button style={btn} onClick={reset}>
         <img src={resetIcon} alt="Reset"/>
       </button>
+      
     </div>
   )
 }
+
+/*<button style={sbtn} onClick={save}>
+  <span style={stext}>Save</span>
+  <img src={saveIcon} alt="Save"/>
+</button>*/

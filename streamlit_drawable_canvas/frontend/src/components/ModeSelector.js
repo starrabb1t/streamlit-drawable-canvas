@@ -1,9 +1,9 @@
 import React from "react"
 
 const MODES = [
-  { value: "transform", label: "Transform" },
-  { value: "rect",      label: "Rectangle" },
-  { value: "point",     label: "Point"     },
+  { value: "transform", label: "⊾ Transform" },
+  { value: "rect",      label: "⊞ Box" },
+  { value: "point",     label: "⊚ Keypoint"     },
 ]
 
 export default function ModeSelector({ value, onChange }) {
@@ -32,8 +32,16 @@ export default function ModeSelector({ value, onChange }) {
     borderColor: "#007bff",
   }
 
+  const textDesc = { 
+    alignContent: "center", 
+    marginRight: "10px", 
+    fontFamily: "Arial", 
+    fontSize: "12px" 
+  }
+
   return (
     <div style={container}>
+      <span style={textDesc}>Mode:</span>
       {MODES.map(m => (
         <div
           key={m.value}

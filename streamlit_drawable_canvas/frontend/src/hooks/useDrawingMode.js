@@ -1,6 +1,7 @@
 // src/hooks/useDrawingMode.js
 import { useEffect } from "react"
 import { fabric }    from "fabric"
+import { showCanvasMessage } from "../utils"
 
 const MIN_SIDE = 10
 
@@ -74,11 +75,21 @@ export default function useDrawingMode(
       handlers.mouseUp = () => {
         if (!isDown) return
         isDown = false
+
         if (rect.width < MIN_SIDE || rect.height < MIN_SIDE) {
           canvas.remove(rect)
-        } else {
-          sendBack()
+          showCanvasMessage(canvas, "Box too small – aborted!")
+        } 
+        const same = canvas
+          .getObjects()
+          .filter(o => o.type === "rect" && o.objectId === objectId)
+
+        if (same.length > 1) {
+          canvas.remove(rect)
+          showCanvasMessage(canvas, "Duplicated ID for box – aborted!")
         }
+      
+        sendBack()
       }
 
       canvas.on("mouse:down", handlers.mouseDown)
@@ -89,9 +100,14 @@ export default function useDrawingMode(
       canvas.selection = false
       canvas.defaultCursor = "pointer"
 
+      let isDown = false
+      let c = null
+
       handlers.mouseDown = opt => {
+        isDown = true
         const p = canvas.getPointer(opt.e)
-        const c = new fabric.Circle({
+        
+        c = new fabric.Circle({
           left:         p.x,
           top:          p.y,
           originX:      "center",
@@ -111,11 +127,42 @@ export default function useDrawingMode(
         c.classId  = classId
         c.keypointName = keypointName
         canvas.add(c)
-        canvas.requestRenderAll()
+        //canvas.requestRenderAll()
+        //sendBack()
+      }
+
+      handlers.mouseUp = () => {
+        if (!isDown) return
+        isDown = false
+
+        // Проверяем, сколько точек с этим object_id и keypoint_name
+        const dups = canvas
+          .getObjects()
+          .filter(o =>
+            o.type === "circle" &&
+            o.objectId === objectId &&
+            o.keypointName === keypointName
+          )
+
+        console.log(dups)
+
+        if (dups.length > 1) {
+          // удаляем только что добавленную
+          canvas.remove(c)
+          canvas.requestRenderAll()
+
+          showCanvasMessage(
+            canvas,
+            `Duplicated ID for keypoint “${keypointName}” – aborted!`
+          )
+        }
+
+        // всё ок
         sendBack()
       }
 
       canvas.on("mouse:down", handlers.mouseDown)
+      canvas.on("mouse:up", handlers.mouseUp)
     }
     else if (mode === "transform") {
       canvas.selection = true

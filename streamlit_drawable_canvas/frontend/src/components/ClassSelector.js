@@ -2,26 +2,34 @@
 import React from "react"
 
 const container = {
-  display:      "flex",
-  gap:          "4px",
+  display: "flex",
+  gap: "4px",
   paddingLeft: "10px",
   paddingBottom: "10px"
 }
 const pillBase = {
-  borderWidth:  "1px",
-  borderStyle:  "solid",
+  borderWidth: "1px",
+  borderStyle: "solid",
   borderRadius: "50vh",
-  background:   "#fff",
-  cursor:       "pointer",
-  userSelect:   "none",
-  padding:      "5px 10px",
-  fontFamily:   "Arial",
-  fontSize:     "14px",
+  background: "#fff",
+  cursor: "pointer",
+  userSelect: "none",
+  padding: "5px 10px",
+  fontFamily: "Arial",
+  fontSize: "14px",
+}
+
+const textDesc = { 
+  alignContent: "center", 
+  marginRight: "10px", 
+  fontFamily: "Arial", 
+  fontSize: "12px" 
 }
 
 export default function ClassSelector({ schema, classId, onSelect }) {
   return (
     <div style={container}>
+      <span style={textDesc}>Label:</span>
       {schema.map(item => {
         const active = item.bbox === classId
         return (
@@ -31,8 +39,8 @@ export default function ClassSelector({ schema, classId, onSelect }) {
             style={{
               ...pillBase,
               borderColor: item.color,
-              color:       active ? "#fff" : item.color,
-              background:  active ? item.color : "#fff",
+              color: active ? "#fff" : item.color,
+              background: active ? item.color : "#fff",
             }}
           >
             {item.bbox}

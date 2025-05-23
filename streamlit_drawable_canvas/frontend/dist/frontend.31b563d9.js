@@ -681,10 +681,11 @@ var _reactDefault = parcelHelpers.interopDefault(_react);
 var _client = require("react-dom/client");
 var _app = require("./App");
 var _appDefault = parcelHelpers.interopDefault(_app);
+var _indexCss = require("./css/index.css");
 const root = (0, _client.createRoot)(document.getElementById("root"));
 root.render(/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _appDefault.default), {}, void 0, false, {
     fileName: "src/index.js",
-    lineNumber: 6,
+    lineNumber: 7,
     columnNumber: 13
 }, undefined));
 
@@ -693,7 +694,7 @@ root.render(/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _appDefault.default), {
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","react-dom/client":"hrvwu","./App":"hh6uc","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"dVPUn":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","react-dom/client":"hrvwu","./App":"hh6uc","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./css/index.css":"lyxGu"}],"dVPUn":[function(require,module,exports,__globalThis) {
 'use strict';
 module.exports = require("ee51401569654d91");
 
@@ -24962,38 +24963,23 @@ var _fabricCanvasDefault = parcelHelpers.interopDefault(_fabricCanvas);
 var _objectIdInput = require("./components/ObjectIdInput");
 var _objectIdInputDefault = parcelHelpers.interopDefault(_objectIdInput);
 var _s = $RefreshSig$();
-const STREAMLIT_FRAME_PADDING = 150;
+const STREAMLIT_FRAME_PADDING = 250;
 function App({ args }) {
     _s();
-    const { backgroundImageURL, canvasWidth, canvasHeight, initialObjects = [], pointRadius } = args;
+    const { annotationSchema, backgroundImageURL, canvasWidth, canvasHeight, initialObjects, pointRadius } = args;
     // временная схема (потом придёт из Python)
-    const annotationSchema = [
-        {
-            bbox: "person",
-            color: "#66FFCC",
-            keypoints: {
-                nose: {
-                    color: "#FF6666"
-                },
-                left_eye: {
-                    color: "#FF9966"
-                }
-            }
-        },
-        {
-            bbox: "dog",
-            color: "#FFAA00",
-            keypoints: {
-                head: {
-                    color: "#0000FF"
-                },
-                tail: {
-                    color: "#00CCFF"
-                }
-            }
-        }
-    ];
-    // 1) выбираем класс (по умолчанию первый)
+    /*const annotationSchema = [
+    {
+      bbox: "person",
+      color: "#66FFCC",
+      keypoints: { nose: { color: "#FF6666" }, left_eye: { color: "#FF9966" } },
+    },
+    {
+      bbox: "dog",
+      color: "#FFAA00",
+      keypoints: { head: { color: "#0000FF" }, tail: { color: "#00CCFF" } },
+    },
+  ]*/ // 1) выбираем класс (по умолчанию первый)
     const [classId, setClassId] = (0, _react.useState)(annotationSchema[0].bbox);
     const [classColor, setClassColor] = (0, _react.useState)(annotationSchema[0].color);
     const handleClassSelect = (cls)=>{
@@ -25016,11 +25002,14 @@ function App({ args }) {
         classId
     ]);
     // вычисляем цвет для текущего keypoint (или fallback на classColor)
-    const keypointColor = keypointName ? annotationSchema.find((x)=>x.bbox === classId).keypoints[keypointName].color : classColor;
+    const keypointColor = keypointName ? annotationSchema.find((x)=>x.bbox === classId)?.keypoints?.[keypointName]?.color || classColor : classColor;
+    const containerRef = (0, _react.useRef)(null);
     // колбэк отправки в Python
     const handleChange = (0, _react.useCallback)((objs)=>{
-        (0, _streamlitComponentLib.Streamlit).setComponentValue(objs);
-        (0, _streamlitComponentLib.Streamlit).setFrameHeight(canvasHeight + STREAMLIT_FRAME_PADDING);
+        const filtered = objs.filter((o)=>o.type === "rect" || o.type === "circle");
+        (0, _streamlitComponentLib.Streamlit).setComponentValue(filtered);
+        const h = containerRef.current?.clientHeight || canvasHeight;
+        (0, _streamlitComponentLib.Streamlit).setFrameHeight(h + STREAMLIT_FRAME_PADDING);
     }, [
         canvasHeight
     ]);
@@ -25035,15 +25024,7 @@ function App({ args }) {
                 onSelect: handleClassSelect
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 77,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _modeSelectorDefault.default), {
-                value: mode,
-                onChange: setMode
-            }, void 0, false, {
-                fileName: "src/App.js",
-                lineNumber: 82,
+                lineNumber: 85,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _objectIdInputDefault.default), {
@@ -25053,7 +25034,15 @@ function App({ args }) {
                 onDecrement: decObjectId
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 85,
+                lineNumber: 92,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _modeSelectorDefault.default), {
+                value: mode,
+                onChange: setMode
+            }, void 0, false, {
+                fileName: "src/App.js",
+                lineNumber: 99,
                 columnNumber: 7
             }, this),
             mode === "point" && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _keypointSelectorDefault.default), {
@@ -25062,7 +25051,7 @@ function App({ args }) {
                 onSelect: setKeypoint
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 94,
+                lineNumber: 105,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _fabricCanvasDefault.default), {
@@ -25080,17 +25069,17 @@ function App({ args }) {
                 onChange: handleChange
             }, void 0, false, {
                 fileName: "src/App.js",
-                lineNumber: 104,
+                lineNumber: 115,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/App.js",
-        lineNumber: 75,
+        lineNumber: 83,
         columnNumber: 5
     }, this);
 }
-_s(App, "G9gQgsdiEbHk8W85W+saI2PYjZw=");
+_s(App, "aw/8J6eI+i8JzPzEhoWs0OzlgmE=");
 _c = App;
 exports.default = _c1 = (0, _streamlitComponentLib.withStreamlitConnection)(App);
 var _c, _c1;
@@ -49268,7 +49257,7 @@ var _useObjectHistoryDefault = parcelHelpers.interopDefault(_useObjectHistory);
 var _toolbar = require("./Toolbar");
 var _toolbarDefault = parcelHelpers.interopDefault(_toolbar);
 var _s = $RefreshSig$();
-function FabricCanvas({ width, height, backgroundImageURL, mode, classColor, keypointColor, classId, objectId, keypointName, initialObjects = [], pointRadius, onChange }) {
+function FabricCanvas({ width, height, backgroundImageURL, mode, classColor, keypointColor, classId, objectId, keypointName, initialObjects, pointRadius, onChange }) {
     _s();
     // Ссылка на <canvas> и объект Fabric
     const mountRef = (0, _react.useRef)(null);
@@ -49287,7 +49276,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, classColor, key
         figureIdCounter
     });
     // Загрузка initialObjects на канву
-    (0, _useLoadInitialDefault.default)(canvasRef, initialObjects, figureIdCounter, sendBack);
+    (0, _useLoadInitialDefault.default)(canvasRef, initialObjects, figureIdCounter, sendBack, pointRadius);
     // Логика рисования в разных режимах
     (0, _useDrawingModeDefault.default)(canvasRef, {
         mode,
@@ -49301,7 +49290,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, classColor, key
         keypointName
     });
     // Зум + пэннинг
-    const { zoomIn, zoomOut } = (0, _useZoomDefault.default)(canvasRef, {
+    const { zoomIn, zoomReset, zoomOut } = (0, _useZoomDefault.default)(canvasRef, {
         width,
         height
     });
@@ -49332,6 +49321,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, classColor, key
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _toolbarDefault.default), {
                 zoomIn: zoomIn,
+                zoomReset: zoomReset,
                 zoomOut: zoomOut,
                 deleteSelected: deleteSelected,
                 undo: undo,
@@ -49349,7 +49339,7 @@ function FabricCanvas({ width, height, backgroundImageURL, mode, classColor, key
         columnNumber: 5
     }, this);
 }
-_s(FabricCanvas, "e8Y+WlGuukI3WPQcfhOiXT9tuK8=", false, function() {
+_s(FabricCanvas, "Wou11JrtEKrI/Ecs8e5H64YEDTc=", false, function() {
     return [
         (0, _useCanvasInitDefault.default),
         (0, _useObjectHistoryDefault.default),
@@ -49393,7 +49383,9 @@ var _zoomInSvg = require("url:../img/zoom_in.svg");
 var _zoomInSvgDefault = parcelHelpers.interopDefault(_zoomInSvg);
 var _zoomOutSvg = require("url:../img/zoom_out.svg");
 var _zoomOutSvgDefault = parcelHelpers.interopDefault(_zoomOutSvg);
-function Toolbar({ zoomIn, zoomOut, deleteSelected, undo, redo, reset }) {
+var _zoomResetSvg = require("url:../img/zoom_reset.svg");
+var _zoomResetSvgDefault = parcelHelpers.interopDefault(_zoomResetSvg);
+function Toolbar({ zoomIn, zoomReset, zoomOut, deleteSelected, undo, redo, reset }) {
     const style = {
         display: "flex",
         gap: 8,
@@ -49418,12 +49410,28 @@ function Toolbar({ zoomIn, zoomOut, deleteSelected, undo, redo, reset }) {
                     alt: "Zoom Out"
                 }, void 0, false, {
                     fileName: "src/components/Toolbar.js",
-                    lineNumber: 34,
+                    lineNumber: 36,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/Toolbar.js",
-                lineNumber: 33,
+                lineNumber: 35,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                style: btn,
+                onClick: zoomReset,
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
+                    src: (0, _zoomResetSvgDefault.default),
+                    alt: "Zoom Reset"
+                }, void 0, false, {
+                    fileName: "src/components/Toolbar.js",
+                    lineNumber: 39,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "src/components/Toolbar.js",
+                lineNumber: 38,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -49434,12 +49442,12 @@ function Toolbar({ zoomIn, zoomOut, deleteSelected, undo, redo, reset }) {
                     alt: "Zoom In"
                 }, void 0, false, {
                     fileName: "src/components/Toolbar.js",
-                    lineNumber: 37,
+                    lineNumber: 42,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/Toolbar.js",
-                lineNumber: 36,
+                lineNumber: 41,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -49450,12 +49458,12 @@ function Toolbar({ zoomIn, zoomOut, deleteSelected, undo, redo, reset }) {
                     alt: "Undo"
                 }, void 0, false, {
                     fileName: "src/components/Toolbar.js",
-                    lineNumber: 40,
+                    lineNumber: 45,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/Toolbar.js",
-                lineNumber: 39,
+                lineNumber: 44,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -49466,12 +49474,12 @@ function Toolbar({ zoomIn, zoomOut, deleteSelected, undo, redo, reset }) {
                     alt: "Redo"
                 }, void 0, false, {
                     fileName: "src/components/Toolbar.js",
-                    lineNumber: 43,
+                    lineNumber: 48,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/Toolbar.js",
-                lineNumber: 42,
+                lineNumber: 47,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -49482,12 +49490,12 @@ function Toolbar({ zoomIn, zoomOut, deleteSelected, undo, redo, reset }) {
                     alt: "Delete"
                 }, void 0, false, {
                     fileName: "src/components/Toolbar.js",
-                    lineNumber: 46,
+                    lineNumber: 51,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/Toolbar.js",
-                lineNumber: 45,
+                lineNumber: 50,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -49498,18 +49506,18 @@ function Toolbar({ zoomIn, zoomOut, deleteSelected, undo, redo, reset }) {
                     alt: "Reset"
                 }, void 0, false, {
                     fileName: "src/components/Toolbar.js",
-                    lineNumber: 49,
+                    lineNumber: 54,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/Toolbar.js",
-                lineNumber: 48,
+                lineNumber: 53,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/components/Toolbar.js",
-        lineNumber: 32,
+        lineNumber: 34,
         columnNumber: 5
     }, this);
 }
@@ -49522,7 +49530,7 @@ $RefreshReg$(_c, "Toolbar");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","url:../img/delete.svg":"eToa8","url:../img/reset.svg":"l9z8i","url:../img/undo.svg":"1rW43","url:../img/redo.svg":"7jd64","url:../img/zoom_in.svg":"2CQHM","url:../img/zoom_out.svg":"25RcJ"}],"eToa8":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","url:../img/delete.svg":"eToa8","url:../img/reset.svg":"l9z8i","url:../img/undo.svg":"1rW43","url:../img/redo.svg":"7jd64","url:../img/zoom_in.svg":"2CQHM","url:../img/zoom_out.svg":"25RcJ","url:../img/zoom_reset.svg":"26nfl"}],"eToa8":[function(require,module,exports,__globalThis) {
 module.exports = module.bundle.resolve("delete.877e1b97.svg") + "?" + Date.now();
 
 },{}],"l9z8i":[function(require,module,exports,__globalThis) {
@@ -49539,6 +49547,9 @@ module.exports = module.bundle.resolve("zoom_in.fad9dae4.svg") + "?" + Date.now(
 
 },{}],"25RcJ":[function(require,module,exports,__globalThis) {
 module.exports = module.bundle.resolve("zoom_out.dc48a1f2.svg") + "?" + Date.now();
+
+},{}],"26nfl":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("zoom_reset.6c61ba21.svg") + "?" + Date.now();
 
 },{}],"f2Cwh":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$0c4d = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
@@ -72526,7 +72537,7 @@ parcelHelpers.export(exports, "default", ()=>useLoadInitial);
 var _react = require("react");
 var _fabric = require("fabric");
 var _s = $RefreshSig$();
-function useLoadInitial(canvasRef, initialObjects, figureIdCounter, sendBack) {
+function useLoadInitial(canvasRef, initialObjects, figureIdCounter, sendBack, pointRadius) {
     _s();
     (0, _react.useEffect)(()=>{
         const canvas = canvasRef.current;
@@ -72563,14 +72574,17 @@ function useLoadInitial(canvasRef, initialObjects, figureIdCounter, sendBack) {
                 selectable: true,
                 strokeUniform: true,
                 lockRotation: true,
-                hasRotatingPoint: false
+                hasRotatingPoint: false,
+                objectId: o.objectId,
+                figureId: o.figureId,
+                classId: o.classId
             });
             else if (o.type === "circle") inst = new (0, _fabric.fabric).Circle({
                 left: o.left,
                 top: o.top,
                 originX: "center",
                 originY: "center",
-                radius: o.radius,
+                radius: pointRadius,
                 fill: "transparent",
                 stroke: o.stroke,
                 strokeWidth: 3,
@@ -72579,10 +72593,14 @@ function useLoadInitial(canvasRef, initialObjects, figureIdCounter, sendBack) {
                 lockRotation: true,
                 hasRotatingPoint: false,
                 lockScalingX: true,
-                lockScalingY: true
+                lockScalingY: true,
+                objectId: o.objectId,
+                figureId: o.figureId,
+                classId: o.classId,
+                keypointName: o.keypointName
             });
             if (inst) {
-                inst.objectId = ++idCounterRef.current;
+                inst.figureId = ++figureIdCounter.current;
                 canvas.add(inst);
             }
         });
@@ -72615,6 +72633,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>useDrawingMode);
 var _react = require("react");
 var _fabric = require("fabric");
+var _utils = require("../utils");
 var _s = $RefreshSig$();
 const MIN_SIDE = 10;
 function useDrawingMode(canvasRef, { mode, classColor, keypointColor, pointRadius, figureIdCounter, sendBack, objectId, classId, keypointName }) {
@@ -72683,8 +72702,16 @@ function useDrawingMode(canvasRef, { mode, classColor, keypointColor, pointRadiu
             handlers.mouseUp = ()=>{
                 if (!isDown) return;
                 isDown = false;
-                if (rect.width < MIN_SIDE || rect.height < MIN_SIDE) canvas.remove(rect);
-                else sendBack();
+                if (rect.width < MIN_SIDE || rect.height < MIN_SIDE) {
+                    canvas.remove(rect);
+                    (0, _utils.showCanvasMessage)(canvas, "Box too small \u2013 aborted!");
+                }
+                const same = canvas.getObjects().filter((o)=>o.type === "rect" && o.objectId === objectId);
+                if (same.length > 1) {
+                    canvas.remove(rect);
+                    (0, _utils.showCanvasMessage)(canvas, "Duplicated ID for box \u2013 aborted!");
+                }
+                sendBack();
             };
             canvas.on("mouse:down", handlers.mouseDown);
             canvas.on("mouse:move", handlers.mouseMove);
@@ -72692,9 +72719,12 @@ function useDrawingMode(canvasRef, { mode, classColor, keypointColor, pointRadiu
         } else if (mode === "point" && keypointName) {
             canvas.selection = false;
             canvas.defaultCursor = "pointer";
+            let isDown = false;
+            let c = null;
             handlers.mouseDown = (opt)=>{
+                isDown = true;
                 const p = canvas.getPointer(opt.e);
-                const c = new (0, _fabric.fabric).Circle({
+                c = new (0, _fabric.fabric).Circle({
                     left: p.x,
                     top: p.y,
                     originX: "center",
@@ -72714,10 +72744,26 @@ function useDrawingMode(canvasRef, { mode, classColor, keypointColor, pointRadiu
                 c.classId = classId;
                 c.keypointName = keypointName;
                 canvas.add(c);
-                canvas.requestRenderAll();
+            //canvas.requestRenderAll()
+            //sendBack()
+            };
+            handlers.mouseUp = ()=>{
+                if (!isDown) return;
+                isDown = false;
+                // Проверяем, сколько точек с этим object_id и keypoint_name
+                const dups = canvas.getObjects().filter((o)=>o.type === "circle" && o.objectId === objectId && o.keypointName === keypointName);
+                console.log(dups);
+                if (dups.length > 1) {
+                    // удаляем только что добавленную
+                    canvas.remove(c);
+                    canvas.requestRenderAll();
+                    (0, _utils.showCanvasMessage)(canvas, `Duplicated ID for keypoint \u{201C}${keypointName}\u{201D} \u{2013} aborted!`);
+                }
+                // всё ок
                 sendBack();
             };
             canvas.on("mouse:down", handlers.mouseDown);
+            canvas.on("mouse:up", handlers.mouseUp);
         } else if (mode === "transform") {
             canvas.selection = true;
             canvas.defaultCursor = "move";
@@ -72780,7 +72826,41 @@ _s(useDrawingMode, "OD7bBpZva5O2jO+Puf00hKivP7c=");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react":"jMk1U","fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"ghy95":[function(require,module,exports,__globalThis) {
+},{"react":"jMk1U","fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","../utils":"khuqI"}],"khuqI":[function(require,module,exports,__globalThis) {
+// src/utils/canvasUtils.js
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "showCanvasMessage", ()=>showCanvasMessage);
+var _fabric = require("fabric");
+function showCanvasMessage(canvas, text, { left = 10, bottomOffset = 10, fill = "red", backgroundColor = "#ccc", fontFamily = "Arial", fontSize = 12, duration = 2000 } = {}) {
+    if (!canvas) return null;
+    const msg = new (0, _fabric.fabric).Text(text, {
+        left,
+        top: canvas.getHeight() - bottomOffset,
+        fill,
+        backgroundColor,
+        fontFamily,
+        fontSize,
+        selectable: false,
+        evented: false
+    });
+    msg.set("originY", "bottom");
+    canvas.add(msg);
+    canvas.requestRenderAll();
+    // планируем удаление
+    const timer = setTimeout(()=>{
+        // только если msg всё ещё на canvas
+        if (msg.canvas) try {
+            canvas.remove(msg);
+            canvas.requestRenderAll();
+        } catch (_err) {
+        // подавляем все ошибки при удалении
+        }
+    }, duration);
+    return;
+}
+
+},{"fabric":"fVwBJ","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"ghy95":[function(require,module,exports,__globalThis) {
 var $parcel$ReactRefreshHelpers$0dfd = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 $parcel$ReactRefreshHelpers$0dfd.init();
 var prevRefreshReg = globalThis.$RefreshReg$;
@@ -72821,12 +72901,27 @@ function useZoom(canvasRef, { width, height }) {
         width,
         height
     ]);
+    const zoomReset = (0, _react.useCallback)(()=>{
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        // Сброс панинга и зума
+        canvas.setViewportTransform([
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+        ]);
+        canvas.requestRenderAll();
+    }, []);
     return {
         zoomIn,
+        zoomReset,
         zoomOut
     };
 }
-_s(useZoom, "yjnoJ+nFqHVKSvTPF57irs8MCfM=");
+_s(useZoom, "4xa8nxQhTld92N7OML5d3R9ekvk=");
 
   $parcel$ReactRefreshHelpers$0dfd.postlude(module);
 } finally {
@@ -72883,13 +72978,17 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, figureIdC
             // если мы откатились — обрезаем «будущее»
             if (historyIndexRef.current < historyRef.current.length - 1) historyRef.current = historyRef.current.slice(0, historyIndexRef.current + 1);
             // пушим новый снимок
+            //const prev = historyRef.current[historyIndexRef.current]
             const snapshot = canvas.getObjects().map((o)=>o.toObject([
                     "figureId",
                     "objectId",
                     "classId",
                     "keypointName"
                 ]));
-            historyRef.current.push(snapshot);
+            /*if (prev !== snapshot) {
+        historyRef.current.push(snapshot)
+        historyIndexRef.current++
+      }*/ historyRef.current.push(snapshot);
             historyIndexRef.current++;
         }
         skipHistoryRef.current = false;
@@ -73034,15 +73133,15 @@ var _reactDefault = parcelHelpers.interopDefault(_react);
 const MODES = [
     {
         value: "transform",
-        label: "Transform"
+        label: "\u22BE Transform"
     },
     {
         value: "rect",
-        label: "Rectangle"
+        label: "\u229E Box"
     },
     {
         value: "point",
-        label: "Point"
+        label: "\u229A Keypoint"
     }
 ];
 function ModeSelector({ value, onChange }) {
@@ -73070,20 +73169,36 @@ function ModeSelector({ value, onChange }) {
         color: "#fff",
         borderColor: "#007bff"
     };
+    const textDesc = {
+        alignContent: "center",
+        marginRight: "10px",
+        fontFamily: "Arial",
+        fontSize: "12px"
+    };
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         style: container,
-        children: MODES.map((m)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                style: value === m.value ? pillActive : pillBase,
-                onClick: ()=>onChange(m.value),
-                children: m.label
-            }, m.value, false, {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                style: textDesc,
+                children: "Mode:"
+            }, void 0, false, {
                 fileName: "src/components/ModeSelector.js",
-                lineNumber: 38,
-                columnNumber: 9
-            }, this))
-    }, void 0, false, {
+                lineNumber: 44,
+                columnNumber: 7
+            }, this),
+            MODES.map((m)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                    style: value === m.value ? pillActive : pillBase,
+                    onClick: ()=>onChange(m.value),
+                    children: m.label
+                }, m.value, false, {
+                    fileName: "src/components/ModeSelector.js",
+                    lineNumber: 46,
+                    columnNumber: 9
+                }, this))
+        ]
+    }, void 0, true, {
         fileName: "src/components/ModeSelector.js",
-        lineNumber: 36,
+        lineNumber: 43,
         columnNumber: 5
     }, this);
 }
@@ -73128,29 +73243,45 @@ const pillBase = {
     fontFamily: "Arial",
     fontSize: "14px"
 };
+const textDesc = {
+    alignContent: "center",
+    marginRight: "10px",
+    fontFamily: "Arial",
+    fontSize: "12px"
+};
 function ClassSelector({ schema, classId, onSelect }) {
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         style: container,
-        children: schema.map((item)=>{
-            const active = item.bbox === classId;
-            return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                onClick: ()=>onSelect(item.bbox),
-                style: {
-                    ...pillBase,
-                    borderColor: item.color,
-                    color: active ? "#fff" : item.color,
-                    background: active ? item.color : "#fff"
-                },
-                children: item.bbox
-            }, item.bbox, false, {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                style: textDesc,
+                children: "Label:"
+            }, void 0, false, {
                 fileName: "src/components/ClassSelector.js",
-                lineNumber: 28,
-                columnNumber: 11
-            }, this);
-        })
-    }, void 0, false, {
+                lineNumber: 32,
+                columnNumber: 7
+            }, this),
+            schema.map((item)=>{
+                const active = item.bbox === classId;
+                return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                    onClick: ()=>onSelect(item.bbox),
+                    style: {
+                        ...pillBase,
+                        borderColor: item.color,
+                        color: active ? "#fff" : item.color,
+                        background: active ? item.color : "#fff"
+                    },
+                    children: item.bbox
+                }, item.bbox, false, {
+                    fileName: "src/components/ClassSelector.js",
+                    lineNumber: 36,
+                    columnNumber: 11
+                }, this);
+            })
+        ]
+    }, void 0, true, {
         fileName: "src/components/ClassSelector.js",
-        lineNumber: 24,
+        lineNumber: 31,
         columnNumber: 5
     }, this);
 }
@@ -73190,18 +73321,27 @@ const btnStyle = {
     height: 24,
     borderRadius: "50%",
     border: "none",
-    background: "#ccc",
+    background: "#bbb",
     color: "#fff",
     cursor: "pointer",
     userSelect: "none"
 };
 const inputStyle = {
-    width: 60,
+    width: 40,
     textAlign: "center",
     borderRadius: "50vh",
-    height: 20,
+    height: 22,
     border: "1px solid #ccc",
-    color: "#333"
+    color: "#333",
+    WebkitAppearance: "none",
+    MozAppearance: "none",
+    margin: 0
+};
+const textDesc = {
+    alignContent: "center",
+    marginRight: "10px",
+    fontFamily: "Arial",
+    fontSize: "12px"
 };
 function ObjectIdInput({ value, min = 1, onChange, onIncrement, onDecrement }) {
     const handleInput = (e)=>{
@@ -73211,16 +73351,25 @@ function ObjectIdInput({ value, min = 1, onChange, onIncrement, onDecrement }) {
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         style: containerStyle,
         children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                style: textDesc,
+                children: "Object ID:"
+            }, void 0, false, {
+                fileName: "src/components/ObjectIdInput.js",
+                lineNumber: 56,
+                columnNumber: 7
+            }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
                 style: btnStyle,
                 onClick: ()=>onDecrement(),
                 children: "\u2013"
             }, void 0, false, {
                 fileName: "src/components/ObjectIdInput.js",
-                lineNumber: 46,
+                lineNumber: 57,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
+                className: "no-spinner",
                 type: "number",
                 min: min,
                 value: value,
@@ -73228,7 +73377,7 @@ function ObjectIdInput({ value, min = 1, onChange, onIncrement, onDecrement }) {
                 style: inputStyle
             }, void 0, false, {
                 fileName: "src/components/ObjectIdInput.js",
-                lineNumber: 49,
+                lineNumber: 60,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -73237,13 +73386,13 @@ function ObjectIdInput({ value, min = 1, onChange, onIncrement, onDecrement }) {
                 children: "+"
             }, void 0, false, {
                 fileName: "src/components/ObjectIdInput.js",
-                lineNumber: 56,
+                lineNumber: 68,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/components/ObjectIdInput.js",
-        lineNumber: 45,
+        lineNumber: 55,
         columnNumber: 5
     }, this);
 }
@@ -73270,6 +73419,34 @@ parcelHelpers.export(exports, "default", ()=>KeypointSelector);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
+// утилита, считающая яркость цвета и возвращающая "light" или "dark"
+function getLuminance(hex) {
+    const c = hex.replace("#", "");
+    const [r, g, b] = [
+        0,
+        2,
+        4
+    ].map((i)=>parseInt(c.substr(i, 2), 16) / 255);
+    // простая формула яркости
+    return 0.299 * r + 0.587 * g + 0.114 * b;
+}
+// затемнить hex-цвет на долю amt (0…1)
+function darken(hex, amt = 0.2) {
+    const c = hex.replace("#", "");
+    let out = "#";
+    for(let i = 0; i < 3; i++){
+        const val = parseInt(c.substr(i * 2, 2), 16);
+        // уменьшаем яркость и округляем
+        const v = Math.round(Math.max(0, Math.min(255, val * (1 - amt))));
+        out += v.toString(16).padStart(2, "0");
+    }
+    return out;
+}
+function pickTextColor(bgHex) {
+    let darken_color = darken(bgHex);
+    console.log(bgHex, darken_color);
+    return getLuminance(bgHex) > 0.8 ? darken_color : bgHex;
+}
 const container = {
     display: "flex",
     gap: "6px",
@@ -73292,29 +73469,46 @@ const pillActive = {
     background: "#333",
     color: "#fff"
 };
+const textDesc = {
+    alignContent: "center",
+    marginRight: "10px",
+    fontFamily: "Arial",
+    fontSize: "12px"
+};
 function KeypointSelector({ keypoints, selected, onSelect }) {
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         style: container,
-        children: Object.entries(keypoints).map(([name, { color }])=>{
-            const active = name === selected;
-            return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-                onClick: ()=>onSelect(active ? null : name),
-                style: {
-                    ...active ? pillActive : pillBase,
-                    borderColor: color,
-                    color: active ? "#fff" : color,
-                    background: active ? color : "#fff"
-                },
-                children: name
-            }, name, false, {
+        children: [
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
+                style: textDesc,
+                children: "Keypoints:"
+            }, void 0, false, {
                 fileName: "src/components/KeypointSelector.js",
-                lineNumber: 38,
-                columnNumber: 11
-            }, this);
-        })
-    }, void 0, false, {
+                lineNumber: 71,
+                columnNumber: 7
+            }, this),
+            Object.entries(keypoints).map(([name, { color }])=>{
+                color = pickTextColor(color);
+                const active = name === selected;
+                return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+                    onClick: ()=>onSelect(active ? null : name),
+                    style: {
+                        ...active ? pillActive : pillBase,
+                        borderColor: color,
+                        color: active ? "#fff" : color,
+                        background: active ? color : "#fff"
+                    },
+                    children: name
+                }, name, false, {
+                    fileName: "src/components/KeypointSelector.js",
+                    lineNumber: 76,
+                    columnNumber: 11
+                }, this);
+            })
+        ]
+    }, void 0, true, {
         fileName: "src/components/KeypointSelector.js",
-        lineNumber: 34,
+        lineNumber: 70,
         columnNumber: 5
     }, this);
 }
@@ -73327,6 +73521,6 @@ $RefreshReg$(_c, "KeypointSelector");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}]},["igbXF","a0t4e"], "a0t4e", "parcelRequire5d99", {}, "./", "/", "http://localhost:3001")
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"lyxGu":[function() {},{}]},["igbXF","a0t4e"], "a0t4e", "parcelRequire5d99", {}, "./", "/", "http://localhost:3001")
 
 //# sourceMappingURL=frontend.31b563d9.js.map

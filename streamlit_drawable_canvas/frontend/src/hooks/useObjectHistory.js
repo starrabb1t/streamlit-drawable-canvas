@@ -46,10 +46,16 @@ export default function useObjectHistory(
         )
       }
       // пушим новый снимок
+      //const prev = historyRef.current[historyIndexRef.current]
       const snapshot = canvas
         .getObjects()
         .map(o => o.toObject(["figureId", "objectId", "classId", "keypointName"]))
 
+      /*if (prev !== snapshot) {
+        historyRef.current.push(snapshot)
+        historyIndexRef.current++
+      }*/
+     
       historyRef.current.push(snapshot)
       historyIndexRef.current++
     }

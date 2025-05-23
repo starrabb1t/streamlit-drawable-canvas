@@ -5,9 +5,11 @@ import undoIcon    from "url:../img/undo.svg"
 import redoIcon    from "url:../img/redo.svg"
 import zoomInIcon  from "url:../img/zoom_in.svg"
 import zoomOutIcon from "url:../img/zoom_out.svg"
+import zoomResetIcon from "url:../img/zoom_reset.svg"
 
 export default function Toolbar({
   zoomIn,
+  zoomReset,
   zoomOut,
   deleteSelected,
   undo,
@@ -32,6 +34,9 @@ export default function Toolbar({
     <div style={style}>
       <button style={btn} onClick={zoomOut}>
         <img src={zoomOutIcon} alt="Zoom Out"/>
+      </button>
+      <button style={btn} onClick={zoomReset}>
+        <img src={zoomResetIcon} alt="Zoom Reset"/>
       </button>
       <button style={btn} onClick={zoomIn}>
         <img src={zoomInIcon} alt="Zoom In"/>

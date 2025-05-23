@@ -1,8 +1,9 @@
 import streamlit as st
 from PIL import Image
 from streamlit_drawable_canvas import st_canvas
+import json
 
-images = ("image2.png", "image.png")
+images = ("image.png", "image.png")
 index = st.selectbox("Выберите изображение:", images)
 
 if type(index) == int:
@@ -11,36 +12,19 @@ print("FOO", index)
 
 bg = Image.open(index)
 
-initial = [
-  {"type":"rect",   "left":10, "top":20, "width":100, "height":50, "stroke":"red"},
-  {"type":"circle", "left":200,"top":100,"width":10,  "height":10, "stroke":"blue"},
-]
+with open("initial_objects.json", "r") as f:
+    initial_objects = json.load(f)
 
-annotation_schema = [   
-    {
-        "bbox" : "person",
-        "color" : "#66FFCC",
-        "keypoints": {
-            "nose": {
-                "color": "#FF6666"
-            },
-            "left_eye": {
-                "color": "#FF9966"
-            },
-            "right_eye": {
-                "color": "#FFCC66"
-            }
-        }
-    }
-]
+#initial_objects = []
 
-initial = []
+with open("annotation_schema.json", "r") as f:
+    annotation_schema = json.load(f)
 
 res = st_canvas(
     annotation_schema,
     background_image=bg,
     key=index,
-    initial_objects=initial
+    initial_objects=initial_objects
 )
 
 st.json(res, expanded=False)

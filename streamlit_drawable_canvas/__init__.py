@@ -5,7 +5,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from PIL import Image
 
-_RELEASE = False
+_RELEASE = True
 
 if not _RELEASE:
     _st_canvas = components.declare_component(
@@ -46,13 +46,13 @@ def st_canvas(
 
     # вызываем компонент, передаём initialObjects
     objs = _st_canvas(
+        annotationSchema = annotation_schema,
         backgroundImageURL=bg_url,
         canvasWidth=width,
         canvasHeight=height,
         initialObjects=initial_objects,   
         pointRadius = pointRadius,
         key=key,
-        annotationSchema = annotation_schema
     )
 
     # если ещё не нажали ничего

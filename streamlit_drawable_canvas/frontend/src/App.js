@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useState, useCallback, useEffect } from "react"
+import React, { useState, useCallback, useEffect, useRef } from "react"
 import { withStreamlitConnection, Streamlit } from "streamlit-component-lib"
 import ClassSelector from "./components/ClassSelector"
 import KeypointSelector from "./components/KeypointSelector"
@@ -7,19 +7,20 @@ import ModeSelector  from "./components/ModeSelector"
 import FabricCanvas  from "./components/FabricCanvas"
 import ObjectIdInput from "./components/ObjectIdInput"
 
-const STREAMLIT_FRAME_PADDING = 150
+const STREAMLIT_FRAME_PADDING = 250
 
 function App({ args }) {
   const {
+    annotationSchema,
     backgroundImageURL,
     canvasWidth,
     canvasHeight,
-    initialObjects = [],
+    initialObjects,
     pointRadius,
   } = args
 
   // временная схема (потом придёт из Python)
-  const annotationSchema = [
+  /*const annotationSchema = [
     {
       bbox: "person",
       color: "#66FFCC",
@@ -30,7 +31,7 @@ function App({ args }) {
       color: "#FFAA00",
       keypoints: { head: { color: "#0000FF" }, tail: { color: "#00CCFF" } },
     },
-  ]
+  ]*/
 
   // 1) выбираем класс (по умолчанию первый)
   const [classId, setClassId] = useState(annotationSchema[0].bbox)
@@ -57,16 +58,23 @@ function App({ args }) {
 
   // вычисляем цвет для текущего keypoint (или fallback на classColor)
   const keypointColor = keypointName
-    ? annotationSchema
-        .find(x => x.bbox === classId)
-        .keypoints[keypointName].color
+    ? (
+        annotationSchema.find(x => x.bbox === classId)
+        ?.keypoints?.[keypointName]?.color
+      ) || classColor
     : classColor
+  
+  const containerRef = useRef(null)
 
   // колбэк отправки в Python
   const handleChange = useCallback(
     objs => {
-      Streamlit.setComponentValue(objs)
-      Streamlit.setFrameHeight(canvasHeight + STREAMLIT_FRAME_PADDING)
+      const filtered = objs.filter(
+        o => o.type === "rect" || o.type === "circle"
+      )
+      Streamlit.setComponentValue(filtered)
+      const h = containerRef.current?.clientHeight|| canvasHeight
+      Streamlit.setFrameHeight(h + STREAMLIT_FRAME_PADDING)
     },
     [canvasHeight]
   )
@@ -79,15 +87,18 @@ function App({ args }) {
         classId={classId}
         onSelect={handleClassSelect}
       />
-      <ModeSelector value={mode} onChange={setMode}/>
 
       {/* — второй ряд: object_id input */}
       <ObjectIdInput
-        value={objectId}
-        onChange={setObjectId}
-        onIncrement={incObjectId}
-        onDecrement={decObjectId}
+      value={objectId}
+      onChange={setObjectId}
+      onIncrement={incObjectId}
+      onDecrement={decObjectId}
       />
+
+      <ModeSelector value={mode} onChange={setMode}/>
+
+      
 
       {/* третий ряд: keypoints (только в режиме point) */}
       {mode === "point" && (

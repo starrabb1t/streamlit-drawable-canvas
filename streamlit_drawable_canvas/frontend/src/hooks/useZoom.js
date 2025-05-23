@@ -24,5 +24,13 @@ export default function useZoom(canvasRef, { width, height }) {
     canvas.requestRenderAll()
   }, [width, height])
 
-  return { zoomIn, zoomOut }
+  const zoomReset = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    // Сброс панинга и зума
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0])
+    canvas.requestRenderAll()
+  }, [])
+
+  return { zoomIn, zoomReset, zoomOut }
 }

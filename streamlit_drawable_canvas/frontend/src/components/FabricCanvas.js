@@ -17,7 +17,7 @@ export default function FabricCanvas({
   classId, 
   objectId,
   keypointName,
-  initialObjects = [],
+  initialObjects,
   pointRadius,
   onChange,
 }) {
@@ -35,13 +35,13 @@ export default function FabricCanvas({
   )
 
   // Загрузка initialObjects на канву
-  useLoadInitial(canvasRef, initialObjects, figureIdCounter, sendBack)
+  useLoadInitial(canvasRef, initialObjects, figureIdCounter, sendBack, pointRadius)
 
   // Логика рисования в разных режимах
   useDrawingMode(canvasRef, { mode, classColor, keypointColor, pointRadius, figureIdCounter, sendBack, objectId, classId, keypointName })
 
   // Зум + пэннинг
-  const { zoomIn, zoomOut } = useZoom(canvasRef, { width, height })
+  const { zoomIn, zoomReset, zoomOut } = useZoom(canvasRef, { width, height })
 
   // Удаление выбранных фигур
   const deleteSelected = useCallback(() => {
@@ -63,6 +63,7 @@ export default function FabricCanvas({
       />
       <Toolbar
         zoomIn={zoomIn}
+        zoomReset={zoomReset}
         zoomOut={zoomOut}
         deleteSelected={deleteSelected}
         undo={undo}

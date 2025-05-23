@@ -5,7 +5,8 @@ export default function useLoadInitial(
   canvasRef,
   initialObjects,
   figureIdCounter,
-  sendBack
+  sendBack,
+  pointRadius
 ) {
   useEffect(() => {
     const canvas = canvasRef.current
@@ -47,16 +48,20 @@ export default function useLoadInitial(
           selectable:   true,
           strokeUniform: true,
           lockRotation: true,
-          hasRotatingPoint: false
+          hasRotatingPoint: false,
+          objectId:   o.objectId,
+          figureId:   o.figureId,
+          classId:    o.classId
         })
       }
       else if (o.type === "circle") {
+
         inst = new fabric.Circle({
           left:         o.left,
           top:          o.top,
           originX:      "center",
           originY:      "center",
-          radius:       o.radius,
+          radius:       pointRadius,
           fill:         "transparent",
           stroke:       o.stroke,
           strokeWidth:  3,
@@ -65,12 +70,16 @@ export default function useLoadInitial(
           lockRotation: true,
           hasRotatingPoint: false,
           lockScalingX: true,
-          lockScalingY: true
+          lockScalingY: true,
+          objectId:   o.objectId,
+          figureId:   o.figureId,
+          classId:    o.classId,
+          keypointName: o.keypointName
         })
       }
 
       if (inst) {
-        inst.objectId = ++idCounterRef.current
+        inst.figureId = ++figureIdCounter.current
         canvas.add(inst)
       }
     })

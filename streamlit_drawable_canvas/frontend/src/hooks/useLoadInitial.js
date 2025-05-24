@@ -13,7 +13,7 @@ export default function useLoadInitial(
     if (!canvas) return
 
     // если initialObjects пуст или уже грузили — выходим
-    if (initialObjects.length === 0 || canvas._initialLoaded) return
+    if (canvas._initialLoaded) return
 
     // ставим флаг, чтобы больше не перезатирать сцену
     canvas._initialLoaded = true

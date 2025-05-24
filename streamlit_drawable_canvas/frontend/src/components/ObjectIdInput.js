@@ -72,7 +72,7 @@ export default function ObjectIdInput({
         className="no-spinner"
         type="number"
         min={min}
-        value={value}
+        value={value != null ? value : 1}
         onChange={handleInput}
         style={inputStyle}
       />

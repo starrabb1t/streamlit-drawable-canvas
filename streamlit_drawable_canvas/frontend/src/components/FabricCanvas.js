@@ -20,6 +20,7 @@ export default function FabricCanvas({
   initialObjects,
   pointRadius,
   onChange,
+  filterById
 }) {
   // Ссылка на <canvas> и объект Fabric
   const mountRef  = useRef(null)
@@ -52,6 +53,32 @@ export default function FabricCanvas({
     canvas.requestRenderAll()
     sendBack()
   }, [sendBack])
+
+  // Эффект «спрятать все объекты кроме выбранного objectId»
+  React.useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    canvas.getObjects().forEach(o => {
+      // применяем прозрачность ко всем фигурам (rect/circle),
+      // у которых object_id !== выбранному
+      if (o.type === "rect" || o.type === "circle") {
+        if (filterById && o.objectId !== objectId) {
+          o.set({
+            opacity: 0.2,
+            selectable: false,
+          })
+        } else {
+           o.set({ opacity: 1 })
+          // восстановить selectability: только в Transform-режиме
+          if (mode === "transform") {
+            o.set({ selectable: true })
+          }
+        }
+      }
+    })
+    canvas.requestRenderAll()
+  }, [filterById, objectId])
 
   return (
     <div>

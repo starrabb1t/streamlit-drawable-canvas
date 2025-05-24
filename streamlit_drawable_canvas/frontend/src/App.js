@@ -28,6 +28,7 @@ function App({ args }) {
     const item = annotationSchema.find(x => x.bbox === cls)
     setClassColor(item.color)
   }
+  const [filterById, setFilterById]   = useState(false)
 
   // 2) режим Transform/Rect/Point
   const [mode, setMode] = useState("transform")
@@ -83,6 +84,8 @@ function App({ args }) {
       onChange={setObjectId}
       onIncrement={incObjectId}
       onDecrement={decObjectId}
+      filterEnabled={filterById}
+      onFilterToggle={setFilterById}
       />
 
       <ModeSelector value={mode} onChange={setMode}/>
@@ -112,6 +115,7 @@ function App({ args }) {
         initialObjects={initialObjects}
         pointRadius={pointRadius}
         onChange={handleChange}
+        filterById={filterById}
       />
     </div>
   )

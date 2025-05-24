@@ -39,12 +39,23 @@ const textDesc = {
   fontSize: "12px" 
 }
 
+const checkboxStyle = { 
+  display: "flex", 
+  alignItems: "center", 
+  gap: 4,
+  marginLeft: "20px", 
+  fontFamily: "Arial", 
+  fontSize: "14px" 
+}
+
 export default function ObjectIdInput({
   value,
   min = 1,
   onChange,
   onIncrement,
   onDecrement,
+  filterEnabled,      // новый булев
+  onFilterToggle,     // callback(toggle)
 }) {
   const handleInput = e => {
     const v = Math.max(min, Number(e.target.value) || min)
@@ -68,6 +79,15 @@ export default function ObjectIdInput({
       <button style={btnStyle} onClick={() => onIncrement()}>
         +
       </button>
+      {/* наш новый чекбокс */}
+      <label style={checkboxStyle}>
+        <input
+          type="checkbox"
+          checked={filterEnabled}
+          onChange={e => onFilterToggle(e.target.checked)}
+        />
+        Hide the rest
+      </label>
     </div>
   )
 }

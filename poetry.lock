@@ -1035,6 +1035,20 @@ watchdog = {version = ">=2.1.5,<7", markers = "platform_system != \"Darwin\""}
 snowflake = ["snowflake-connector-python (>=3.3.0) ; python_version < \"3.12\"", "snowflake-snowpark-python[modin] (>=1.17.0) ; python_version < \"3.12\""]
 
 [[package]]
+name = "streamlit-container-width"
+version = "1.0.3"
+description = "A simple component that returns the dimensions of the container where it is rendered."
+optional = false
+python-versions = ">=3.6"
+groups = ["main"]
+files = [
+    {file = "streamlit_container_width-1.0.3.tar.gz", hash = "sha256:abab06ebedc229021f7e2076e5264699729900b7915aa2aac1c4f362d172e3be"},
+]
+
+[package.dependencies]
+streamlit = ">=0.63"
+
+[[package]]
 name = "tenacity"
 version = "9.1.2"
 description = "Retry code until it succeeds"
@@ -1173,4 +1187,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10"
-content-hash = "c472c7115ce04c4f8d1e9dccc90cf4f16bfa3cc1b70d997fdc3c5a10c93f7450"
+content-hash = "523007b769e7151f5cad96fcccad3f1547964ccc1680e8706771701575dc22c1"

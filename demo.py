@@ -5,6 +5,10 @@ from streamlit_container_width import st_container_width
 import json
 import time
 
+st.set_page_config(
+    layout="wide"
+)
+
 images = ("image.png", "image.png")
 index = st.selectbox("Выберите изображение:", images)
 

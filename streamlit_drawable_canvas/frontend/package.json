@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "fabric": "^5.2.4",
+    "lodash.debounce": "^4.0.8",
     "react": "^18.0.2",
     "react-dom": "^18.0.2",
     "streamlit-component-lib": "^1.3.0"

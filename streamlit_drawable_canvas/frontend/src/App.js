@@ -1,12 +1,12 @@
 // src/App.js
-import React, { useState, useCallback, useEffect, useRef } from "react"
+import React, { useState, useMemo, useEffect, useRef } from "react"
 import { withStreamlitConnection, Streamlit } from "streamlit-component-lib"
 import ClassSelector from "./components/ClassSelector"
 import KeypointSelector from "./components/KeypointSelector"
 import ModeSelector  from "./components/ModeSelector"
 import FabricCanvas  from "./components/FabricCanvas"
 import ObjectIdInput from "./components/ObjectIdInput"
-//import debounce from "lodash.debounce"
+import debounce from "lodash.debounce"
 
 const STREAMLIT_FRAME_PADDING = 250
 
@@ -55,26 +55,45 @@ function App({ args }) {
   const containerRef = useRef(null)
 
   // колбэк отправки в Python + автозаполнение objectId при Transform & select
-  const handleChange = useCallback(
-    objs => {
-      // 1) фильтруем оставляем только rect/circle
-      const filtered = objs.filter(o => o.type === "rect" || o.type === "circle")
+  const doChange = objs => {
+    // 1) фильтруем оставляем только rect/circle
+    const filtered = objs.filter(o => o.type === "rect" || o.type === "circle")
 
-      // 2) если мы в Transform-режиме и есть выделенный объект — подтягиваем его ID
-      if (mode === "transform") {
-        const sel = filtered.find(o => o.is_selected)
-        if (sel) {
-          setObjectId(sel.objectId)
-        }
+    // 2) если мы в Transform-режиме и есть выделенный объект — подтягиваем его ID
+    if (mode === "transform") {
+      const sel = filtered.find(o => o.is_selected)
+      if (sel) {
+        setObjectId(sel.objectId)
       }
+    }
 
-      // 3) отправляем в Streamlit
-      Streamlit.setComponentValue(filtered)
-      const h = containerRef.current?.clientHeight || canvasHeight
-      Streamlit.setFrameHeight(h + STREAMLIT_FRAME_PADDING)
-    },
+    // 3) отправляем в Streamlit
+    Streamlit.setComponentValue(filtered)
+    const h = containerRef.current?.clientHeight || canvasHeight
+    Streamlit.setFrameHeight(h + STREAMLIT_FRAME_PADDING)
+  }
+
+  const handleChange = useMemo(
+    () => debounce(doChange, 250),
     [canvasHeight, mode, setObjectId]
   )
+
+  /*
+  // колбэк отправки в Python
+  const doChange = objs => {
+      const filtered = objs.filter(
+        o => o.type === "rect" || o.type === "circle"
+      )
+      Streamlit.setComponentValue(filtered)
+      //const h = containerRef.current?.clientHeight || canvasHeight
+      Streamlit.setFrameHeight(canvasHeight + STREAMLIT_FRAME_PADDING)
+    }
+
+  const handleChange = useMemo(
+    () => debounce(doChange, 250),
+    [canvasHeight]
+  )
+    */
 
   return (
     <div ref={containerRef} style={{ display: "inline-block" }}>

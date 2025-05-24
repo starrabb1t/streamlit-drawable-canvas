@@ -12,6 +12,12 @@ export default function useLoadInitial(
     const canvas = canvasRef.current
     if (!canvas) return
 
+    // если initialObjects пуст или уже грузили — выходим
+    if (initialObjects.length === 0 || canvas._initialLoaded) return
+
+    // ставим флаг, чтобы больше не перезатирать сцену
+    canvas._initialLoaded = true
+
     // 1) очистим всё, сохраняя только фон
     const bg = canvas.backgroundImage
     canvas.clear()

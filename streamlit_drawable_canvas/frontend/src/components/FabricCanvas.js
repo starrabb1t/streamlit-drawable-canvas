@@ -113,6 +113,30 @@ export default function FabricCanvas({
     })
     canvas.requestRenderAll()
   }, [filterById, objectId])
+  
+  // Смена Label: применяем новый classId и цвет к выделенным bbox
+  React.useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    if (mode !== "transform") return
+
+    const selected = canvas.getActiveObjects()
+    if (!selected || selected.length === 0) return
+
+    let touched = false
+    selected.forEach(o => {
+      if (o.type === "rect") {
+        o.classId = classId
+        o.set({ stroke: classColor })
+        touched = true
+      }
+    })
+
+    if (touched) {
+      canvas.requestRenderAll()
+      sendBack()
+    }
+  }, [classId, classColor, mode, sendBack])
 
   return (
     <div>

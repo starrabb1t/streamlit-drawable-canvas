@@ -61,9 +61,20 @@ function App({ args }) {
 
     // 2) если мы в Transform-режиме и есть выделенный объект — подтягиваем его ID
     if (mode === "transform") {
+      // 2a) тянем objectId из любого выделенного объекта (как было)
       const sel = filtered.find(o => o.is_selected)
       if (sel) {
         setObjectId(sel.objectId)
+      }
+      // 2b) если выделён ровно один bbox — синхронизируем Label (classId + цвет)
+      const selectedRects = filtered.filter(o => o.is_selected && o.type === "rect")
+      if (selectedRects.length === 1) {
+        const r = selectedRects[0]
+        if (r.classId != null) {
+          setClassId(r.classId)
+          const item = annotationSchema.find(x => x.bbox === r.classId)
+          if (item) setClassColor(item.color)
+        }
       }
     }
 
@@ -75,7 +86,7 @@ function App({ args }) {
 
   const handleChange = useMemo(
     () => debounce(doChange, 250),
-    [canvasHeight, mode, setObjectId]
+    [canvasHeight, mode, setObjectId, setClassId, setClassColor, annotationSchema]
   )
 
   /*
@@ -94,6 +105,8 @@ function App({ args }) {
     [canvasHeight]
   )
     */
+
+  //console.log("FOO BAR BAZ")
 
   return (
     <div ref={containerRef} style={{ display: "inline-block" }}>

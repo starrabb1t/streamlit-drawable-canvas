@@ -73184,19 +73184,24 @@ function useObjectHistory(canvasRef, { initialObjects, onChange, mode, figureIdC
         const canvas = canvasRef.current;
         if (!canvas) return;
         const active = canvas.getActiveObjects();
-        const objs = canvas.getObjects().map((o)=>({
+        const objs = canvas.getObjects().map((o)=>{
+            // вычисляем абсолютные координаты независимо от групп
+            const m = o.calcTransformMatrix();
+            const p = (0, _fabric.fabric).util.transformPoint(new (0, _fabric.fabric).Point(0, 0), m);
+            return {
                 objectId: o.objectId,
                 figureId: o.figureId,
                 classId: o.classId,
                 keypointName: o.keypointName,
                 type: o.type,
-                left: o.left,
-                top: o.top,
+                left: p.x - o.width * (o.scaleX || 1) / 2,
+                top: p.y - o.height * (o.scaleY || 1) / 2,
                 width: o.width * (o.scaleX || 1),
                 height: o.height * (o.scaleY || 1),
                 stroke: o.stroke,
                 is_selected: active.includes(o)
-            }));
+            };
+        });
         onChange(objs);
     }, [
         onChange

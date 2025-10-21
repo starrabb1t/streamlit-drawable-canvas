@@ -15,20 +15,25 @@ export default function useObjectHistory(
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const active = canvas.getActiveObjects()
-    const objs = canvas.getObjects().map(o => ({
-      objectId:   o.objectId,
-      figureId:   o.figureId,
-      classId:    o.classId,
-      keypointName: o.keypointName,
-      type:        o.type,
-      left:        o.left,
-      top:         o.top,
-      width:       o.width  * (o.scaleX  || 1),
-      height:      o.height * (o.scaleY || 1),
-      stroke:      o.stroke,
-      is_selected: active.includes(o),
-    }))
+    const active = canvas.getActiveObjects();
+    const objs = canvas.getObjects().map(o => {
+      // вычисляем абсолютные координаты независимо от групп
+      const m = o.calcTransformMatrix();
+      const p = fabric.util.transformPoint(new fabric.Point(0, 0), m);
+      return {
+        objectId: o.objectId,
+        figureId: o.figureId,
+        classId: o.classId,
+        keypointName: o.keypointName,
+        type: o.type,
+        left: p.x - (o.width * (o.scaleX || 1)) / 2,
+        top: p.y - (o.height * (o.scaleY || 1)) / 2,
+        width: o.width * (o.scaleX || 1),
+        height: o.height * (o.scaleY || 1),
+        stroke: o.stroke,
+        is_selected: active.includes(o),
+      };
+    });
     onChange(objs)
   }, [onChange])
 

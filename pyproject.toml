@@ -1,6 +1,6 @@
 [project]
 name = "streamlit-drawable-canvas"
-version = "0.13.0"
+version = "0.14.0"
 description = "A Streamlit custom component for a free drawing canvas using Fabric.js."
 authors = [
     {name = "starrabb1t"}

@@ -72813,7 +72813,7 @@ function useLoadInitial(canvasRef, initialObjects, figureIdCounter, sendBack, po
             });
             else if (o.type === "circle") {
                 const strokeW = 3;
-                const radius = Math.min(o.width, o.height) / 2 - strokeW / 2;
+                const radius = pointRadius || 5; // фиксированный радиус в пикселях
                 inst = new (0, _fabric.fabric).Circle({
                     left: o.left - strokeW / 2,
                     top: o.top - strokeW / 2,

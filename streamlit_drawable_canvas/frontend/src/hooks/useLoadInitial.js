@@ -42,8 +42,8 @@ export default function useLoadInitial(
 
       if (o.type === "rect") {
         inst = new fabric.Rect({
-          left:         o.left,
-          top:          o.top,
+          left:         o.left - 1, // компенсируем половину strokeWidth
+          top:          o.top  - 1,
           originX:      "left",
           originY:      "top",
           width:        o.width,
@@ -53,6 +53,7 @@ export default function useLoadInitial(
           strokeWidth:  2,
           selectable:   true,
           strokeUniform: true,
+          noScaleCache: false,
           lockRotation: true,
           hasRotatingPoint: false,
           objectId:   o.objectId,
@@ -61,16 +62,18 @@ export default function useLoadInitial(
         })
       }
       else if (o.type === "circle") {
+        const strokeW = 3;
+        const radius = Math.min(o.width, o.height) / 2 - strokeW / 2;
 
         inst = new fabric.Circle({
-          left:         o.left,
-          top:          o.top,
-          originX:      "center",
-          originY:      "center",
-          radius:       pointRadius,
+          left:         o.left - strokeW / 2,
+          top:          o.top  - strokeW / 2,
+          originX:      "left",
+          originY:      "top",
+          radius:       radius,
           fill:         "transparent",
           stroke:       o.stroke,
-          strokeWidth:  3,
+          strokeWidth:  strokeW,
           selectable:   true,
           controls: false,
           lockRotation: true,

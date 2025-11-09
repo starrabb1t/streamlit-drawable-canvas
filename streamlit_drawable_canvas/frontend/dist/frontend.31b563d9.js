@@ -72793,8 +72793,8 @@ function useLoadInitial(canvasRef, initialObjects, figureIdCounter, sendBack, po
         initialObjects.forEach((o)=>{
             let inst = null;
             if (o.type === "rect") inst = new (0, _fabric.fabric).Rect({
-                left: o.left,
-                top: o.top,
+                left: o.left - 1,
+                top: o.top - 1,
                 originX: "left",
                 originY: "top",
                 width: o.width,
@@ -72804,32 +72804,37 @@ function useLoadInitial(canvasRef, initialObjects, figureIdCounter, sendBack, po
                 strokeWidth: 2,
                 selectable: true,
                 strokeUniform: true,
+                noScaleCache: false,
                 lockRotation: true,
                 hasRotatingPoint: false,
                 objectId: o.objectId,
                 figureId: o.figureId,
                 classId: o.classId
             });
-            else if (o.type === "circle") inst = new (0, _fabric.fabric).Circle({
-                left: o.left,
-                top: o.top,
-                originX: "center",
-                originY: "center",
-                radius: pointRadius,
-                fill: "transparent",
-                stroke: o.stroke,
-                strokeWidth: 3,
-                selectable: true,
-                controls: false,
-                lockRotation: true,
-                hasRotatingPoint: false,
-                lockScalingX: true,
-                lockScalingY: true,
-                objectId: o.objectId,
-                figureId: o.figureId,
-                classId: o.classId,
-                keypointName: o.keypointName
-            });
+            else if (o.type === "circle") {
+                const strokeW = 3;
+                const radius = Math.min(o.width, o.height) / 2 - strokeW / 2;
+                inst = new (0, _fabric.fabric).Circle({
+                    left: o.left - strokeW / 2,
+                    top: o.top - strokeW / 2,
+                    originX: "left",
+                    originY: "top",
+                    radius: radius,
+                    fill: "transparent",
+                    stroke: o.stroke,
+                    strokeWidth: strokeW,
+                    selectable: true,
+                    controls: false,
+                    lockRotation: true,
+                    hasRotatingPoint: false,
+                    lockScalingX: true,
+                    lockScalingY: true,
+                    objectId: o.objectId,
+                    figureId: o.figureId,
+                    classId: o.classId,
+                    keypointName: o.keypointName
+                });
+            }
             if (inst) {
                 inst.figureId = ++figureIdCounter.current;
                 canvas.add(inst);
